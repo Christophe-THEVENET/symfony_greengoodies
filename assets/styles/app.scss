@@ -1,0 +1,18 @@
+// Import des variables et mixins
+/*
+  L'ordre des imports : 
+    - reset
+    - vendors
+    - pages
+    - themes
+    - layout
+    - components
+*/
+
+// Import des autres modules avec des alias uniques
+@use "base/_all" as base;
+@use "pages/_all" as pages;
+@use "layout/_all" as layout;
+@use "components/_all" as components;
+
+
