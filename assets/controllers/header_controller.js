@@ -8,6 +8,12 @@ export default class extends Controller {
         this.isOpen = false;
     }
 
+    disconnect() {
+        // S'assurer que le scroll est restauré si le contrôleur est déconnecté
+        document.body.style.overflow = "";
+    }
+
+
     toggle() {
         if (this.isOpen) {
             this.close();
@@ -21,6 +27,8 @@ export default class extends Controller {
         this.burgerTarget.classList.add(this.activeClass);
         this.mobileMenuTarget.classList.add(this.activeClass);
         this.overlayTarget.classList.add(this.activeClass);
+        // Bloquer le scroll du body
+        document.body.style.overflow = "hidden";
     }
 
     close() {
@@ -28,6 +36,8 @@ export default class extends Controller {
         this.burgerTarget.classList.remove(this.activeClass);
         this.mobileMenuTarget.classList.remove(this.activeClass);
         this.overlayTarget.classList.remove(this.activeClass);
+        // Restaurer le scroll du body
+        document.body.style.overflow = "";
     }
 
     closeOnOverlay() {

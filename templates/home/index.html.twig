@@ -3,9 +3,5 @@
 {% block title %}{{ parent() }} - Accueil{% endblock %}
 
 {% block body %}
-
-<h1>Test</h1>
-    <button class="btn">test</button>
-    <button class="btn btn-secondary">test</button>
-    <button class="btn btn-outline">test</button>
+    {% include "./_partials/_hero.html.twig" %}
 {% endblock %}

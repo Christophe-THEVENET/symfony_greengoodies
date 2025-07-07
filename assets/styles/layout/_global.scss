@@ -1,0 +1,9 @@
+@use "../abstracts/_all" as *;
+body {
+    background-color: $beige-light;
+}
+
+[class$="container"] {
+    max-width: $container-max-width;
+}
+

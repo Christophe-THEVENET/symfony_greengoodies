@@ -17,7 +17,7 @@ $border-color-hf: #F6F5F0;
 // Breakpoints responsifs
 $breakpoint-sm: 576px;
 $breakpoint-mobile: 768px;         
-$breakpoint-lg: 992px;
+$breakpoint-tablette: 992px;
 $breakpoint-xl: 1200px;
 $breakpoint-xxl: 1400px;
 
@@ -26,8 +26,8 @@ $container-max-width: 1200px;
 $container-padding: 1rem;
 
 // Typographie
-$font-size-title-hero: 4rem;
-$font-size-texte-hero : 1.125rem;   
+$font-size-title-hero: 3rem;
+$font-size-text-hero : 0.875rem;   
 $font-size-nav: 1.063rem;
 $font-size-title-card-product: 1rem;
 $font-size-text: 0.875rem; // texte / label / lienk   
