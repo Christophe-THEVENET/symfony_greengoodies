@@ -36,3 +36,105 @@
         }
     }
 }
+.values {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+
+        &__item {
+            height: 646px;
+            display: flex;
+
+            &:first-child {
+                background-color: $beige-dark;
+            }
+
+            &:nth-child(2) {
+                background-color: $green;
+            }
+
+            &.reverse {
+                flex-direction: row-reverse;
+
+                // Cibler le contenu dans reverse
+                .values__container__item-content {
+                    align-items: flex-end;
+
+                    &-reverse {
+                        max-width: 30rem;
+                    }
+
+                }
+
+
+            }
+
+            &-content {
+                width: 66.66%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                padding: 2rem;
+
+                h3 {
+                    font-size: $font-size-title-product;
+                    font-weight: $font-weight-medium;
+                    color: $text-dark;
+                    margin-bottom: 1rem;
+                    text-transform: uppercase;
+                }
+
+                p {
+                    font-size: $font-size-text-product;
+                    font-weight: $font-weight-text;
+                    color: $text-dark;
+                    margin-bottom: 1rem;
+                    max-width: 26rem;
+                }
+
+            }
+
+            &-image {
+                width: 33.33%;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+        }
+
+
+
+    }
+}
+
+@media screen and (max-width: $breakpoint-tablette) {
+    .values__container__item, .values__container__item.reverse {
+        flex-direction: column;
+        height: auto;
+
+        &-content {
+            width: 100%;
+            padding: 5rem;
+            min-height: 30rem;
+            justify-content: center;
+
+        }
+
+        &-image {
+            width: 100%;
+            height: 20rem;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+}
