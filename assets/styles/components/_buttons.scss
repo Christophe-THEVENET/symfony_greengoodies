@@ -1,14 +1,14 @@
 @use "../abstracts/_all" as a;
 // Styles pour les boutons
 .btn {
-    @include a.button-style(a.$primary-color);
+    @include a.button-style(a.$gray);
 
     &.btn-secondary {
-        @include a.button-style(a.$secondary-color);
+        @include a.button-style(a.$black);
     }
 
     &.btn-outline {
-        @include a.button-style(transparent, a.$primary-color);
-        border: 2px solid a.$primary-color;
+        @include a.button-style(transparent, a.$black);
+        border: 2px solid a.$black;
     }
 }

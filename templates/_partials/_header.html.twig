@@ -1,0 +1,46 @@
+<!-- filepath: e:\wamp\www\symfony\openclassrooms\greengoodies\templates\components\_header.html.twig -->
+<header class="header" 
+        data-controller="header"
+        data-header-active-class="active">
+    <div class="header__container">
+        <a href="{{ path('app_home') }}" class="header__container__logo">
+        <img src="{{ asset('./img/logo.svg') }}" alt="Logo" class="header__container__logo-icon"/>
+        </a>
+        
+        <!-- Navigation desktop -->
+        <nav class="header__container__nav">
+            <a href="{{ path('app_home') }}" class="header__nav-link header__nav-link--active">Accueil</a>
+            <a href="#" class="header__nav-link">Produits</a>
+            <a href="#" class="header__nav-link">Catégories</a>
+            <a href="#" class="header__nav-link">Contact</a>
+        </nav>
+        
+        <!-- Menu burger -->
+        <button class="header__burger" 
+                data-header-target="burger"
+                data-action="click->header#toggle"
+                aria-label="Menu"
+                aria-expanded="false">
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
+            <span class="header__burger-line"></span>
+        </button>
+        
+        <!-- Navigation mobile -->
+        <nav class="header__nav-mobile" data-header-target="mobileMenu">
+            <a href="{{ path('app_home') }}" class="header__nav-mobile-link" 
+               data-action="click->header#closeOnLink">Accueil</a>
+            <a href="#" class="header__nav-mobile-link"
+               data-action="click->header#closeOnLink">Produits</a>
+            <a href="#" class="header__nav-mobile-link"
+               data-action="click->header#closeOnLink">Catégories</a>
+            <a href="#" class="header__nav-mobile-link"
+               data-action="click->header#closeOnLink">Contact</a>
+        </nav>
+        
+        <!-- Overlay -->
+        <div class="header__overlay" 
+             data-header-target="overlay"
+             data-action="click->header#closeOnOverlay"></div>
+    </div>
+</header>

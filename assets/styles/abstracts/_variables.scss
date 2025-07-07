@@ -1,15 +1,44 @@
-
 //  ---------- Fonts ---------------
-$fontPrimary: "Inter";
+$fontPrimary: "Inter", sans-serif;
 
-// Variables principales
-$primary-color: #28a745;
-$secondary-color: #6c757d;
-$background-color: #f8f9fa;
-$text-color: #333;
+// Couleurs principales (basées sur la maquette)
+$beige-light: #FFFDF7; // beige clair
+$beige-dark: #EBE3D3; // beige fonçé   
+$green: #E8F0E3; // Vert clair
+$pink: #F7F1EC; // rose clair
+$white: #FFFFFF; // blanc
+$gray: #565656; // gris
+$black: #000000; // noir
+$text-dark: #333333;
+$text-light: #666666;
+$border-color: #E2E8F0;
 
 // Breakpoints responsifs
 $breakpoint-sm: 576px;
-$breakpoint-md: 768px;
+$breakpoint-mobile: 768px;         
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+$breakpoint-xxl: 1400px;
+
+// Tailles de conteneur
+$container-max-width: 1200px;
+$container-padding: 1rem;
+
+// Typographie
+$font-size-title-hero: 4rem;
+$font-size-texte-hero : 1.125rem;   
+$font-size-nav: 1.063rem;
+$font-size-title-card-product: 1rem;
+$font-size-text: 0.875rem; // texte / label / lienk   
+$font-size-button: 0.875rem; 
+$font-size-title-product: 1.25rem;  
+$font-size-price-product: 1.875rem;       
+$font-size-subtitle-product: 0.625rem; 
+$font-size-text-product: 0.875rem; 
+$font-size-info-product: 0.75rem; 
+
+$font-weight-text: 300;
+$font-weight-normal: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+    
