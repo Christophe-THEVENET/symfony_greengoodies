@@ -1,0 +1,38 @@
+@use "../abstracts/_all" as *;
+
+.products {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 auto;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            height: 80px;
+            padding: 0 $container-padding;
+
+            &-title {
+                font-size: $font-size-text-product;
+                font-weight: $font-weight-medium;
+                color: $text-dark;
+                text-transform: uppercase;
+            }
+        }
+
+        &__list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); // 3 colonnes sur desktop
+            width: 100%;
+
+            @media screen and (max-width: $breakpoint-tablette) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            // Mobile : 1 colonne
+            @media screen and (max-width: $breakpoint-mobile) {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}

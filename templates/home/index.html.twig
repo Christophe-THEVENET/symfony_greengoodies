@@ -1,7 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Accueil{% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Accueil
+{% endblock %}
 
 {% block body %}
-    {% include "./_partials/_hero.html.twig" %}
+	{% include "./_partials/_hero.html.twig" %}
+	<section class="products">
+		<div class="products__container">
+			<div class="products__container__header">
+				<h2 class="products__container__header-title">Nos produits</h2>
+			</div>
+            <div class="products__container__list">
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+            {% include "./_partials/_card-product.html.twig" %}
+			</div>
+		</div>
+	</section>
 {% endblock %}
