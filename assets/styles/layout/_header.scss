@@ -4,6 +4,7 @@
     background-color: $beige-light;
     position: relative;
     z-index: 1000;
+    border: 1px solid $border-color-hf;
 
     &__container {
         max-width: $container-max-width;
@@ -165,4 +166,4 @@
             }
         }
     }
-}
+}   
