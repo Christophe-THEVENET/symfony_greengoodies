@@ -13,7 +13,7 @@
                data-action="click->header#closeOnLink">Produits</a>
             <a href="{{ path('app_product_show') }}" class="header__container__nav-link "
                data-action="click->header#closeOnLink">Voir</a>
-            <a href="#" class="header__container__nav-link">Catégories</a>
+            <a href="{{ path('app_cart') }}" class="header__container__nav-link">Panier</a>
             <a href="#" class="header__container__nav-link">Contact</a>
         </nav>
         
@@ -34,8 +34,8 @@
                data-action="click->header#closeOnLink">Produits</a>
             <a href="{{ path('app_product_show') }}" class="header__container__nav-mobile-link"
                data-action="click->header#closeOnLink">Voir</a>
-            <a href="#" class="header__container__nav-mobile-link"
-               data-action="click->header#closeOnLink">Catégories</a>
+            <a href="{{ path('app_cart') }}" class="header__container__nav-mobile-link"
+               data-action="click->header#closeOnLink">Panier</a>
             <a href="#" class="header__container__nav-mobile-link"
                data-action="click->header#closeOnLink">Contact</a>
         </nav>
