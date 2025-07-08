@@ -1,6 +1,7 @@
 @use "../abstracts/_all" as *;
 
 .cart {
+    min-height: calc(100vh - 160px);
 
     &__container {
         @include centerElement;
