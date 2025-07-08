@@ -9,12 +9,22 @@
         
         <!-- Navigation desktop -->
         <nav class="header__container__nav">
-            <a href="{{ path('app_home') }}" class="header__container__nav-link header__container__nav-link--active" 
+            <a href="{{ path('app_home') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
                data-action="click->header#closeOnLink">Produits</a>
-            <a href="{{ path('app_product_show') }}" class="header__container__nav-link "
+            <a href="{{ path('app_product_show') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_product_show' %}active{% endif %}"
                data-action="click->header#closeOnLink">Voir</a>
-            <a href="{{ path('app_cart') }}" class="header__container__nav-link">Panier</a>
-            <a href="#" class="header__container__nav-link">Contact</a>
+            <a href="{{ path('app_cart') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">Panier</a>
+            <a href="{{ path('app_login') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
+            <a href="{{ path('app_register') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
+            {% if app.user %}
+                <a
+                    href="{{ path('app_logout') }}" 
+                    class="avatar"
+                    data-tooltip="Se déconnecter"
+                    aria-label="Se déconnecter">
+                        {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
+                </a>
+            {% endif %}
         </nav>
         
         <!-- Menu burger -->
@@ -30,14 +40,20 @@
         
         <!-- Navigation mobile -->
         <nav class="header__container__nav-mobile" data-header-target="mobileMenu">
-            <a href="{{ path('app_home') }}" class="header__container__nav-mobile-link" 
+            <a href="{{ path('app_home') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
                data-action="click->header#closeOnLink">Produits</a>
-            <a href="{{ path('app_product_show') }}" class="header__container__nav-mobile-link"
+            <a href="{{ path('app_product_show') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_product_show' %}active{% endif %}"
                data-action="click->header#closeOnLink">Voir</a>
-            <a href="{{ path('app_cart') }}" class="header__container__nav-mobile-link"
+            <a href="{{ path('app_cart') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
                data-action="click->header#closeOnLink">Panier</a>
-            <a href="#" class="header__container__nav-mobile-link"
-               data-action="click->header#closeOnLink">Contact</a>
+            <a href="{{ path('app_login') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
+               data-action="click->header#closeOnLink">Se connecter</a>
+            <a href="{{ path('app_register') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
+               data-action="click->header#closeOnLink">S'inscrire</a>
+                 {% if app.user %}
+                <a href="{{ path('app_logout') }}" class="avatar"  aria-label="Se déconnecter"> {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
+                </a>
+            {% endif %}
         </nav>
         
         <!-- Overlay -->

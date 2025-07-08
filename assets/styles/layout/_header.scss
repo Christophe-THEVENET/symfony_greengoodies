@@ -53,7 +53,7 @@
                     color: $black;
                 }
 
-                &--active {
+                                                                                                                                                                                                                                                                &.active {
                     color: $gray;
                 }
             }
@@ -143,6 +143,9 @@
                 &:last-child {
                     border-bottom: none;
                 }
+&.active {
+    color: $gray;
+}
             }
         }
 
@@ -165,4 +168,79 @@
             }
         }
     }
-}   
+}
+/* .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -12px;
+    background: $beige-dark;
+    border: 1px solid lightgray;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+    line-height: 1;
+
+    &:hover {
+        background: darken($beige-dark, 5%);
+        border-bottom: 1px solid $text-dark;
+        transition: all 0.3s ease;
+    }
+} */
+.avatar {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: darken($beige-dark, 10%);
+    color: $white;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+
+    &:hover {
+        background-color: darken($beige-dark, 20%);
+        transform: scale(1.05);
+    }
+
+    // Tooltip avec délai
+    &[data-tooltip] {
+        &::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: 40px; // Moins haut, plus proche de l'avatar
+            right: -10px;
+            background-color: $text-dark;
+            color: $white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.5rem;
+            font-weight: $font-weight-normal;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            transition-delay: 0.8s; // Délai de 0.8 seconde
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        &:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        // Quand on arrête de survoler, on retire immédiatement
+        &:not(:hover)::before {
+            transition-delay: 0s;
+        }
+    }
+}
