@@ -14,4 +14,10 @@ final class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
         ]);
     }
+
+    #[Route('/show', name: 'app_product_show')]
+    public function show(): Response
+    {
+        return $this->render('product/show.html.twig', []);
+    }
 }
