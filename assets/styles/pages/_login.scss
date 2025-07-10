@@ -82,6 +82,19 @@
         margin-right: 0.5rem;
     }
 
+    .link-go-login-register {
+        margin-top: 2rem;
+        width: 100%;
+        text-align: center;
+
+        a {
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: darken($text-dark, 10%);
+            }
+        }
+    }
 
 }
 
