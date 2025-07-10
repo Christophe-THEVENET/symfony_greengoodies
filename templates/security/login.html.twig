@@ -3,19 +3,18 @@
 {% block title %}{{parent()}} - Connexion{% endblock %}
 
 {% block body %}
-
-	<section class="login">
+    <section class="login">
         <div class="login__container">
             <div class="login__image">
                 <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />
             </div>
             <div class="login__form">
                 <div class="login__wrapper">
-                    <form method="post">
-                      {#   {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %} #}
-
+                    <form method="post" 
+                          data-controller="login"
+                          data-login-form-type-value="login"
+                          data-action="submit->login#onSubmit">
+                        
                         {% if error %}
                             <div class="alert alert-danger" 
                                 data-controller="alert"
@@ -33,32 +32,52 @@
 
                         {% if app.user %}
                             <div class="mb-3">
-                                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
+                                <a href="{{ path('app_logout') }}">Se déconnecter</a>
                             </div>
                         {% endif %}
 
-                        
                         {% if not app.user %}
-                            <h1 class="product__title">Connection</h1>
+                            <h1 class="product__title">Connexion</h1>
+                            
                             <div class="login__input__block">
-                                <label class="product__text"  for="username">Email</label>
-                                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+                                <label class="product__text" for="username">Email</label>
+                                <input type="email" 
+                                       value="{{ last_username }}" 
+                                       name="_username" 
+                                       id="username" 
+                                       class="form-control" 
+                                       autocomplete="email" 
+                                       required 
+                                       autofocus
+                                       data-login-target="email"
+                                       data-action="input->login#checkForm">
                             </div>
+                            
                             <div class="login__input__block">
                                 <label class="product__text" for="password">Mot de passe</label>
-                                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                                <input type="password" 
+                                       name="_password" 
+                                       id="password" 
+                                       class="form-control" 
+                                       autocomplete="current-password" 
+                                       required
+                                       data-login-target="password"
+                                       data-action="input->login#checkForm">
                             </div>
 
-                            {# CSRF token for form protection #}
-                            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                             <div class="checkbox mb-3">
                                 <input type="checkbox" name="_remember_me" id="_remember_me">
                                 <label class="product__text" for="_remember_me">Se souvenir de moi</label>
                             </div>
 
-                            <button class="btn btn-secondary" type="submit">
-                                <span class="link"> Connexion</span>
+                            <button class="btn btn-secondary" 
+                                    type="submit"
+                                    data-login-target="submitButton"
+                                    disabled>
+                                <span class="link">Connexion</span>
                             </button>
                         {% endif %}
                     </form>
@@ -66,5 +85,4 @@
             </div>
         </div>
     </section>
-
 {% endblock %}

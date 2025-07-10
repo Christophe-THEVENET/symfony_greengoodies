@@ -3,17 +3,123 @@
 {% block title %}{{parent()}} - Inscription{% endblock %}
 
 {% block body %}
-    <h1>Inscription</h1>
+    <section class="login">
+        <div class="login__container">
+            <div class="login__image">
+                <img src="{{ asset('./img/site/register.png') }}" alt="Inscription" />
+            </div>
+            <div class="login__form">
+                <div class="login__wrapper">
+                    {{ form_start(registrationForm, {
+                        'attr': {
+                            'data-controller': 'login',
+                            'data-login-form-type-value': 'register',
+                            'data-action': 'submit->login#onSubmit'
+                        }
+                    }) }}
+                        
+                        {% if form_errors(registrationForm) %}
+                            <div class="alert alert-danger" 
+                                data-controller="alert"
+                                data-alert-duration-value="5000"
+                                data-alert-auto-hide-value="true">
+                                {{ form_errors(registrationForm) }}
+                                <button type="button" 
+                                        class="alert-close" 
+                                        data-action="click->alert#close"
+                                        aria-label="Fermer">
+                                    &times;
+                                </button>
+                            </div>
+                        {% endif %}
 
-    {{ form_errors(registrationForm) }}
+                        <h1 class="product__title">Inscription</h1>
+                        
+                        <div class="login__input__block">
+                            {{ form_label(registrationForm.firstname, null, {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_widget(registrationForm.firstname, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'data-login-target': 'firstname',
+                                    'data-action': 'input->login#checkForm'
+                                }
+                            }) }}
+                            {{ form_errors(registrationForm.firstname) }}
+                        </div>
+                        
+                        <div class="login__input__block">
+                            {{ form_label(registrationForm.lastname, null, {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_widget(registrationForm.lastname, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'data-login-target': 'lastname',
+                                    'data-action': 'input->login#checkForm'
+                                }
+                            }) }}
+                            {{ form_errors(registrationForm.lastname) }}
+                        </div>
+                        
+                        <div class="login__input__block">
+                            {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_widget(registrationForm.email, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'data-login-target': 'email',
+                                    'data-action': 'input->login#checkForm'
+                                }
+                            }) }}
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+                        
+                        <div class="login__input__block">
+                            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_widget(registrationForm.plainPassword.first, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'data-login-target': 'password',
+                                    'data-action': 'input->login#checkForm'
+                                }
+                            }) }}
+                            <div class="password-requirements">
+                                <small>Le mot de passe doit contenir :</small>
+                                <ul>
+                                    <li>Au moins 6 caractères</li>
+                                    <li>Une majuscule</li>
+                                    <li>Une minuscule</li>
+                                    <li>Un chiffre</li>
+                                    <li>Un caractère spécial</li>
+                                </ul>
+                            </div>
+                            {{ form_errors(registrationForm.plainPassword.first) }}
+                        </div>
+                        
+                        <div class="login__input__block">
+                            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_widget(registrationForm.plainPassword.second, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'data-login-target': 'passwordConfirm',
+                                    'data-action': 'input->login#checkForm'
+                                }
+                            }) }}
+                            {{ form_errors(registrationForm.plainPassword.second) }}
+                        </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.firstname) }}
-        {{ form_row(registrationForm.lastname) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+                        <div class="checkbox mb-3">
+                            {{ form_widget(registrationForm.agreeTerms) }}
+                            {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'product__text'}}) }}
+                            {{ form_errors(registrationForm.agreeTerms) }}
+                        </div>
 
-        <button type="submit" class="btn">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+                        <button type="submit" 
+                                class="btn btn-secondary"
+                                data-login-target="submitButton"
+                                disabled>
+                            <span class="link">S'inscrire</span>
+                        </button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
