@@ -1,0 +1,26 @@
+<div class="cart__item account__item">
+	<div class="cart__item-details account__item__wrapper">
+     <div class="account__item__image">
+        <img src="{{ asset('./img/site/convictions.png') }}" alt="Nécessaire, déodorant Bio" class="cart__item">
+    </div>
+        <div class="account__item__info">
+            <p class="account__item__info-name">
+                {{ app.user.firstname|capitalize }}
+                {{ app.user.lastname|upper }}
+            </p>
+            <div class="account__item__info-details">
+                <p>
+                    <span class="account__item__info-email">                    
+                        {{ app.user.email }}
+                    </span>
+                </p>
+                <p class="account__item__info-date">
+                    <span class="account__badge">
+                        Membre depuis le 
+                        {{ app.user.createdAt|date('d', 'Europe/Paris') }} {{ app.user.createdAt|date('F Y', 'Europe/Paris')|replace({'July':'Juillet'}) }}
+                    </span>
+                </p> 
+            </div>
+        </div>
+	</div>
+</div>

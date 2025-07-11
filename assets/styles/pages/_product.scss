@@ -22,22 +22,17 @@
     // Element
     &__description {
         flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        @include centerElement(column);
     }
 
-    // Element
     &__wrapper {
         max-width: 65%;
         display: flex;
         flex-direction: column;
-        height: 100%; // Prend toute la hauteur disponible
+        height: 100%; 
         padding-top: 5rem;
     }
 
-    // Element
     &__title {
         font-size: $font-size-title-product;
         font-weight: $font-weight-medium;
@@ -45,7 +40,6 @@
         margin-bottom: 1rem;
     }
 
-    // Element
     &__price {
         font-size: $font-size-price-product;
         font-weight: $font-weight-text;
@@ -53,7 +47,6 @@
         margin-bottom: 3rem;
     }
 
-    // Element
     &__subtitle {
         font-size: $font-size-subtitle-product;
         font-weight: $font-weight-text;
@@ -62,7 +55,6 @@
         text-transform: capitalize;
     }
 
-    // Element
     &__text {
         font-size: $font-size-text-product;
         font-weight: $font-weight-normal;
@@ -74,12 +66,9 @@
          p:nth-last-of-type(1) {
              margin-bottom: 4rem;
          }
-
-
 }
 
-
-
+// ****************** TABLETTE ******************** //
 @media screen and (max-width: $breakpoint-tablette) {
 
     .product {
@@ -103,17 +92,13 @@
     }
 }
 
+// ****************** MOBILE ******************** //
 @media screen and (max-width: $breakpoint-mobile) {
 
     .product {
 
         &__wrapper {
             max-width: 85%;
-
-
         }
-
-
-
     }
 }
