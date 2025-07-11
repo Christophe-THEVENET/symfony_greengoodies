@@ -39,7 +39,6 @@
                             {{ form_label(registrationForm.firstname, null, {'label_attr': {'class': 'product__text'}}) }}
                             {{ form_widget(registrationForm.firstname, {
                                 'attr': {
-                                    'class': 'form-control',
                                     'data-login-target': 'firstname',
                                     'data-action': 'input->login#checkForm'
                                 }
@@ -51,7 +50,6 @@
                             {{ form_label(registrationForm.lastname, null, {'label_attr': {'class': 'product__text'}}) }}
                             {{ form_widget(registrationForm.lastname, {
                                 'attr': {
-                                    'class': 'form-control',
                                     'data-login-target': 'lastname',
                                     'data-action': 'input->login#checkForm'
                                 }
@@ -63,7 +61,6 @@
                             {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'product__text'}}) }}
                             {{ form_widget(registrationForm.email, {
                                 'attr': {
-                                    'class': 'form-control',
                                     'data-login-target': 'email',
                                     'data-action': 'input->login#checkForm'
                                 }
@@ -75,7 +72,6 @@
                             {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'product__text'}}) }}
                             {{ form_widget(registrationForm.plainPassword.first, {
                                 'attr': {
-                                    'class': 'form-control',
                                     'data-login-target': 'password',
                                     'data-action': 'input->login#checkForm'
                                 }
@@ -97,7 +93,6 @@
                             {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'product__text'}}) }}
                             {{ form_widget(registrationForm.plainPassword.second, {
                                 'attr': {
-                                    'class': 'form-control',
                                     'data-login-target': 'passwordConfirm',
                                     'data-action': 'input->login#checkForm'
                                 }

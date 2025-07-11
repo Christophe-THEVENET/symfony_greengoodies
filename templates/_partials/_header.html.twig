@@ -16,6 +16,7 @@
             <a href="{{ path('app_cart') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">Panier</a>
             <a href="{{ path('app_login') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
             <a href="{{ path('app_register') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
+            <a href="{{ path('app_account') }}" class="header__container__nav-link {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}">Mon compte</a>
             {% if app.user %}
                 <a
                     href="{{ path('app_logout') }}" 
@@ -50,7 +51,9 @@
                data-action="click->header#closeOnLink">Se connecter</a>
             <a href="{{ path('app_register') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
                data-action="click->header#closeOnLink">S'inscrire</a>
-                 {% if app.user %}
+            <a href="{{ path('app_account') }}" class="header__container__nav-mobile-link {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}"
+               data-action="click->header#closeOnLink">Mon compte</a>
+            {% if app.user %}
                 <a href="{{ path('app_logout') }}" class="avatar"  aria-label="Se déconnecter"> {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
                 </a>
             {% endif %}

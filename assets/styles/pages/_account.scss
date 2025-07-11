@@ -1,0 +1,83 @@
+// assets/styles/pages/_account.scss
+@use "../abstracts/_all" as *;
+
+.account {
+
+    .cart__item.account__item {
+        margin: 0;
+        height: 4rem;
+        padding: 0;
+
+        .account__item__wrapper {
+            display: flex;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+
+        }
+
+        .account__item__image {
+            flex: 1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                padding: 0;
+            }
+        }
+
+        .account__item__info {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            &-name {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: rgb(151, 60, 3);
+                margin-right: 2rem;
+                margin-left: 1rem;
+            }
+
+            &-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin-left: auto;
+                padding-right: 1rem;
+            }
+
+            &-email {
+                font-size: 0.7rem;
+                color: $black;
+            }
+
+            &-date {
+                font-size: 0.6rem;
+                margin-left: auto;
+                color: $text-light;
+                font-style: italic
+            }
+        }
+
+    }
+
+
+
+}
+
+// Réutilisation des styles de login
+.account {
+
+    // Hérite des styles .login__input__block
+    .login__input__block {
+        @extend .login__input__block;
+    }
+
+    .password-requirements {
+        @extend .password-requirements;
+    }
+}

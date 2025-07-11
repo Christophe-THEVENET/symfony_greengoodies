@@ -63,6 +63,15 @@
         }
     }
 
+         // input mot de passe
+         input#registration_form_plainPassword_first, input#registration_form_plainPassword_second {
+             width: 100%;
+         }
+    
+         button.toggle-password-button {
+             margin-top: 0.8rem;
+             font-size: 10px;
+         }
     // Bouton désactivé
     .btn:disabled {
         opacity: 0.6;
