@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class ProductController extends AbstractController
 {
-    #[Route('/produit', name: 'app_product_show')]
-    public function show(): Response
+    #[Route('/produit/{id}', name: 'app_product_show')]
+    public function show(Product $product): Response
     {
-        return $this->render('product/show.html.twig', []);
+        return $this->render('product/show.html.twig', [
+            'product' => $product
+        ]);
     }
 }

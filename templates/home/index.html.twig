@@ -15,15 +15,14 @@
 				<h2 class="products__container__header-title">Nos produits</h2>
 			</div>
             <div class="products__container__list">
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
-            {% include "./_partials/_card-product.html.twig" %}
+          
+
+
+            {% for product in products %}
+                {% include "./_partials/_card-product.html.twig" with {'product': product} %}
+            {% endfor %}
+
+
 			</div>
 		</div>
 	</section>
