@@ -1,12 +1,12 @@
 <article class="card__product">
     <div class="card__product-image">
-        <img src="{{asset('img/products/shot_tropical.png')}}" alt="">
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.shortDescription }}">
     </div>
     <div class="card__product-info">
-        <h3 class="card__product-info-title">Shot Tropical</h3>
-        <p class="card__product-info-description">Fruits frais, pressés à froid</p>
-        <p class="card__product-info-price">4,50€</p>
-        <a href="#" class="btn">
+        <h3 class="card__product-info-title">{{ product.name }}</h3>
+        <p class="card__product-info-description">{{ product.shortDescription }}</p>
+        <p class="card__product-info-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
+        <a href="{{ path('app_product_show', { id: product.id }) }}" class="btn">
             <span class="link">Voir le produit</span>
         </a>
     </div>
