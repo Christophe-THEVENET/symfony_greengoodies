@@ -1,46 +1,38 @@
 //  ---------- Fonts ---------------
 $fontPrimary: "Inter", sans-serif;
 
-// Couleurs principales (basées sur la maquette)
+// Colors from design system
 $beige-light: #FFFDF7; // beige clair
 $beige-dark: #EBE3D3; // beige fonçé   
 $green: #E8F0E3; // Vert clair
 $pink: #F7F1EC; // rose clair
-$white: #FFFFFF; // blanc
-$gray: #565656; // gris
 $black: #000000; // noir
-$text-dark: #333333;
-$text-light: #666666;
+$gray-33: #333333;
+$gray-56: #565656; // gris
+$gray-66: #666666;
+$white: #FFFFFF; // blanc
 $border-color: #E2E8F0;
 $border-color-hf: #F6F5F0;
 
 // Breakpoints responsifs
-/* $breakpoint-sm: 576px; */
 $breakpoint-mobile: 768px;         
 $breakpoint-tablette: 992px;
-/* $breakpoint-xl: 1200px;
-$breakpoint-xxl: 1400px; */
 
-// Tailles de conteneur
+// size of container
 $container-max-width: 1400px;
 $container-padding: 4rem;
 
-// Typographie
-$font-size-title-hero: 3rem;
-$font-size-text-hero : 0.875rem;   //14
-$font-size-nav: 1.063rem;
-$font-size-title-card-product: 1rem;
-$font-size-text: 0.875rem; // texte / label / lienk   
-$font-size-button: 0.875rem; 
-$font-size-title-product: 1.25rem;  
-$font-size-price-product: 1.875rem;       
-$font-size-subtitle-product: 0.625rem; 
-$font-size-text-product: 0.875rem; //14
-$font-size-info-product: 0.75rem; 
-$font-size-info-price: 1.125rem; 
+// font-size
+$fs-10px: 0.625rem; // 10px
+$fs-14px: 0.875rem; // 14px
+$fs-16px: 1rem; // 16px
+$fs-18px: 1.125rem; // 18px
+$fs-20px: 1.25rem; // 20px
+$fs-30px: 1.875rem; // 30px
+$fs-64px: 4rem; // 64px
 
-$font-weight-text: 300;
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
-    
+// font-weight
+$fw-300: 300;
+$fw-400: 400;
+$fw-500: 500;
+$fw-600: 600;

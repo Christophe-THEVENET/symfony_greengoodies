@@ -46,22 +46,22 @@
         padding-top: 2rem;
 
         &-title {
-            font-size: $font-size-title-card-product;
+          /*   font-size: $font-size-title-card-product;
             font-weight: $font-weight-semibold;
-            color: $black;
+            color: $black; */
             margin-bottom: 0.3rem;
         }
 
         &-description {
-            font-size: $font-size-text;
+           /*  font-size: $font-size-text;
             font-weight: $font-weight-normal;
-            color: $text-light;
+            color: $text-light; */
         }
 
         &-price {
-            font-size: $font-size-text;
+           /*  font-size: $font-size-text;
             font-weight: $font-weight-normal;
-            color: $text-dark;
+            color: $gray-33; */
             margin-top: 0.8rem;
             margin-bottom: 1rem;
         }

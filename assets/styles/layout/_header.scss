@@ -1,251 +1,206 @@
 @use "../abstracts/_all" as *;
 
 .header {
-    background-color: $beige-light;
-    position: relative;
     z-index: 1000;
-    border: 1px solid $border-color-hf;
-
-    &__container {
-        margin: 0 auto;
-        padding: 0 $container-padding;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 80px;
-        position: relative;
-
-        &__logo {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            z-index: 1001;
-
-            &:hover {
-                opacity: 0.8;
-                transition: opacity 0.3s ease;
-            }
-
-            &-icon {
-                height: 24px;
-                width: auto;
-            }
-        }
-
-        // Navigation desktop
-        &__nav {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-
-            // Forcer la valeur en dur
-            @media screen and (max-width: $breakpoint-mobile) {
-                display: none;
-            }
-
-            &-link {
-                color: $text-dark;
-                text-decoration: none;
-                font-weight: $font-weight-medium;
-                transition: color 0.3s ease;
-
-                &:hover {
-                    color: $black;
-                }
-
-                                                                                                                                                                                                                                                                &.active {
-                    color: $gray;
-                }
-            }
-
-        }
-
-
-        // Menu burger
-        &__burger {
-            display: none;
-            flex-direction: column;
-            gap: 4px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 8px;
-            z-index: 1001;
-
-            // Forcer la valeur en dur
-            @media screen and (max-width: $breakpoint-mobile) {
-                display: flex;
-            }
-
-            &-line {
-                width: 24px;
-                height: 2px;
-                background-color: $text-dark;
-                border-radius: 2px;
-                transition: all 0.3s ease;
-            }
-
-            &.active {
-                .header__container__burger-line {
-                    &:nth-child(1) {
-                        transform: rotate(45deg) translate(5px, 5px);
-                    }
-
-                    &:nth-child(2) {
-                        opacity: 0;
-                    }
-
-                    &:nth-child(3) {
-                        transform: rotate(-45deg) translate(7px, -6px);
-                    }
-                }
-            }
-        }
-
-        // Navigation mobile
-        &__nav-mobile {
-            display: none;
-            position: fixed;
-            top: 80px;
-            right: 0;
-            width: 280px;
-            height: calc(100vh - 80px);
-            background-color: $beige-light;
-            box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            flex-direction: column;
-            gap: 1.5rem;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            z-index: 999;
-
-            @media screen and (max-width: $breakpoint-mobile) {
-                display: flex;
-            }
-
-            &.active {
-                transform: translateX(0);
-            }
-
-            &-link {
-                color: $text-dark;
-                text-decoration: none;
-                font-weight: $font-weight-medium;
-                font-size: 1.125rem;
-                padding: 1rem 0;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-                transition: color 0.3s ease;
-
-                &:hover {
-                    color: $gray;
-                }
-
-                &:last-child {
-                    border-bottom: none;
-                }
-&.active {
-    color: $gray;
-}
-            }
-        }
-
-        // Overlay
-        &__overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-
-            &.active {
-                display: block;
-                opacity: 1;
-            }
-        }
-    }
-}
-/* .avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+    border-bottom: 1px solid $border-color-hf;
+    margin: 0 auto;
+    padding: 0 $container-padding;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-left: -12px;
-    background: $beige-dark;
-    border: 1px solid lightgray;
-    font-size: 0.8rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border-bottom: 1px solid transparent;
-    line-height: 1;
-
-    &:hover {
-        background: darken($beige-dark, 5%);
-        border-bottom: 1px solid $text-dark;
-        transition: all 0.3s ease;
-    }
-} */
-.avatar {
+    justify-content: space-between;
+    height: 80px;
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: darken($beige-dark, 10%);
-    color: $white;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.875rem;
 
-    &.account {
+    &__logo-icon {
+        height: 24px;
         width: auto;
-        height: auto;
+
+        &:hover {
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
     }
 
-    &:hover {
-        background-color: darken($beige-dark, 20%);
-        transform: scale(1.05);
+    // Navigation desktop
+    &__nav {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+
+        // responsive ------------------------------------
+        @media screen and (max-width: $breakpoint-mobile) {
+            display: none;
+        }
+
+        &-link {
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: $black;
+            }
+
+            &.active {
+                color: $gray-66;
+            }
+        }
     }
 
-    // Tooltip avec délai
-    &[data-tooltip] {
-        &::before {
-            content: attr(data-tooltip);
-            position: absolute;
-            top: 40px; // Moins haut, plus proche de l'avatar
-            right: -10px;
-            background-color: $text-dark;
-            color: $white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.5rem;
-            font-weight: $font-weight-normal;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
+    // Bouton burger
+    &__burger {
+        display: none;
+        background: none;
+        border: none;
+        gap: 4px;
+        cursor: pointer;
+        padding: 8px;
+        z-index: 1001;
+
+        &.active {
+            .header__burger-line {
+                &:nth-child(1) {
+                    transform: rotate(45deg) translate(0, 6px);
+                }
+
+                &:nth-child(2) {
+                    opacity: 0;
+                }
+
+                &:nth-child(3) {
+                    transform: rotate(-45deg) translate(0, -6px);
+                }
+            }
+        }
+
+        // responsive ------------------------------------
+        @media screen and (max-width: $breakpoint-mobile) {
+            display: flex;
+            @include centerElement(column);
+        }
+
+        &-line {
+            width: 24px;
+            height: 2px;
+            background-color: $gray-33;
+            border-radius: 2px;
             transition: all 0.3s ease;
-            transition-delay: 0.8s; // Délai de 0.8 seconde
-            z-index: 9999;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        &:hover::before {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        // Quand on arrête de survoler, on retire immédiatement
-        &:not(:hover)::before {
-            transition-delay: 0s;
+            z-index: 999;
         }
     }
+
+    // Navigation mobile
+    &__mobilemenu {
+        display: none;
+        position: fixed;
+        top: 80px;
+        right: 0;
+        width: 280px;
+        height: calc(100vh - 80px);
+        background-color: $beige-light;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        flex-direction: column;
+        gap: 1.5rem;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+
+        &.active {
+            transform: translateX(0);
+        }
+
+        @media screen and (max-width: $breakpoint-mobile) {
+            display: flex;
+        }
+
+        &-link {
+            padding: 1rem 0;
+            border-bottom: 1px solid $border-color;
+            transition: color 0.3s ease;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &.active {
+                color: $gray-66;
+            }
+        }
+    }
+
+    // Overlay
+    &__overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        &.active {
+            display: block;
+            opacity: 1;
+        }
+    }
+
+        // User connected
+    &__avatar {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: darken($beige-dark, 10%);
+        color: $white;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+
+       
+
+        &:hover {
+            background-color: darken($beige-dark, 20%);
+            transform: scale(1.05);
+        }
+
+        // Tooltip avec délai
+        &[data-tooltip] {
+            &::before {
+                content: attr(data-tooltip);
+                position: absolute;
+                top: 40px;
+                right: -10px;
+                background-color: $gray-33;
+                color: $white;
+                padding: 4px 8px;
+                border-radius: 6px;
+                font-size: $fs-10px;
+                font-weight: $fw-500;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                transition-delay: 0.8s;
+                z-index: 9999;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            &:hover::before {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            // Quand on arrête de survoler, on retire immédiatement
+            &:not(:hover)::before {
+                transition-delay: 0s;
+            }
+        }
+    }
+
 }

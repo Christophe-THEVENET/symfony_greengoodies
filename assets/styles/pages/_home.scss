@@ -13,9 +13,6 @@
             padding: 0 $container-padding;
 
             &-title {
-                font-size: $font-size-text-product;
-                font-weight: $font-weight-medium;
-                color: $text-dark;
                 text-transform: uppercase;
             }
         }
@@ -78,17 +75,11 @@
                 padding: 2rem;
 
                 h3 {
-                    font-size: $font-size-title-product;
-                    font-weight: $font-weight-medium;
-                    color: $text-dark;
                     margin-bottom: 1rem;
                     text-transform: uppercase;
                 }
 
                 p {
-                    font-size: $font-size-text-product;
-                    font-weight: $font-weight-text;
-                    color: $text-dark;
                     margin-bottom: 1rem;
                     max-width: 26rem;
                 }

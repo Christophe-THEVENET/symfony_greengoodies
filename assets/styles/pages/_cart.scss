@@ -20,17 +20,13 @@
     }
 
     &__title {
-        font-size: $font-size-title-product;
-        font-weight: $font-weight-medium;
-        color: $text-dark;
+    
         margin-bottom: 1.5rem;
     }
 
     &__clear {
         align-self: start;
-        font-size: $font-size-text-product;
-        font-weight: $font-weight-normal;
-        color: $text-light;
+    
         margin-bottom: 1rem;
         text-decoration: none;
         border-bottom: 1px solid transparent;
@@ -38,9 +34,9 @@
         transition: all 0.3s ease;
 
         &:hover {
-            color: $text-dark;
-            font-weight: $font-weight-medium;
-            border-bottom: 1px solid $text-dark;
+        /*   color: $gray-33;
+                    font-weight: $font-weight-medium; */
+            /*  border-bottom: 1px solid $gray-33; */
             transition: all 0.3s ease;
         }
     }
@@ -61,21 +57,15 @@
         margin-bottom: 2rem;
 
         &-amount {
-            font-size: $font-size-text;
-            font-weight: $font-weight-medium;
-            color: $text-dark;
+        
         }
 
         &-price {
-            font-size: $font-size-title-product;
-            font-weight: $font-weight-medium;
-            color: $text-dark;
+        
         }
 
         &-info {
-            font-size: $font-size-info-product;
-            font-weight: $font-weight-normal;
-            color: $text-light;
+        
         }
     }
 

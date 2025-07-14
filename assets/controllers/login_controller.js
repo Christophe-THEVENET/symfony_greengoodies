@@ -88,15 +88,9 @@ export default class extends Controller {
     }
 
     validatePassword(password) {
-        // CONNEXION : Validation simple
-        if (this.formTypeValue === "login") {
-            return password.length > 0;
-        }
-
-        // INSCRIPTION : Validation complexe selon regex back-end
-        const fullRegex =
+        const passwordRegex =
             /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{6,32}$/;
-        return fullRegex.test(password);
+        return passwordRegex.test(password);
     }
 
     validateName(name) {

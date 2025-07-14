@@ -17,16 +17,16 @@
                 align-items: flex-start;
 
                 &-title {
-                    color: $text-dark;
+                   /*  color: $gray-33;
                     font-size: $font-size-title-hero;
-                    font-weight: $font-weight-medium;
+                    font-weight: $font-weight-medium; */
                     margin-bottom: 2rem;
                 }
 
                 &-text {
-                    color: $text-dark;
+                   /*  color: $gray-33;
                     font-size: $font-size-text-hero;
-                    font-weight: $font-weight-text;
+                    font-weight: $font-weight-text; */
                 }
             }
 
@@ -59,11 +59,11 @@
                     max-width: 250px;
 
                     &-title {
-                        font-size: calc($font-size-title-hero * 0.75);
+                       /*  font-size: calc($font-size-title-hero * 0.75); */
                     }
 
                     &-text {
-                        font-size: calc($font-size-text-hero * 0.85);
+                       /*  font-size: calc($font-size-text-hero * 0.85); */
                     }
 
                 }

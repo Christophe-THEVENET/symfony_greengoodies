@@ -1,0 +1,120 @@
+@use "../abstracts/_all" as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+
+// ****************** GLOBAL *********************
+// header nav footer
+.f-hfp {
+    font-size: $fs-14px;
+    font-weight: $fw-400;
+    color: $gray-33;
+    text-decoration: none;
+}
+
+// title page
+.f-title-page-section {
+    font-size: $fs-20px;
+    font-weight: $fw-500;
+    color: $gray-33;
+}
+
+// title item
+.f-title-item {
+    font-size: $fs-14px;
+    font-weight: $fw-600;
+    color: $black;
+}
+
+// text, link, subtitle
+.f-text {
+    font-size: $fs-14px;
+    font-weight: $fw-400;
+    color: $gray-66;
+}
+
+// ******************* HOME PAGE *****************
+// ------ hero section ------
+.f-hero-title {
+    font-size: $fs-64px;
+    font-weight: $fw-500;
+    color: $gray-33;
+}
+
+.f-hero-text {
+    font-size: $fs-18px;
+    font-weight: $fw-300;
+    color: $gray-33;
+}
+
+// ------ product card section ------
+.f-card-product-title {
+    font-size: $fs-16px;
+    font-weight: $fw-600;
+    color: $black;
+}
+
+.f-card-product-text {
+    font-size: $fs-14px;
+    font-weight: $fw-400;
+    color: $gray-66;
+}
+
+.f-card-product-price {
+    font-size: $fs-14px;
+    font-weight: $fw-400;
+    color: $gray-33;
+}
+
+// ------ values section ------
+.f-values-title {
+    font-size: $fs-20px;
+    font-weight: $fw-500;
+    color: $gray-33;
+}
+
+.f-values-text {
+    font-size: $fs-14px;
+    font-weight: $fw-300;
+    color: $gray-33;
+}
+
+// ******************* PRODUCT SHOW PAGE *****************
+.f-product-show-price {
+    font-size: $fs-30px;
+    font-weight: $fw-300;
+    color: $gray-33;
+}
+
+.f-product-show-title-description {
+    font-size: $fs-10px;
+    font-weight: $fw-400;
+    color: $gray-66;
+}
+
+.f-product-show-description {
+    font-size: $fs-14px;
+    font-weight: $fw-400;
+    color: $gray-66;
+}
+
+// ******************* CART PAGE *****************
+// ------ cart item------
+.f-cart-product-item-title {
+    font-size: $fs-14px;
+    font-weight: $fw-600;
+    color: $black;
+}
+
+// ------ total price item------
+.f-cart-total-item-price {
+    font-size: $fs-20px;
+    font-weight: $fw-400;
+    color: $gray-33;
+}
+
+// ******************* MY ACCOUNT PAGE *****************
+.f-comman-item-value {
+    font-size: $fs-14px;
+    font-weight: $fw-500;
+    color: $gray-33;
+}

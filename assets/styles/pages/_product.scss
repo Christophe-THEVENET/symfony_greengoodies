@@ -34,31 +34,23 @@
     }
 
     &__title {
-        font-size: $font-size-title-product;
-        font-weight: $font-weight-medium;
-        color: $text-dark;
+       
         margin-bottom: 1rem;
     }
 
     &__price {
-        font-size: $font-size-price-product;
-        font-weight: $font-weight-text;
-        color: $text-dark;
+      
         margin-bottom: 3rem;
     }
 
     &__subtitle {
-        font-size: $font-size-subtitle-product;
-        font-weight: $font-weight-text;
-        color: $text-dark;
+       
         margin-bottom: 0.5rem;
         text-transform: capitalize;
     }
 
     &__text {
-        font-size: $font-size-text-product;
-        font-weight: $font-weight-normal;
-        color: $text-light;
+      
         margin-bottom: 1rem;
     }
 

@@ -28,21 +28,21 @@
 
 
     &-name {
-        font-size: $font-size-text-product;
+       /*  font-size: $font-size-text-product;
         font-weight: $font-weight-semibold;
-        color: $black;
+        color: $black; */
     }
 
     &-quantity {
-        font-size: $font-size-text-product;
+       /*  font-size: $font-size-text-product;
         font-weight: $font-weight-normal;
-        color: $text-light;
+        color: $text-light; */
     }
 
     &-price {
-        font-size: $font-size-info-price;
+       /*  font-size: $font-size-info-price;
         font-weight: $font-weight-medium;
-        color: $text-dark;
+        color: $gray-33; */
         margin-top: 0.5rem;
     }
 

@@ -5,5 +5,5 @@
   }
 
 .btn-secondary {
-    @include button-style($gray, $black, $white);
+    @include button-style($gray-33, $black, $white);
 }
