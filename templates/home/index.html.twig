@@ -11,20 +11,13 @@
 
             {# ****************** PRODUCTS LIST****************** #}
 	<section class="products">
-		<div class="products__container">
-			<div class="products__container__header">
-				<h2 class="products__container__header-title">Nos produits</h2>
-			</div>
-            <div class="products__container__list">
-          
-
-
+		<div class="products__header">
+			<h2 class="products__header-title f-title-page-section">Nos produits</h2>
+		</div>
+		<div class="products__list">
             {% for product in products %}
                 {% include "./_partials/_card-product.html.twig" with {'product': product} %}
             {% endfor %}
-
-
-			</div>
 		</div>
 	</section>
 
