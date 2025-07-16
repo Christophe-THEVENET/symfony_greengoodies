@@ -97,8 +97,8 @@
 
 @media screen and (max-width: $breakpoint-tablette) {
 
-    .values__container__item,
-    .values__container__item.reverse {
+    .values__item,
+    .values__item.reverse {
         flex-direction: column;
         height: auto;
 
@@ -107,7 +107,6 @@
             padding: 5rem;
             min-height: 30rem;
             justify-content: center;
-
         }
 
         &-image {
@@ -115,8 +114,6 @@
             height: 20rem;
 
             img {
-                width: 100%;
-                height: 100%;
                 object-fit: cover;
                 object-position: center;
             }

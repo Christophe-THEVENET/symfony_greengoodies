@@ -8,3 +8,7 @@ body {
     margin: 0 auto;
 }
 
+.container-height {
+    min-height: calc(100vh - 160px);
+}
+
