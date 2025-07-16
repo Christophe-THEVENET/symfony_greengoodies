@@ -1,27 +1,26 @@
  {% extends 'base.html.twig' %}
 
+ {% set bodyClass = 'page-pink' %}
+
 {% block title %}{{ parent() }} - Panier{% endblock %}
 
 {% block body %}
            {# ****************** PANIER ****************** #}
-	<section class="cart">
-    <div class="cart__container">
-        
+	<section class="cart container container--height">
         <div class="cart__wrapper">
-                <h1 class="cart__title">Mon panier</h1>
-                <a class="cart__clear" href="#">x Vider le panier</a>
-                <div class="cart__item-wrapper">
-                    {% include "./_partials/_cart/_cart-item.html.twig" %}
-                    <div class="cart__total">
-                        <p class="cart__total-amount">Total panier: <span class="cart__total-price">8,50€</span></p>
-                        <p class="cart__total-info">Frais de livraison: Offert </p>
-                    </div>
+            <h1 class="cart__title f-title-page-section">Mon panier</h1>
+            <a class="cart__clear f-text" href="#">x Vider le panier</a>
+            <div class="cart__item-wrapper">
+                {% include "./_partials/_cart/_cart-item.html.twig" %}
+                <div class="cart__total">
+                    <p class="cart__total-amount f-title-page-section">Total panier: <span class="cart__total-price f-cart-total-item-price">8,50€</span></p>
+                    <p class="cart__total-info f-text">Frais de livraison: Offert </p>
                 </div>
-                <a href="#" class="btn-secondary">
-                    <span class="link">Valider la commande</span>
-                </a>
+            </div>
+            <a href="#" class="btn-secondary">
+                <span class="link">Valider la commande</span>
+            </a>
         </div>
-
-    </div>
-</section>
+    </section>
 {% endblock %}
+  

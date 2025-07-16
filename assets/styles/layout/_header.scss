@@ -1,15 +1,18 @@
 @use "../abstracts/_all" as *;
 
 .header {
-    z-index: 1000;
+    
+    background-color: $beige-light;
     border-bottom: 1px solid $border-color-hf;
-    margin: 0 auto;
-    padding: 0 $container-padding;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     height: 80px;
-    position: relative;
+
+    .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 $container-padding;
+    }
 
     &__logo-icon {
         height: 24px;

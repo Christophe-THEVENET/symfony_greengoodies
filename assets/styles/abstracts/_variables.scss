@@ -14,6 +14,12 @@ $white: #FFFFFF; // blanc
 $border-color: #E2E8F0;
 $border-color-hf: #F6F5F0;
 
+// 2 couleurs pour le body en fonction de la page
+$body-colors: (
+    'default': $beige-light,
+    'pink': $pink,
+);
+
 // Breakpoints responsifs
 $breakpoint-mobile: 768px;         
 $breakpoint-tablette: 992px;
@@ -24,6 +30,7 @@ $container-padding: 4rem;
 
 // font-size
 $fs-10px: 0.625rem; // 10px
+$fs-12px: 0.75rem; // 12px
 $fs-14px: 0.875rem; // 14px
 $fs-16px: 1rem; // 16px
 $fs-18px: 1.125rem; // 18px

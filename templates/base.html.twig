@@ -12,7 +12,8 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    {# pour changer la couleur du fond en fonction de la page #}
+      <body class="{{ bodyClass ?? 'page-default' }}">
         {% include "./_partials/_header.html.twig" %}
         <main class="container">
            
