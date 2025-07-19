@@ -1,15 +1,45 @@
-
 //  ---------- Fonts ---------------
-$fontPrimary: "Inter";
+$fontPrimary: "Inter", sans-serif;
 
-// Variables principales
-$primary-color: #28a745;
-$secondary-color: #6c757d;
-$background-color: #f8f9fa;
-$text-color: #333;
+// Colors from design system
+$beige-light: #FFFDF7; // beige clair
+$beige-dark: #EBE3D3; // beige fonçé   
+$green: #E8F0E3; // Vert clair
+$pink: #F7F1EC; // rose clair
+$black: #000000; // noir
+$gray-33: #333333;
+$gray-56: #565656; // gris
+$gray-66: #666666;
+$white: #FFFFFF; // blanc
+$border-color: #E2E8F0;
+$border-color-hf: #F6F5F0;
+
+// 2 couleurs pour le body en fonction de la page
+$body-colors: (
+    'default': $beige-light,
+    'pink': $pink,
+);
 
 // Breakpoints responsifs
-$breakpoint-sm: 576px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 992px;
-$breakpoint-xl: 1200px;
+$breakpoint-mobile: 768px;         
+$breakpoint-tablette: 992px;
+
+// size of container
+$container-max-width: 1400px;
+$container-padding: 4rem;
+
+// font-size
+$fs-10px: 0.625rem; // 10px
+$fs-12px: 0.75rem; // 12px
+$fs-14px: 0.875rem; // 14px
+$fs-16px: 1rem; // 16px
+$fs-18px: 1.125rem; // 18px
+$fs-20px: 1.25rem; // 20px
+$fs-30px: 1.875rem; // 30px
+$fs-64px: 4rem; // 64px
+
+// font-weight
+$fw-300: 300;
+$fw-400: 400;
+$fw-500: 500;
+$fw-600: 600;

@@ -1,0 +1,122 @@
+@use "../abstracts/_all" as *;
+
+.products {
+
+    &__header {
+        display: flex;
+        align-items: center;
+        height: 80px;
+        padding: 0 $container-padding;
+
+        &-title {
+            text-transform: uppercase;
+            font-size: 0.875rem; // 14px
+        }
+    }
+
+    &__list {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); // 3 colonnes sur desktop
+
+        @media screen and (max-width: $breakpoint-tablette) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        // Mobile : 1 colonne
+        @media screen and (max-width: $breakpoint-mobile) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+.values {
+    &__item {
+        height: 646px;
+        display: flex;
+
+        &:first-child {
+            background-color: $beige-dark;
+        }
+
+        &:nth-child(2) {
+            background-color: $green;
+        }
+
+        &.reverse {
+            flex-direction: row-reverse;
+
+            // Cibler le contenu dans reverse
+            .values__item-content {
+                align-items: flex-end;
+
+                &-reverse {
+                    max-width: 30rem;
+                }
+
+            }
+
+
+        }
+
+        &-content {
+            width: 66.66%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+
+        }
+
+        &-title {
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        &-text {
+            margin-bottom: 1rem;
+            max-width: 26rem;
+        }
+
+
+        &-image {
+            width: 33.33%;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+
+
+
+    }
+}
+
+@media screen and (max-width: $breakpoint-tablette) {
+
+    .values__item,
+    .values__item.reverse {
+        flex-direction: column;
+        height: auto;
+
+        &-content {
+            width: 100%;
+            padding: 5rem;
+            min-height: 30rem;
+            justify-content: center;
+        }
+
+        &-image {
+            width: 100%;
+            height: 20rem;
+
+            img {
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+}

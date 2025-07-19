@@ -1,0 +1,33 @@
+@use "../abstracts/_all" as *;
+
+.cart__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: $beige-light;
+    width: 100%;
+    padding: 1rem;
+
+    &-image {
+        width: 142px;
+        height: 142px;
+        overflow: hidden;
+        border-radius: 5px;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &-details {
+        flex: 1;
+        margin-left: 1rem;
+    }
+    &-price {
+      font-size: 1.125rem;
+        margin-top: 0.5rem;
+    }
+
+}

@@ -1,11 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} - Accueil{% endblock %}
+{% block title %}
+	{{ parent() }}
+	- Accueil
+{% endblock %}
+
 
 {% block body %}
+	{% include "./_partials/_hero.html.twig" %}
 
-<h1>Test</h1>
-    <button class="btn">test</button>
-    <button class="btn btn-secondary">test</button>
-    <button class="btn btn-outline">test</button>
+            {# ****************** PRODUCTS LIST****************** #}
+	<section class="products">
+		<div class="products__header">
+			<h2 class="products__header-title f-title-page-section">Nos produits</h2>
+		</div>
+		<div class="products__list">
+            {% for product in products %}
+                {% include "./_partials/_card-product.html.twig" with {'product': product} %}
+            {% endfor %}
+		</div>
+	</section>
+
+            {# ****************** VALUES ****************** #}
+    <section class="values">
+			<article class="values__item">
+                <div class="values__item-content">
+                    <h3  class="values__item-title f-values-title">notre conviction</h3>
+                    <p class="values__item-text f-values-text ">Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique.</p>
+                </div>
+                 <div class="values__item-image">
+                    <img src="{{ asset('img/site/convictions.png') }}" alt="fleurs décoration">
+                </div>
+            </article>
+
+            <article class="values__item reverse">
+                <div class="values__item-content">
+                    <div class="values__item-content-reverse">
+                        <h3   class="values__item-title f-values-title">NOS VALEURS</h3>
+                        <p class="values__item-text f-values-text">Durabilité : Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité. Éthique : Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques. Écologie : Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.</p>
+                    </div>
+                </div>
+                <div class="values__item-image">
+                    <img src="{{ asset('img/site/valeurs.png') }}" alt="fleurs décoration">
+                </div>
+            </article>
+
+    </section>
 {% endblock %}

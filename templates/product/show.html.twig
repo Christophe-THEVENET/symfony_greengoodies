@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ parent() }} - Produit{% endblock %}
+
+{% block body %}
+
+            {# ****************** PRODUCTS LIST****************** #}
+	<section class="product container container--height">
+    <div class="product__content">
+        <div class="product__image">
+            <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.shortDescription }}" />
+        </div>
+        
+        <div class="product__details">
+            <div class="product__details-wrapper">
+            <h2 class="product__details-title f-title-page-section">{{ product.name }}</h2>
+            <p class="product__details-price f-product-show-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
+            <p class="product__details-description-title f-product-show-title-description">Description</p>
+            <p class="product__details-description f-product-show-description">
+                {{ product.longDescription|replace({'.': '.<br><br>'})|raw }}
+            </p>
+            <a href="#" class="btn-secondary">
+                <span class="link">Ajouter au panier</span>
+            </a>
+            </div>
+        </div>
+        </div>
+    </section>
+
+{% endblock %}

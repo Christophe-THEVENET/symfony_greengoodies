@@ -1,0 +1,29 @@
+@use "../abstracts/_all" as *;
+/* body {
+    background-color: $beige-light;
+} */
+
+body {
+    background-color: map-get($body-colors, 'default');
+    transition: background-color 0.3s ease; // ✅ Transition douce
+
+    @each $page, $color in $body-colors {
+        &.page-#{$page} {
+            background-color: $color;
+        }
+    }
+}
+
+.container {
+    max-width: $container-max-width;
+    margin: 0 auto;
+}
+
+.container--pink {
+    background-color: $pink;
+}
+
+.container--height {
+    min-height: calc(100vh - 160px);
+}
+

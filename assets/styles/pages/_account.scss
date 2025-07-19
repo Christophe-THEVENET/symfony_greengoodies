@@ -1,0 +1,174 @@
+// assets/styles/pages/_account.scss
+@use "../abstracts/_all" as *;
+
+.account {
+
+    // userinfo item
+    .account__item {
+        margin: 0;
+        height: 4rem;
+        padding: 0;
+
+        .account__item__wrapper {
+            display: flex;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+
+        }
+
+        .account__item__image {
+            flex: 1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                padding: 0;
+            }
+        }
+
+        .account__item__info {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            &-name {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: rgb(151, 60, 3);
+                margin-right: 2rem;
+                margin-left: 1rem;
+            }
+
+            &-details {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                margin-left: auto;
+                padding-right: 1rem;
+            }
+
+            &-email {
+                font-size: 0.7rem;
+                color: $black;
+            }
+
+            &-date {
+                font-size: 0.6rem;
+                margin-left: auto;
+                /*  color: $text-light; */
+                font-style: italic
+            }
+        }
+
+    }
+
+    // orders item
+    .orders {
+        // Le bloc principal des commandes
+        @include centerElement(column);
+        width: 100%;
+        padding: 4rem;
+
+
+        &__title {
+            margin-bottom: 1.5rem !important;
+            align-self: flex-start;
+            display: block;
+        }
+
+        &__table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem; // ✅ Réduit l'espacement
+
+
+
+            &-head {
+
+
+                &:nth-child(1) {
+                    text-align: left;
+                    width: 45%;
+
+                }
+
+                &:nth-child(2) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+
+
+            }
+
+
+
+            // ✅ &-cell au même niveau que &-row
+            &-cell {
+                vertical-align: middle;
+                text-align: left;
+                font-size: 14px;
+
+
+                &:nth-child(1) {
+                    text-align: left;
+                    width: 45%;
+                }
+
+                &:nth-child(2) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+
+
+                /*   &--header {
+                    font-weight: 600;
+                    color: #6c757d;
+                    font-size: 0.875rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background-color: #f8f9fa;
+                }
+
+                &--number {
+                    font-weight: 600;
+                    color: $green;
+                    font-size: 1rem;
+                }
+
+                &--date {
+                    color: #6c757d;
+                    font-size: 0.9375rem;
+                }
+
+                &--price {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #212529;
+                }
+
+                &--empty {
+                    text-align: center;
+                    color: #6c757d;
+                    font-style: italic;
+                } */
+            }
+        }
+
+    }
+}

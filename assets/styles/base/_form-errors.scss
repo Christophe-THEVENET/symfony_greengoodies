@@ -1,0 +1,40 @@
+// assets/styles/components/_form-errors.scss
+.form-error {
+    margin-top: 0.5rem;
+
+    .error-message {
+        display: flex;
+        align-items: center;
+        color: rgb(238, 155, 30);
+        font-size: 0.875rem;
+        /* background-color: #fef2f2;
+        border: 1px solid #fecaca; */
+       /*  border-radius: 4px; */
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.25rem;
+
+        .icon-alert {
+            margin-right: 0.5rem;
+            color: rgb(238, 155, 30);
+
+            &::before {
+                content: "⚠️";
+            }
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Styling pour les champs en erreur
+.login__form-item {
+
+    .form-control.is-invalid,
+    input.is-invalid {
+        border-color: red;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+}
+

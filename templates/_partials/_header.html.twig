@@ -1,0 +1,64 @@
+<!-- filepath: e:\wamp\www\symfony\openclassrooms\greengoodies\templates\components\_header.html.twig -->
+<header class="header"
+        data-controller="header"
+        data-header-active-class="active">
+        <div class="container">
+            <a href="{{ path('app_home') }}" class="header__logo">
+            <img src="{{ asset('./img/logo.svg') }}" alt="Logo" class="header__logo-icon"/>
+            </a>
+            
+            <!-- Navigation desktop -->
+            <nav class="header__nav">
+                <a href="{{ path('app_home') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
+                data-action="click->header#closeOnLink">Produits</a>
+                <a href="{{ path('app_cart') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">Panier</a>
+                <a href="{{ path('app_login') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
+                <a href="{{ path('app_register') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
+                <a href="{{ path('app_account') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}">Mon compte</a>
+                {% if app.user %}
+                    <a
+                        href="{{ path('app_logout') }}" 
+                        class="header__avatar"
+                        data-tooltip="Se déconnecter"
+                        aria-label="Se déconnecter">
+                            {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
+                    </a>
+                {% endif %}
+            </nav>
+            
+            <!-- Button burger -->
+            <button class="header__burger" 
+                    data-header-target="burger"
+                    data-action="click->header#toggle"
+                    aria-label="Menu"
+                    aria-expanded="false">
+                <span class="header__burger-line"></span>
+                <span class="header__burger-line"></span>
+                <span class="header__burger-line"></span>
+            </button>
+            
+            <!-- Navigation mobile -->
+            <nav class="header__mobilemenu" data-header-target="mobileMenu">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="header__avatar"  aria-label="Se déconnecter"> {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
+                    </a>
+                {% endif %}
+                <a href="{{ path('app_home') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
+                data-action="click->header#closeOnLink">Produits</a>
+                <a href="{{ path('app_cart') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
+                data-action="click->header#closeOnLink">Panier</a>
+                <a href="{{ path('app_login') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
+                data-action="click->header#closeOnLink">Se connecter</a>
+                <a href="{{ path('app_register') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
+                data-action="click->header#closeOnLink">S'inscrire</a>
+                <a href="{{ path('app_account') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}"
+                data-action="click->header#closeOnLink">Mon compte</a>
+            </nav>
+            
+            <!-- Overlay -->
+            <div class="header__overlay" 
+                data-header-target="overlay"
+                data-action="click->header#closeOnOverlay">
+                </div>
+        </div>
+</header>

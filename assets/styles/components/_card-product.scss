@@ -1,0 +1,44 @@
+@use "../abstracts/_all" as *;
+
+.card-product {
+    display: flex;
+    flex-direction: column;
+
+    &__image {
+        width: 100%;
+        height: 470px;
+        overflow: hidden;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: bottom center;
+
+        }
+
+        // Responsive height
+        @media screen and (max-width: $breakpoint-tablette) {
+            height: 370px;
+        }
+
+        @media screen and (max-width: $breakpoint-mobile) {
+            height: 300px;
+        }
+    }
+
+    &__content {
+        @include centerElement(column);
+        padding-top: 2rem;
+
+        &-title {
+            margin-bottom: 0.3rem;
+        }
+
+        &-price {
+
+            margin-top: 0.8rem;
+            margin-bottom: 1rem;
+        }
+    }
+}

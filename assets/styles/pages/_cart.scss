@@ -1,0 +1,94 @@
+@use "../abstracts/_all" as *;
+
+.cart {
+    @include centerElement;
+    align-items: flex-start;
+    margin: 0 auto;
+    padding: 6rem 0;
+
+    &__wrapper {
+        @include centerElement(column);
+        min-width: 55%;
+        display: flex;
+        flex-direction: column;
+        height: 100%; // Prend toute la hauteur disponible
+    }
+
+    &__title {
+
+        margin-bottom: 1.5rem;
+    }
+
+    &__clear {
+        align-self: start;
+        margin-bottom: 1rem;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        line-height: 1;
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: $gray-33;
+            font-weight: $fw-400;
+            border-bottom: 1px solid $gray-33;
+            transition: all 0.3s ease;
+        }
+    }
+
+    &__item-wrapper {
+        width: 100%;
+        @include centerElement(column);
+        gap: 0.3rem;
+    }
+
+    &__total {
+        @include centerElement(column);
+        align-items: flex-end;
+        width: 100%;
+        background-color: $beige-light;
+        padding: 1rem 3rem 1rem 1rem;
+        margin-bottom: 2rem;
+        justify-content: flex-start;
+
+        &-amount {
+            font-size: 0.875rem;
+        }
+
+        &-price {
+            margin-left: 0.1rem;
+        }
+
+        &-info {
+            font-size: 0.75rem;
+            letter-spacing: 0.2px;
+        }
+    }
+
+    .btn-secondary {
+        width: 80%;
+    }
+
+}
+
+@media screen and (max-width: $breakpoint-tablette) {
+
+    .cart {
+        &__wrapper {
+            min-width: 65%;
+        }
+    }
+}
+
+@media screen and (max-width: $breakpoint-mobile) {
+
+    .cart {
+        &__wrapper {
+            min-width: 80%;
+            max-width: 95%;
+        }
+
+        .btn-secondary {
+            width: 90%;
+        }
+    }
+}
