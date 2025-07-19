@@ -1,5 +1,7 @@
-{# templates/account/index.html.twig #}
 {% extends 'base.html.twig' %}
+
+{% set bodyClass = 'page-pink' %}
+
 
 {% block title %}
 	{{ parent() }}
@@ -7,43 +9,63 @@
 {% endblock %}
 
 {% block body %}
-	<section class="cart account">
-		<div class="cart__container">
-			<div class="cart__wrapper">
-
-                <h1 class="cart__title">Mon compte</h1>
-
-                <div class="cart__item-wrapper">
-
-                    {% include "./_partials/_account/_user-info.html.twig" %}
-
-                    <div class="cart__item profil__item">
-                    
-                        <div class="profil__item-left">
-
-                            <h5>Mon profil</h5>
-                            <p class="cart__item-quantity">Modifier vos informations personnelles</p>
-                            <h5>Actions du compte</h5>
-
-                            <div>
-                                <a href="{{ path('app_logout') }}" class="btn btn-outline">
-                                <i class="fas fa-sign-out-alt"></i> Se déconnecter
-                                </a>
-                                <a href="#" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?')">
-                                <i class="fas fa-trash"></i> Supprimer mon compte
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="profil__item-right">
-
-                           
-                               
-                        </div>
+	<section class="cart account container container--height">
+		<div class="cart__wrapper">
+			<h1 class=" cart__title f-title-page-section">
+				Mon compte
+			</h1>
+			<div class="cart__item-wrapper">
+				{% include "./_partials/_account/_user-info.html.twig" %}
 
 
-            </div>
+				<div class="cart__item orders">
+					<h5 class="orders__title f-title-item">Mes commandes</h5>
+
+						<table class="orders__table">
+							<thead class="orders__table-head">
+								<tr>
+									<th class="f-text">N°</th>
+									<th class="f-text">Date</th>
+									<th class="f-text">Prix</th>
+								</tr>
+							</thead>
+							<tbody class="orders__table-body">
+								{% for order in orders|default([
+                                    {id: '01', date: '01/01/2024', price: '185,50€'},
+                                    {id: '01', date: '01/01/2024', price: '185,50€'},
+                                    {id: '01', date: '01/01/2024', price: '185,50€'},
+                                    {id: '01', date: '01/01/2024', price: '185,50€'},
+                                    {id: '01', date: '01/01/2024', price: '185,50€'}
+                                ]) %}
+									<tr class="orders__table-row">
+										<td class="f-title-page-section  orders__table-cell orders__table-cell--number">
+											{{ order.id|default('%02d'|format(loop.index)) }}
+										</td>
+										<td class="f-title-page-section orders__table-cell orders__table-cell--date">
+											{{ order.date|default('01/01/2024') }}
+										</td>
+										<td class="f-title-page-section orders__table-cell orders__table-cell--price">
+											{{ order.price|default('185,50€') }}
+										</td>
+									</tr>
+								{% else %}
+									<tr class="orders__table-row orders__table-row--empty">
+										<td colspan="3" class="orders__table-cell orders__table-cell--empty">
+											Aucune commande pour le moment
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+				</div>
+			</div>
+
 		</div>
 	</section>
-    
+
 {% endblock %}
+
+{# 
+ <a href="#" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?')">
+                                    <i class="fas fa-trash"></i> Supprimer mon compte
+                                </a> #}

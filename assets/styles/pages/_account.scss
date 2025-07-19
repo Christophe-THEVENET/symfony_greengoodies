@@ -3,7 +3,8 @@
 
 .account {
 
-    .cart__item.account__item {
+    // userinfo item
+    .account__item {
         margin: 0;
         height: 4rem;
         padding: 0;
@@ -58,26 +59,116 @@
             &-date {
                 font-size: 0.6rem;
                 margin-left: auto;
-               /*  color: $text-light; */
+                /*  color: $text-light; */
                 font-style: italic
             }
         }
 
     }
 
+    // orders item
+    .orders {
+        // Le bloc principal des commandes
+        @include centerElement(column);
+        width: 100%;
+        padding: 4rem;
 
 
-}
+        &__title {
+            margin-bottom: 1.5rem !important;
+            align-self: flex-start;
+            display: block;
+        }
 
-// Réutilisation des styles de login
-.account {
+        &__table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.5rem; // ✅ Réduit l'espacement
 
-    // Hérite des styles .login__input__block
-    .login__input__block {
-        @extend .login__input__block;
-    }
 
-    .password-requirements {
-        @extend .password-requirements;
+
+            &-head {
+
+
+                &:nth-child(1) {
+                    text-align: left;
+                    width: 45%;
+
+                }
+
+                &:nth-child(2) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+
+
+            }
+
+
+
+            // ✅ &-cell au même niveau que &-row
+            &-cell {
+                vertical-align: middle;
+                text-align: left;
+                font-size: 14px;
+
+
+                &:nth-child(1) {
+                    text-align: left;
+                    width: 45%;
+                }
+
+                &:nth-child(2) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+                &:nth-child(3) {
+                    text-align: left;
+                    width: 100%;
+                }
+
+
+
+                /*   &--header {
+                    font-weight: 600;
+                    color: #6c757d;
+                    font-size: 0.875rem;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    background-color: #f8f9fa;
+                }
+
+                &--number {
+                    font-weight: 600;
+                    color: $green;
+                    font-size: 1rem;
+                }
+
+                &--date {
+                    color: #6c757d;
+                    font-size: 0.9375rem;
+                }
+
+                &--price {
+                    font-weight: 600;
+                    font-size: 1rem;
+                    color: #212529;
+                }
+
+                &--empty {
+                    text-align: center;
+                    color: #6c757d;
+                    font-style: italic;
+                } */
+            }
+        }
+
     }
 }

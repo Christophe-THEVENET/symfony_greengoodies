@@ -3,87 +3,86 @@
 {% block title %}{{parent()}} - Connexion{% endblock %}
 
 {% block body %}
-    <section class="login">
-        <div class="login__container">
-            <div class="login__image">
-                <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />
-            </div>
-            <div class="login__form">
-                <div class="login__wrapper">
+
+    {% if error %}
+        <div class="alert alert-danger" 
+            data-controller="alert"
+            data-alert-duration-value="5000"
+            data-alert-auto-hide-value="true">
+             {{ error.messageKey|trans(error.messageData, 'security') }}
+            <button type="button" 
+            class="alert-close" 
+            data-action="click->alert#close"
+            aria-label="Fermer">
+            &times;
+            </button>
+        </div>
+    {% endif %}
+
+    <section class="login container container--height">
+        <div class="login__image">
+            <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />
+        </div>
+        <div class="login__form">
+            <div class="login__form-wrapper">
+
+                <h1 class="login__form-title f-title-page-section">Connexion</h1>               
+
+                {% if app.user %}
+                    <div>Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </div>
+                {% endif %}
+
+                {% if not app.user %}
                     <form method="post" 
-                          data-controller="login"
-                          data-login-form-type-value="login"
-                          data-action="submit->login#onSubmit">
+                        data-controller="login"
+                        data-login-form-type-value="login"
+                        data-action="submit->login#onSubmit">
+
+                        <div class="login__form-item">
+                            <label class="f-text" for="username">Email</label>
+                            <input type="email" 
+                                value="{{ last_username }}" 
+                                name="_username" 
+                                id="username" 
+                                class="form-control" 
+                                autocomplete="email" 
+                                required 
+                                autofocus
+                                data-login-target="email"
+                                data-action="input->login#checkForm">
+                        </div>
+                                
+                        <div class="login__form-item">
+                            <label class="f-text" for="password">Mot de passe</label>
+                            <input type="password" 
+                                name="_password" 
+                                id="password" 
+                                class="form-control" 
+                                autocomplete="current-password" 
+                                required
+                                data-login-target="password"
+                                data-action="input->login#checkForm">
+                        </div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                        <div class="login__form-checkbox">
+                            <input type="checkbox" name="_remember_me" id="_remember_me">
+                            <label class="f-text" for="_remember_me">Se souvenir de moi</label>
+                        </div>
+
+                        <button class="btn btn-secondary" 
+                            type="submit"
+                            data-login-target="submitButton"
+                            disabled>
+                            <span class="link">Connexion</span>
+                        </button>
                         
-                        {% if error %}
-                            <div class="alert alert-danger" 
-                                data-controller="alert"
-                                data-alert-duration-value="5000"
-                                data-alert-auto-hide-value="true">
-                                {{ error.messageKey|trans(error.messageData, 'security') }}
-                                <button type="button" 
-                                        class="alert-close" 
-                                        data-action="click->alert#close"
-                                        aria-label="Fermer">
-                                    &times;
-                                </button>
-                            </div>
-                        {% endif %}
-
-                        {% if app.user %}
-                            <div class="mb-3">
-                                Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
-                                <a href="{{ path('app_logout') }}">Se déconnecter</a>
-                            </div>
-                        {% endif %}
-
-                        {% if not app.user %}
-                            <h1 class="product__title">Connexion</h1>
-                            
-                            <div class="login__input__block">
-                                <label class="product__text" for="username">Email</label>
-                                <input type="email" 
-                                       value="{{ last_username }}" 
-                                       name="_username" 
-                                       id="username" 
-                                       class="form-control" 
-                                       autocomplete="email" 
-                                       required 
-                                       autofocus
-                                       data-login-target="email"
-                                       data-action="input->login#checkForm">
-                            </div>
-                            
-                            <div class="login__input__block">
-                                <label class="product__text" for="password">Mot de passe</label>
-                                <input type="password" 
-                                       name="_password" 
-                                       id="password" 
-                                       class="form-control" 
-                                       autocomplete="current-password" 
-                                       required
-                                       data-login-target="password"
-                                       data-action="input->login#checkForm">
-                            </div>
-
-                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                            <div class="checkbox mb-3">
-                                <input type="checkbox" name="_remember_me" id="_remember_me">
-                                <label class="product__text" for="_remember_me">Se souvenir de moi</label>
-                            </div>
-
-                            <button class="btn btn-secondary" 
-                                    type="submit"
-                                    data-login-target="submitButton"
-                                    disabled>
-                                <span class="link">Connexion</span>
-                            </button>
-                      
                     </form>
-                    <div class="link-go-login-register"><a class="product__text" href="{{ path('app_register') }}">Pas encore de compte ? S'inscrire</a></div>
-                 {% endif %}
-                </div>
+                    <div class="login__link"><a class="login__link-a f-text" href="{{ path('app_register') }}">Pas encore de compte ? S'inscrire</a></div>
+                {% endif %}
             </div>
         </div>
     </section>

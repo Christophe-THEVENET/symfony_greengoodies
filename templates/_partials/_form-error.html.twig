@@ -1,0 +1,11 @@
+{# templates/_partials/_form-error.html.twig #}
+{% if errors %}
+    <div class="form-error">
+        {% for error in errors %}
+            <span class="error-message">
+                <i class="icon-alert"></i>
+                {{ error.message }}
+            </span>
+        {% endfor %}
+    </div>
+{% endif %}
