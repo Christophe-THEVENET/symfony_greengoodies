@@ -9,6 +9,7 @@ export default class extends Controller {
         "firstname",
         "lastname",
         "submitButton",
+        "passwordRequirements", 
     ];
     static values = {
         formType: { type: String, default: "login" }, // "login" ou "register"
@@ -90,6 +91,12 @@ export default class extends Controller {
     validatePassword(password) {
         const passwordRegex =
             /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{6,32}$/;
+
+        // ✅ Ajout de la validation des requirements en temps réel
+        if (this.hasPasswordRequirementsTarget) {
+            this.updatePasswordRequirements(password);
+        }
+
         return passwordRegex.test(password);
     }
 
@@ -106,8 +113,7 @@ export default class extends Controller {
             password === passwordConfirm &&
             password.length > 0
         );
-    }
-  // style des inputs en live
+    } // style des inputs en live
     updateField(field, isValid) {
         const value = field.value.trim();
         // Retire les classes de validation précédentes (Nettoie)
@@ -120,6 +126,36 @@ export default class extends Controller {
                 field.classList.add("invalid");
             }
         }
+    }
+
+    // ✅ Nouvelle méthode pour mettre à jour les requirements
+    updatePasswordRequirements(password) {
+        const requirements = {
+            length: password.length >= 6,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /\d/.test(password),
+            special: /[^A-Za-z0-9]/.test(password),
+        };
+
+        // Mise à jour de chaque requirement
+        Object.keys(requirements).forEach((type) => {
+            const element = this.passwordRequirementsTarget.querySelector(
+                `[data-requirement="${type}"]`
+            );
+            if (element) {
+                const icon = element.querySelector(".requirement-icon");
+                const isValid = requirements[type];
+
+                if (isValid) {
+                    element.dataset.valid = "true";
+                    icon.textContent = "✅";
+                } else {
+                    element.dataset.valid = "false";
+                    icon.textContent = "❌";
+                }
+            }
+        });
     }
 
     onSubmit(event) {

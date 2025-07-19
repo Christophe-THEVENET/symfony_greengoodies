@@ -118,12 +118,6 @@
 
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 
 // validation visuelle en temps réel strucure des mots de passe
 .password-requirements {
@@ -146,10 +140,8 @@
         margin: 0;
 
         li {
-            display: flex;
-            align-items: center;
+        
             padding: 0.05rem 0;
-            font-size: 0.875rem;
             transition: all 0.3s ease;
             font-weight: 400;
             font-size: 0.6rem;
@@ -186,108 +178,103 @@
 
     // Quand toutes les exigences sont remplies
     &.all-requirements-met {
-        background-color: #d1edff;
+        background-color: transparent;
         border-color: #198754;
 
         small {
             color: #198754;
         }
     }
-}
 
-// Animation pour les transitions
-@keyframes requirement-check {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.2);
-    }
-
-    100% {
-        transform: scale(1.1);
-    }
-}
-
-.requirement-valid .requirement-icon {
-    animation: requirement-check 0.3s ease;
-}
-
-// Indicateur de force du mot de passe
-.password-strength {
-    margin-top: 0.5rem;
-    height: 4px;
-    background-color: #e0e0e0;
-    border-radius: 2px;
-    overflow: hidden;
-
-    &__bar {
-        height: 100%;
-        width: 0%;
+    .requirements-list li {
         transition: all 0.3s ease;
+        padding: 0.1rem;
+        border-radius: 4px;
 
-        &.weak {
-            width: 25%;
-            background-color: #e74c3c;
+        .requirement-icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+            margin-right: 0.5rem;
         }
 
-        &.medium {
-            width: 50%;
-            background-color: #f39c12;
-        }
-
-        &.strong {
-            width: 75%;
-            background-color: #2ecc71;
-        }
-
-        &.very-strong {
-            width: 100%;
-            background-color: #27ae60;
-        }
-    }
-}
-
-@media screen and (max-width: $breakpoint-tablette) {
-
-    .login {
-
-
-        &__image {
-
-            flex: 1
-        }
-
-        &__form {
-            flex: 2;
-
-            &-wrapper {
-                max-width: 75%;
-
+        // ✅ Style basé sur l'attribut data-valid
+        &[data-valid="true"] {
+         
+            .requirement-icon {
+                transform: scale(1.4);
             }
         }
-    }
-}
 
-@media screen and (max-width: $breakpoint-mobile) {
-    .login {
-        flex-direction: column;
+        &[data-valid="false"] {
 
-        &__image {
-
-            flex: none;
-            height: 6rem;
-        }
-
-        &__form {
-            flex: none;
-
-            &-wrapper {
-                max-width: 90%;
-
+            // Animation quand ça change
+            &[data-valid="true"] .requirement-icon {
+                animation: bounce 0.3s ease;
             }
         }
     }
 
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes bounce {
+
+        0%,
+        100% {
+            transform: scale(1.1);
+        }
+
+        50% {
+            transform: scale(1.3);
+
+        }
+
+    }
+
+
+    @media screen and (max-width: $breakpoint-tablette) {
+
+        .login {
+
+
+            &__image {
+
+                flex: 1
+            }
+
+            &__form {
+                flex: 2;
+
+                &-wrapper {
+                    max-width: 75%;
+
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        .login {
+            flex-direction: column;
+
+            &__image {
+
+                flex: none;
+                height: 6rem;
+            }
+
+            &__form {
+                flex: none;
+
+                &-wrapper {
+                    max-width: 90%;
+
+                }
+            }
+        }
+
+    }
 }
