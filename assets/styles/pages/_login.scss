@@ -147,47 +147,48 @@
         }
     }
 
-    @media screen and (max-width: $breakpoint-tablette) {
+}
 
-        .login {
+@media screen and (max-width: $breakpoint-tablette) {
+
+    .login {
 
 
-            &__image {
+        &__image {
 
-                flex: 1
-            }
-
-            &__form {
-                flex: 2;
-
-                &-wrapper {
-                    max-width: 75%;
-
-                }
-            }
+            flex: 1
         }
 
+        &__form {
+            flex: 2;
+
+            &-wrapper {
+                max-width: 75%;
+
+            }
+        }
     }
 
-    @media screen and (max-width: $breakpoint-mobile) {
-        .login {
-            flex-direction: column;
+}
 
-            &__image {
+@media screen and (max-width: $breakpoint-mobile) {
+    .login {
+        flex-direction: column;
 
-                flex: none;
-                height: 6rem;
-            }
+        &__image {
 
-            &__form {
-                flex: none;
-
-                &-wrapper {
-                    max-width: 90%;
-
-                }
-            }
-
+            flex: none;
+            height: 6rem;
         }
+
+        &__form {
+            flex: none;
+
+            &-wrapper {
+                max-width: 90%;
+
+            }
+        }
+
     }
 }
