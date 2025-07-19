@@ -140,18 +140,18 @@ export default class extends Controller {
 
         // Mise à jour de chaque requirement
         Object.keys(requirements).forEach((type) => {
-            const element = this.passwordRequirementsTarget.querySelector(
+            const liElement = this.passwordRequirementsTarget.querySelector(
                 `[data-requirement="${type}"]`
             );
-            if (element) {
-                const icon = element.querySelector(".requirement-icon");
+            if (liElement) {
+                const icon = liElement.querySelector(".requirement-icon");
                 const isValid = requirements[type];
 
                 if (isValid) {
-                    element.dataset.valid = "true";
+                    liElement.dataset.valid = "true";
                     icon.textContent = "✅";
                 } else {
-                    element.dataset.valid = "false";
+                    liElement.dataset.valid = "false";
                     icon.textContent = "❌";
                 }
             }
