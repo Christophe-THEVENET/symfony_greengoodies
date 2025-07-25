@@ -10,18 +10,21 @@ use App\Entity\User;
 use App\Repository\OrderRepository;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class CartService
 {
     private CartDto $cart;
+    private bool $cartLoaded = false; // ✅ AJOUTEZ ce flag
 
     public function __construct(
         private EntityManagerInterface $entityManager,
         private OrderRepository $orderRepository,
         private ProductRepository $productRepository,
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
+        private Security $security
     ) {
         $this->cart = new CartDto();
         $this->loadCartFromSession();
@@ -29,6 +32,9 @@ class CartService
 
     public function addProduct(int $productId, int $quantity = 1): void
     {
+        // ✅ Charger le panier seulement quand nécessaire
+
+
         $product = $this->productRepository->find($productId);
         if (!$product) {
             throw new \InvalidArgumentException('Produit non trouvé');
@@ -41,6 +47,7 @@ class CartService
 
     public function removeProduct(int $productId): void
     {
+        $this->loadCartFromSession();
         $this->cart->removeItem($productId);
         $this->persistCart();
         $this->saveCartToSession();
@@ -48,23 +55,27 @@ class CartService
 
     public function updateQuantity(int $productId, int $quantity): void
     {
+        $this->loadCartFromSession();
         $this->cart->updateQuantity($productId, $quantity);
         $this->persistCart();
         $this->saveCartToSession();
     }
 
-
     public function getCart(): CartDto
     {
+        if (!$this->cartLoaded) {
+            $this->loadCartFromSession();
+            $this->cartLoaded = true;
+        }
         return $this->cart;
     }
 
     public function clearCart(): void
     {
-        // Supprimer la commande non validée si elle existe
-        if ($this->cart->getOrderId()) {
-            $order = $this->orderRepository->find($this->cart->getOrderId());
-            if ($order && !$order->isValid()) {
+        $user = $this->getCurrentUser();
+        if ($user) {
+            $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
+            if ($order) {
                 $this->entityManager->remove($order);
                 $this->entityManager->flush();
             }
@@ -80,15 +91,27 @@ class CartService
             throw new \InvalidArgumentException('Le panier est vide');
         }
 
+        // 🔧 CORRECTION : Forcer la création/synchronisation de l'order
         $order = $this->getOrCreateOrder($user);
+
+        // 🔧 IMPORTANT : Toujours synchroniser avant validation
+        $this->syncOrderItems($order);
+
+        // Calculer le total
+        $totalAmount = 0;
+        foreach ($order->getOrderItems() as $orderItem) {
+            $totalAmount += $orderItem->getTotalPrice();
+        }
+        $order->setTotalAmount($totalAmount);
+
+        // Validation finale
         $order->setIsValid(true);
         $order->setOrderNumber($this->generateOrderNumber());
 
         $this->entityManager->flush();
 
         // Vider le panier après validation
-        $this->cart->clear();
-        $this->saveCartToSession();
+        $this->clearCart();
 
         return $order;
     }
@@ -101,43 +124,49 @@ class CartService
 
         $user = $this->getCurrentUser();
         if (!$user) {
-            return; // Panier anonyme, on ne persiste pas
+            return;
         }
 
-        $order = $this->getOrCreateOrder($user);
-        $this->syncOrderItems($order);
+        try {
+            $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
 
-        $this->entityManager->flush();
-        $this->cart->setOrderId($order->getId());
+            if (!$order) {
+                $order = new Order();
+                $order->setUser($user);
+                $order->setIsValid(false);
+                $order->setCreatedAt(new \DateTimeImmutable());
+                $order->setTotalAmount(0.0);
+
+                $this->entityManager->persist($order);
+                $this->entityManager->flush();
+                $this->cart->setOrderId($order->getId());
+            }
+
+            $this->syncOrderItems($order);
+            $this->entityManager->flush();
+        } catch (\Doctrine\DBAL\Exception\UniqueConstraintViolationException $e) {
+            $this->entityManager->clear();
+            $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
+            if ($order) {
+                $this->cart->setOrderId($order->getId());
+                $this->syncOrderItems($order);
+                $this->entityManager->flush();
+            }
+        } catch (\Exception $e) {
+            // Optionnel : log ou gestion d'erreur
+        }
     }
 
     private function getOrCreateOrder(User $user): Order
     {
-        // Chercher une commande non validée existante
-        $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
-
-        if (!$order) {
-            $order = new Order();
-            $order->setUser($user);
-            $order->setIsValid(false);
-            $order->setCreatedAt(new \DateTimeImmutable());
-
-            $this->entityManager->persist($order);
-        }
-
-        return $order;
+        return $this->orderRepository->findUnvalidatedOrderByUser($user)
+            ?? throw new \RuntimeException('Order should exist after persistCart');
     }
 
     private function syncOrderItems(Order $order): void
     {
-        // ✅ MEILLEURE APPROCHE : utiliser removeOrderItem()
-        $orderItems = $order->getOrderItems()->toArray(); // Copie pour éviter les modifications pendant l'itération
-        foreach ($orderItems as $item) {
-            $order->removeOrderItem($item);  // Gère la relation + suppression
-            $this->entityManager->remove($item);  // Supprime de la BDD
-        }
-
-        // Ou encore plus simple avec orphanRemoval: true :
+        // ❌ SUPPRIMER cette duplication - gardez seulement UNE boucle
+        $orderItems = $order->getOrderItems()->toArray();
         foreach ($orderItems as $item) {
             $order->removeOrderItem($item);  // orphanRemoval supprime automatiquement
         }
@@ -153,7 +182,7 @@ class CartService
             $orderItem->setTotalPrice($cartItem['total_price']);
             $orderItem->setProduct($cartItem['product']);
 
-            $order->addOrderItem($orderItem);  // ✅ Utilise la méthode de l'entité
+            $order->addOrderItem($orderItem);
             $totalAmount += $cartItem['total_price'];
         }
 
@@ -162,17 +191,19 @@ class CartService
 
     private function loadCartFromSession(): void
     {
+        if ($this->cartLoaded) {
+            return;
+        }
+
         $session = $this->getSession();
         if (!$session) {
             return;
         }
 
-        // get cart data from session
-        // [[idProduct => quantity], [idProduct => quantity]]
-        $cartData = $session->get('cart', []);
+        $this->cart = new CartDto();
 
-        // hydrate Cart DTO
-        // [$items => [idProduct => [product => Product, quantity => int, unit_price => float, total_price => float]], $orderId => int|null, totalAmount => float]
+        // Charger les produits depuis la session (classique)
+        $cartData = $session->get('cart', []);
         foreach ($cartData as $productId => $quantity) {
             $product = $this->productRepository->find($productId);
             if ($product) {
@@ -180,11 +211,22 @@ class CartService
             }
         }
 
-        // Charger l'ordre ID depuis la session
+        // Charger l'Order non validée si présente
         $orderId = $session->get('cart_order_id');
         if ($orderId) {
-            $this->cart->setOrderId($orderId);
+            $order = $this->orderRepository->find($orderId);
+            if ($order && !$order->isValid()) {
+                foreach ($order->getOrderItems() as $orderItem) {
+                    $product = $orderItem->getProduct();
+                    if ($product) {
+                        $this->cart->addItem($product, $orderItem->getQuantity());
+                    }
+                }
+                $this->cart->setOrderId($orderId);
+            }
         }
+
+        $this->cartLoaded = true;
     }
 
     // light data persistence in session
@@ -206,9 +248,7 @@ class CartService
 
     private function getCurrentUser(): ?User
     {
-        // Implémentation pour récupérer l'utilisateur connecté
-        // Adapter selon votre système d'authentification
-        return null;
+        return $this->security->getUser();
     }
 
     private function getSession(): ?SessionInterface

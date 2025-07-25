@@ -20,11 +20,42 @@ class OrderRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->where('o.user = :user')
-            ->andWhere('o.is_valid = :isValid')
+            ->andWhere('o.isValid = false')
             ->setParameter('user', $user)
-            ->setParameter('isValid', false)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    // find or create an unvalidated order for a user
+    public function findOrCreateUnvalidatedOrderByUser(User $user): Order
+    {
+        // Tentative de récupération avec verrouillage
+        $query = $this->createQueryBuilder('o')
+            ->where('o.user = :user')
+            ->andWhere('o.isValid = false')
+            ->setParameter('user', $user)
+            ->getQuery();
+
+        $query->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE);
+
+        $order = $query->getOneOrNullResult();
+
+        if ($order) {
+            return $order;
+        }
+
+        // Si pas d'order, créer une nouvelle
+        $order = new Order();
+        $order->setUser($user);
+        $order->setIsValid(false);
+        $order->setCreatedAt(new \DateTimeImmutable());
+        $order->setTotalAmount(0.0);
+
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($order);
+        $entityManager->flush();
+
+        return $order;
     }
 
     // make sure to get the next order number
@@ -35,8 +66,8 @@ class OrderRepository extends ServiceEntityRepository
 
         // Trouve le dernier numéro de commande de l'année
         $lastOrder = $this->createQueryBuilder('o')
-            ->where('o.is_valid = :isValid')
-            ->andWhere('o.order_number LIKE :yearPattern')
+            ->where('o.isValid = :isValid')
+            ->andWhere('o.orderNumber LIKE :yearPattern')
             ->setParameter('isValid', true)
             ->setParameter('yearPattern', "CMD-{$currentYear}-%")
             ->orderBy('o.id', 'DESC')
@@ -61,10 +92,10 @@ class OrderRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('o')
             ->where('o.user = :user')
-            ->andWhere('o.is_valid = :isValid')
+            ->andWhere('o.isValid = :isValid')
             ->setParameter('user', $user)
             ->setParameter('isValid', true)
-            ->orderBy('o.created_at', 'DESC')
+            ->orderBy('o.createdAt', 'DESC')
             ->getQuery()
             ->getResult();
     }

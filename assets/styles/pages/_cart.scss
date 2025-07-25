@@ -64,8 +64,17 @@
         }
     }
 
-    .btn-secondary {
+    
+
+    .form-cart-valid {
         width: 80%;
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+
+        button {
+            width: 100%;
+        }
     }
 
 }

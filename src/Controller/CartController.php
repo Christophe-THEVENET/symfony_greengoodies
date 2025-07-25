@@ -22,12 +22,15 @@ class CartController extends AbstractController
             'cart' => $this->cartService->getCart()
         ]);
     }
-    // add product to cart
-    #[Route('/add/{productId}', name: 'app_cart_add', methods: ['POST'])]
+    // add product to cart (ajax front-end)
+    #[Route('/add/{productId}', name: 'api_cart_add', methods: ['POST'])]
     public function add(int $productId, Request $request): JsonResponse
     {
         try {
-            $quantity = $request->request->getInt('quantity', 1);
+            // ✅ Lire les données JSON
+            $data = json_decode($request->getContent(), true);
+            $quantity = $data['quantity'] ?? 1;
+
             $this->cartService->addProduct($productId, $quantity);
 
             return $this->json([
@@ -42,12 +45,14 @@ class CartController extends AbstractController
             ], 400);
         }
     }
-    // update product quantity in cart
-    #[Route('/update/{productId}', name: 'cart_update', methods: ['POST'])]
+    // update product quantity in cart (ajax page panier)
+    #[Route('/update/{productId}', name: 'api_cart_update', methods: ['POST'])]
     public function update(int $productId, Request $request): JsonResponse
     {
         try {
-            $quantity = $request->request->getInt('quantity');
+            $data = json_decode($request->getContent(), true);
+            $quantity = $data['quantity'] ?? 1;
+
             $this->cartService->updateQuantity($productId, $quantity);
 
             return $this->json([
@@ -65,8 +70,8 @@ class CartController extends AbstractController
             ], 400);
         }
     }
-    // remove product from cart
-    #[Route('/remove/{productId}', name: 'cart_remove', methods: ['POST'])]
+    // remove product from cart (bouton supprimer sur chaque ligne page panier)
+    #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['POST'])]
     public function remove(int $productId): JsonResponse
     {
         try {
@@ -83,8 +88,8 @@ class CartController extends AbstractController
             ], 400);
         }
     }
-    // clear cart
-    #[Route('/clear', name: 'cart_clear', methods: ['POST'])]
+    // clear cart (bouton vider panier page panier)
+    #[Route('/clear', name: 'api_cart_clear', methods: ['POST'])]
     public function clear(): JsonResponse
     {
         $this->cartService->clearCart();
@@ -94,8 +99,8 @@ class CartController extends AbstractController
             'message' => 'Panier vidé'
         ]);
     }
-    // validate cart and create order
-    #[Route('/validate', name: 'cart_validate', methods: ['POST'])]
+    // validate cart and create order (bouton valider panier page panier)
+    #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
     public function validate(): Response
     {
         if (!$this->getUser()) {
@@ -105,11 +110,11 @@ class CartController extends AbstractController
         try {
             $order = $this->cartService->validateCart($this->getUser());
 
-            $this->addFlash('success', 'Commande validée avec succès !');
-            return $this->redirectToRoute('order_show', ['id' => $order->getId()]);
+            /*  $this->addFlash('success', 'Commande validée avec succès !'); */
+            return $this->redirectToRoute('app_account');
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
-            return $this->redirectToRoute('cart_show');
+            return $this->redirectToRoute('app_cart');
         }
     }
 }

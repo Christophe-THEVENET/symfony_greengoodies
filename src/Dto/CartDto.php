@@ -14,6 +14,7 @@ class CartDto
 
     public function addItem(Product $product, int $quantity = 1): void
     {
+        // Vérifier si le produit est déjà dans le panier
         $productId = $product->getId();
 
         if (isset($this->items[$productId])) {

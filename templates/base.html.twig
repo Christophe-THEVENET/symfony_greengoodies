@@ -12,14 +12,12 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    {# pour changer la couleur du fond en fonction de la page #}
-      <body class="{{ bodyClass ?? 'page-default' }}">
+    <body class="{{ bodyClass ?? 'page-default' }}">
         {% include "./_partials/_header.html.twig" %}
         <main class="container">
-           
             {% block body %}{% endblock %}
-
         </main>
         {% include "./_partials/_footer.html.twig" %}
     </body>
 </html>
+{# templates/base.html.twig #}

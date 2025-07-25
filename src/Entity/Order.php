@@ -87,7 +87,12 @@ class Order
 
     public function isValid(): ?bool
     {
-        return $this->isValid === true && $this->orderNumber !== null;
+        return $this->isValid; // ✅ CORRIGÉ - enlevez la condition sur orderNumber
+    }
+
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
     }
 
     public function setIsValid(bool $isValid): static
