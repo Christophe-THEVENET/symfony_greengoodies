@@ -28,17 +28,21 @@ export default class extends Controller {
             const action = this.getActionType();
             const requestData = this.prepareRequestData(action);
 
-            console.log("🛒 Action:", action);
-            console.log("🛒 Data:", requestData);
-            console.log("🛒 URL:", this.urlValue);
+            // Choix de la méthode HTTP selon l'action
+            let method = "POST";
+            if (action === "update") method = "PUT";
+            if (action === "remove") method = "DELETE";
 
             const response = await fetch(this.urlValue, {
-                method: "POST",
+                method: method,
                 headers: {
                     "Content-Type": "application/json",
                     "X-Requested-With": "XMLHttpRequest",
                 },
-                body: JSON.stringify(requestData),
+                body:
+                    action === "add" || action === "update"
+                        ? JSON.stringify(requestData)
+                        : null,
             });
 
             const data = await response.json();
@@ -49,7 +53,6 @@ export default class extends Controller {
                 this.showToast(data.message || "Erreur", true);
             }
         } catch (error) {
-            console.error("Erreur cart:", error);
             this.showToast("Erreur technique", true);
         }
     }
@@ -69,50 +72,18 @@ export default class extends Controller {
         if (action === "add" || action === "update") {
             let quantity = 1;
 
-            // 🔍 DEBUG COMPLET
-            console.log("🛒 === DEBUG QUANTITY ===");
-            console.log("- Element:", this.element);
-            console.log("- hasQuantityTarget:", this.hasQuantityTarget);
-
-            if (this.hasQuantityTarget) {
-                console.log("- quantityTarget:", this.quantityTarget);
-                console.log(
-                    "- quantityTarget.value:",
-                    this.quantityTarget.value
-                );
-                console.log(
-                    "- quantityTarget.tagName:",
-                    this.quantityTarget.tagName
-                );
-            }
-
-            // Chercher tous les inputs
-            const allInputs = this.element.querySelectorAll("input");
-            console.log("- Tous les inputs trouvés:", allInputs);
-            allInputs.forEach((input, i) => {
-                console.log(`  Input ${i}:`, input, "value:", input.value);
-            });
-
-            // Essayer toutes les méthodes dans l'ordre
             if (this.hasQuantityTarget && this.quantityTarget.value) {
                 quantity = parseInt(this.quantityTarget.value) || 1;
-                console.log("✅ Quantité depuis target:", quantity);
             } else {
                 const quantityInput = this.element.querySelector(
                     'input[name="quantity"], .quantity-input, input[type="number"]'
                 );
-                console.log("- quantityInput trouvé:", quantityInput);
-
                 if (quantityInput && quantityInput.value) {
                     quantity = parseInt(quantityInput.value) || 1;
-                    console.log("✅ Quantité depuis querySelector:", quantity);
                 } else if (this.hasQuantityValue) {
                     quantity = this.quantityValue;
-                    console.log("✅ Quantité depuis value:", quantity);
                 }
             }
-
-            console.log("🎯 Quantité finale:", quantity);
             data.quantity = quantity;
         }
 
@@ -122,8 +93,15 @@ export default class extends Controller {
     handleSuccess(data, action) {
         switch (action) {
             case "add":
-                this.showToast(data.message || "Produit ajouté au panier");
+                this.showToast(
+                    (data.message || "Produit ajouté au panier") +
+                        ' <button class="btn btn-link btn-sm" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
+                );
                 this.updateCartCounter(data.cart_count);
+                showStimulusToast(
+                    'Produit ajouté au panier ! <button class="btn btn-link btn-sm" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
+                );
+                // Suppression de la redirection vers la page d'accueil
                 break;
 
             case "update":
@@ -138,7 +116,6 @@ export default class extends Controller {
 
             case "clear":
                 this.showToast(data.message || "Panier vidé");
-                // Redirection ou rechargement de page
                 if (data.redirectUrl) {
                     sessionStorage.setItem("toast", data.message);
                     window.location.href = data.redirectUrl;
@@ -150,7 +127,6 @@ export default class extends Controller {
     }
 
     updateCartCounter(count) {
-        // Met à jour TOUS les compteurs de panier sur la page
         const counters = document.querySelectorAll(
             ".cart-counter, .cart-count"
         );
@@ -158,7 +134,6 @@ export default class extends Controller {
             counter.textContent = count;
         });
 
-        // Met à jour aussi les badges dans la navigation
         const badges = document.querySelectorAll("[data-cart-badge]");
         badges.forEach((badge) => {
             badge.textContent = count;
@@ -166,15 +141,11 @@ export default class extends Controller {
     }
 
     updateCartDisplay(cart) {
-        // Met à jour le total
         if (this.hasTotalTarget) {
             this.totalTarget.textContent = `${cart.total}€`;
         }
-
-        // Met à jour le compteur
         this.updateCartCounter(cart.count);
 
-        // Met à jour les éléments avec data-cart-total
         const totals = document.querySelectorAll("[data-cart-total]");
         totals.forEach((total) => {
             total.textContent = `${cart.total}€`;
@@ -194,9 +165,24 @@ export default class extends Controller {
                         ? "linear-gradient(to right, #dc3545, #ff7675)"
                         : "linear-gradient(to right, #28a745, #00b894)",
                 },
+                escapeMarkup: false,
             }).showToast();
-        } else {
-            alert(message);
         }
     }
+}
+
+function showStimulusToast(message, type = "success", duration = 5000) {
+    const alertDiv = document.createElement("div");
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.setAttribute("data-controller", "alert");
+    alertDiv.setAttribute("data-alert-duration-value", duration);
+    alertDiv.setAttribute("data-alert-auto-hide-value", "true");
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button"
+            class="alert-close"
+            data-action="click->alert#close"
+            aria-label="Fermer">&times;</button>
+    `;
+    document.body.appendChild(alertDiv);
 }

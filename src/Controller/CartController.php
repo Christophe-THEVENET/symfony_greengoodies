@@ -14,64 +14,67 @@ use Symfony\Component\Routing\Annotation\Route;
 class CartController extends AbstractController
 {
     public function __construct(private CartService $cartService) {}
-    // cart page
+
+    // ************** cart page **************
     #[Route('/', name: 'app_cart', methods: ['GET'])]
     public function show(): Response
     {
         return $this->render('cart/index.html.twig', [
-            'cart' => $this->cartService->getCart()
+            'cart' => $this->cartService->getCart(),
         ]);
     }
-    // add product to cart (ajax front-end)
+
+    // ************** add product to cart (ajax front-end) **************
     #[Route('/add/{productId}', name: 'api_cart_add', methods: ['POST'])]
     public function add(int $productId, Request $request): JsonResponse
     {
         try {
-            // ✅ Lire les données JSON
             $data = json_decode($request->getContent(), true);
             $quantity = $data['quantity'] ?? 1;
 
             $this->cartService->addProduct($productId, $quantity);
 
             return $this->json([
-                'success' => true,
-                'message' => 'Produit ajouté au panier',
-                'cart_count' => $this->cartService->getCart()->getItemCount()
+                'success'    => true,
+                'message'    => 'Produit ajouté au panier',
+                'cart_count' => $this->cartService->getCart()->getItemCount(),
+                'redirectUrl' => $this->generateUrl('app_home'), // Ajout de l'URL d'accueil
             ]);
         } catch (\Exception $e) {
             return $this->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 400);
         }
     }
-    // update product quantity in cart (ajax page panier)
-    #[Route('/update/{productId}', name: 'api_cart_update', methods: ['POST'])]
+
+    // ************** update product quantity in cart (ajax page panier) **************
+    #[Route('/update/{productId}', name: 'api_cart_update', methods: ['PUT'])]
     public function update(int $productId, Request $request): JsonResponse
     {
         try {
-            $data = json_decode($request->getContent(), true);
+            $data     = json_decode($request->getContent(), true);
             $quantity = $data['quantity'] ?? 1;
-
             $this->cartService->updateQuantity($productId, $quantity);
 
             return $this->json([
                 'success' => true,
                 'message' => 'Quantité mise à jour',
-                'cart' => [
+                'cart'    => [
                     'total' => $this->cartService->getCart()->getTotalAmount(),
-                    'count' => $this->cartService->getCart()->getItemCount()
-                ]
+                    'count' => $this->cartService->getCart()->getItemCount(),
+                ],
             ]);
         } catch (\Exception $e) {
             return $this->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 400);
         }
     }
+
     // remove product from cart (bouton supprimer sur chaque ligne page panier)
-    #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['POST'])]
+    #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
     public function remove(int $productId): JsonResponse
     {
         try {
@@ -79,16 +82,16 @@ class CartController extends AbstractController
 
             return $this->json([
                 'success' => true,
-                'message' => 'Produit retiré du panier'
+                'message' => 'Produit retiré du panier',
             ]);
         } catch (\Exception $e) {
             return $this->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 400);
         }
     }
-    // clear cart (bouton vider panier page panier)
+    // ************** clear cart (bouton vider panier page panier) **************
     #[Route('/clear', name: 'api_cart_clear', methods: ['POST'])]
     public function clear(): JsonResponse
     {
@@ -96,14 +99,14 @@ class CartController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'message' => 'Panier vidé'
+            'message' => 'Panier vidé',
         ]);
     }
-    // validate cart and create order (bouton valider panier page panier)
+    // ************** validate cart and create order (bouton valider panier page panier) **************
     #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
     public function validate(): Response
     {
-        if (!$this->getUser()) {
+        if (! $this->getUser()) {
             return $this->redirectToRoute('app_login');
         }
 

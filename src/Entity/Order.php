@@ -12,12 +12,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
-// Ensure that an order can only have one unvalidated order per user
-#[ORM\UniqueConstraint(
-    name: 'unique_user_unvalidated_order',
-    columns: ['user_id'],
-    options: ['where' => '(is_valid = false)']
-)]
 class Order
 {
     #[ORM\Id]
@@ -87,7 +81,7 @@ class Order
 
     public function isValid(): ?bool
     {
-        return $this->isValid; // ✅ CORRIGÉ - enlevez la condition sur orderNumber
+        return $this->isValid; 
     }
 
     public function getIsValid(): ?bool

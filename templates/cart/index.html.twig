@@ -23,7 +23,7 @@
         <div class="cart__wrapper">
             <h1 class="cart__title f-title-page-section">Mon panier</h1>
             
-            {# ✅ Bouton vider le panier avec Stimulus #}
+            {# Vider le panier #}
             <button type="button" 
                     class="cart__clear f-text"
                     {{ stimulus_controller('cart', {
@@ -32,9 +32,14 @@
                     {{ stimulus_action('cart', 'trigger', 'click') }}>
                 x Vider le panier
             </button>
+
             
             <div class="cart__item-wrapper">
-                {% include "./_partials/_cart/_cart-item.html.twig" %}
+                {% for item in cart.items %}
+                    {% include "./_partials/_cart/_cart-item.html.twig" with { item: item } %}
+                {% else %}
+                    <p class="cart__empty">Votre panier est vide.</p>
+                {% endfor %}
                 <div class="cart__total">
                     <p class="cart__total-amount f-title-page-section">
                         Total panier: 
