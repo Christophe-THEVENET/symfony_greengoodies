@@ -89,32 +89,30 @@ class CartService
             throw new \InvalidArgumentException('Le panier est vide');
         }
 
+        $invalidOrder = $this->getInvalidOrder($user);
 
-        $order = $this->getOrCreateOrder($user);
-
-
-        $this->syncOrderItems($order);
+        $this->syncOrderItems($invalidOrder);
 
         // Calculer le total
         $totalAmount = 0;
-        foreach ($order->getOrderItems() as $orderItem) {
+        foreach ($invalidOrder->getOrderItems() as $orderItem) {
             $totalAmount += $orderItem->getTotalPrice();
         }
-        $order->setTotalAmount($totalAmount);
+        $invalidOrder->setTotalAmount($totalAmount);
 
         // Validation finale
-        $order->setIsValid(true);
-        $order->setOrderNumber($this->generateOrderNumber());
+        $validOrder = $invalidOrder->setIsValid(true);
+        $validOrder->setOrderNumber($this->generateOrderNumber());
 
         $this->entityManager->flush();
 
         // Vider le panier après validation
         $this->clearCart();
 
-        return $order;
+        return $validOrder;
     }
 
-    private function persistCart(): void
+    public function persistCart(): void
     {
         if ($this->cart->isEmpty()) {
             return;
@@ -155,7 +153,7 @@ class CartService
         }
     }
 
-    private function getOrCreateOrder(User $user): Order
+    private function getInvalidOrder(User $user): Order
     {
         return $this->orderRepository->findUnvalidatedOrderByUser($user)
             ?? throw new \RuntimeException('Order should exist after persistCart');
@@ -163,7 +161,7 @@ class CartService
 
     private function syncOrderItems(Order $order): void
     {
-        // ❌ SUPPRIMER cette duplication - gardez seulement UNE boucle
+        
         $orderItems = $order->getOrderItems()->toArray();
         foreach ($orderItems as $item) {
             $order->removeOrderItem($item);  // orphanRemoval supprime automatiquement

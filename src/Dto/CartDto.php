@@ -85,7 +85,6 @@ class CartDto
         $this->totalAmount = array_sum(array_column($this->items, 'total_price'));
     }
 
-    // Getters/Setters pour orderId
     public function getOrderId(): ?int
     {
         return $this->orderId;
@@ -100,7 +99,7 @@ class CartDto
     {
         foreach ($this->items as $item) {
             if ($item['product']->getId() === $productId) {
-                return $item['total_price']; // ou $item['unit_price'] * $item['quantity']
+                return $item['total_price']; 
             }
         }
         return 0.0;

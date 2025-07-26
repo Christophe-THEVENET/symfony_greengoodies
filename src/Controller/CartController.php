@@ -55,7 +55,6 @@ class CartController extends AbstractController
             $data     = json_decode($request->getContent(), true);
             $quantity = $data['quantity'] ?? 1;
             $updatedQuantity = $this->cartService->updateQuantity($productId, $quantity);
-            /* $updatedTotalPrice = $this->cartService->getCart()->getTotalAmount(); */
             $itemTotalPrice = $this->cartService->getCart()->getItemTotalPrice($productId); // Récupérer le total de l'item
 
             return $this->json([
@@ -125,7 +124,7 @@ class CartController extends AbstractController
         try {
             $order = $this->cartService->validateCart($this->getUser());
 
-            /*  $this->addFlash('success', 'Commande validée avec succès !'); */
+            /*  a voir notification succès */
             return $this->redirectToRoute('app_account');
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());

@@ -26,38 +26,6 @@ class OrderRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    // find or create an unvalidated order for a user
-    public function findOrCreateUnvalidatedOrderByUser(User $user): Order
-    {
-        // Tentative de récupération avec verrouillage
-        $query = $this->createQueryBuilder('o')
-            ->where('o.user = :user')
-            ->andWhere('o.isValid = false')
-            ->setParameter('user', $user)
-            ->getQuery();
-
-        $query->setLockMode(\Doctrine\DBAL\LockMode::PESSIMISTIC_WRITE);
-
-        $order = $query->getOneOrNullResult();
-
-        if ($order) {
-            return $order;
-        }
-
-        // Si pas d'order, créer une nouvelle
-        $order = new Order();
-        $order->setUser($user);
-        $order->setIsValid(false);
-        $order->setCreatedAt(new \DateTimeImmutable());
-        $order->setTotalAmount(0.0);
-
-        $entityManager = $this->getEntityManager();
-        $entityManager->persist($order);
-        $entityManager->flush();
-
-        return $order;
-    }
-
     // make sure to get the next order number
     public function getNextOrderNumber(): string
     {

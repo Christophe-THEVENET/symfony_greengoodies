@@ -5,25 +5,22 @@
 {% block title %}{{ parent() }} - Panier{% endblock %}
 
 {% block body %}
-           {# ****************** PANIER ****************** #}
 
-           
        <pre>
           panier en mémoire:  {{ dump(cart) }}
        </pre>
-
        <pre>
             panier en session:  {{ dump(app.session.get('cart')) }}
             order_id en session:  {{ dump(app.session.get('cart_order_id')) }}
         </pre>
 
            {# ****************** PANIER ****************** #}
-
 	<section class="cart container container--height">
         <div class="cart__wrapper">
             <h1 class="cart__title f-title-page-section">Mon panier</h1>
             
             {# Vider le panier #}
+              {% if cart.items|length > 0 %}
             <button type="button" 
                     class="cart__clear f-text"
                     {{ stimulus_controller('cart', {
@@ -32,7 +29,7 @@
                     {{ stimulus_action('cart', 'trigger', 'click') }}>
                 x Vider le panier
             </button>
-
+            {% endif %}
             
             <div class="cart__item-wrapper">
                 {% for item in cart.items %}
