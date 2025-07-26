@@ -1,37 +1,36 @@
 {# templates/cart/_partials/_cart/_cart-item.html.twig #}
-{% for item in cart.items %}
-<article class="cart-item">
-    <div class="cart-item__image">
-        <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}">
+<article class="cart__item" data-product-id="{{ item.product.id }}">
+    <div class="cart__item-image">
+        <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" class="cart__item">
     </div>
-    
-    <div class="cart-item__details">
-        <h3>{{ item.product.name }}</h3>
-        <p>{{ item.unit_price }}€</p>
-        
-        {# ✅ Mise à jour quantité avec Stimulus #}
-        <input type="number" 
-               value="{{ item.quantity }}" 
-               min="1" 
-               data-cart-target="quantity"
-               {{ stimulus_controller('cart', {
-                   url: path('api_cart_update', {productId: item.product.id})
-               }) }}
-               {{ stimulus_action('cart', 'trigger', 'change') }}>
-        
-        {# ✅ Bouton supprimer avec Stimulus #}
-        <button type="button" 
-                class="remove-item"
-                {{ stimulus_controller('cart', {
-                    url: path('api_cart_remove', {productId: item.product.id})
-                }) }}
-                {{ stimulus_action('cart', 'trigger', 'click') }}>
-            🗑️ Supprimer
-        </button>
+    <div class="cart__item-details">
+        <p class="cart__item-name f-title-item ">{{ item.product.name }}</p>
+        <p class="cart__item-quantity f-text">
+            Quantité:
+            <input type="number"
+                   class="cart__item-qty"
+                   value="{{ item.quantity }}"
+                   min="1"
+                   data-cart-target="quantity"
+                   {{ stimulus_controller('cart', {
+                       url: path('api_cart_update', {productId: item.product.id})
+                   }) }}
+                   {{ stimulus_action('cart', 'trigger', 'input') }}>
+        </p>
+        <p class="cart__item-price f-title-page-section">
+            Prix unitaire : {{ item.unit_price|number_format(2, ',', ' ') }}€
+        </p>
     </div>
-    
-    <div class="cart-item__total">
-        {{ item.total_price }}€
+    <div class="cart__item-total">
+        Total : {{ item.total_price|number_format(2, ',', ' ') }}€
     </div>
+    <button type="button"
+        class="remove-item"
+        title="Supprimer"
+        {{ stimulus_controller('cart', {
+            url: path('api_cart_remove', {productId: item.product.id})
+        }) }}
+        {{ stimulus_action('cart', 'trigger', 'click') }}>
+        <span aria-label="Supprimer" role="img">🗑️</span>
+    </button>
 </article>
-{% endfor %}

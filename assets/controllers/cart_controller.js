@@ -26,7 +26,7 @@ export default class extends Controller {
 
         try {
             const action = this.getActionType();
-            const requestData = this.prepareRequestData(action);
+            const quantityProduct = this.prepareQuantityProduct(action);
 
             // Choix de la méthode HTTP selon l'action
             let method = "POST";
@@ -41,7 +41,7 @@ export default class extends Controller {
                 },
                 body:
                     action === "add" || action === "update"
-                        ? JSON.stringify(requestData)
+                        ? JSON.stringify(quantityProduct)
                         : null,
             });
 
@@ -66,52 +66,54 @@ export default class extends Controller {
         return "unknown";
     }
 
-    prepareRequestData(action) {
+    prepareQuantityProduct(action) {
         const data = {};
-
         if (action === "add" || action === "update") {
             let quantity = 1;
-
             if (this.hasQuantityTarget && this.quantityTarget.value) {
                 quantity = parseInt(this.quantityTarget.value) || 1;
-            } else {
-                const quantityInput = this.element.querySelector(
-                    'input[name="quantity"], .quantity-input, input[type="number"]'
-                );
-                if (quantityInput && quantityInput.value) {
-                    quantity = parseInt(quantityInput.value) || 1;
-                } else if (this.hasQuantityValue) {
-                    quantity = this.quantityValue;
-                }
             }
             data.quantity = quantity;
         }
-
         return data;
     }
 
     handleSuccess(data, action) {
         switch (action) {
             case "add":
-                this.showToast(
-                    (data.message || "Produit ajouté au panier") +
-                        ' <button class="btn btn-link btn-sm" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
-                );
                 this.updateCartCounter(data.cart_count);
                 showStimulusToast(
-                    'Produit ajouté au panier ! <button class="btn btn-link btn-sm" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
+                    'Produit ajouté au panier ! <button class="btn-toast" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
                 );
                 // Suppression de la redirection vers la page d'accueil
                 break;
 
             case "update":
                 this.showToast(data.message || "Quantité mise à jour");
-                this.updateCartDisplay(data.cart);
+                this.updateCartDisplay(data.cart); // <-- met à jour le DOM (total, compteur, etc)
+
+                // Met à jour la quantité et le total de l'item modifié
+                if (data.cart && data.cart.updatedItem) {
+                    const item = data.cart.updatedItem;
+                    const article = document.querySelector(
+                        `[data-product-id="${item.product.id}"]`
+                    );
+                    if (article) {
+                        article.querySelector(".cart__item-qty").value =
+                            item.quantity;
+                        article.querySelector(
+                            ".cart__item-total"
+                        ).textContent = `Total : ${Number(item.total_price)
+                            .toFixed(2)
+                            .replace(".", ",")}€`;
+                    }
+                }
                 break;
 
             case "remove":
                 this.showToast(data.message || "Produit supprimé");
                 this.element.closest("article, .cart-item, tr")?.remove();
+                this.updateCartDisplay(data.cart); // <-- Ajoute cette ligne
                 break;
 
             case "clear":
@@ -141,14 +143,17 @@ export default class extends Controller {
     }
 
     updateCartDisplay(cart) {
+        console.log("Montant total reçu après suppression :", cart.total);
         if (this.hasTotalTarget) {
-            this.totalTarget.textContent = `${cart.total}€`;
+            this.totalTarget.textContent = `${Number(cart.total)
+                .toFixed(2)
+                .replace(".", ",")}€`;
         }
-        this.updateCartCounter(cart.count);
-
         const totals = document.querySelectorAll("[data-cart-total]");
         totals.forEach((total) => {
-            total.textContent = `${cart.total}€`;
+            total.textContent = `${Number(cart.total)
+                .toFixed(2)
+                .replace(".", ",")}€`;
         });
     }
 
@@ -172,17 +177,18 @@ export default class extends Controller {
 }
 
 function showStimulusToast(message, type = "success", duration = 5000) {
-    const alertDiv = document.createElement("div");
-    alertDiv.className = `alert alert-${type}`;
-    alertDiv.setAttribute("data-controller", "alert");
-    alertDiv.setAttribute("data-alert-duration-value", duration);
-    alertDiv.setAttribute("data-alert-auto-hide-value", "true");
-    alertDiv.innerHTML = `
+    const toastEl = document.createElement("div");
+    toastEl.className = `alert alert-${type}`;
+    toastEl.classList.add("toast-block");
+    toastEl.setAttribute("data-controller", "alert");
+    toastEl.setAttribute("data-alert-duration-value", duration);
+    toastEl.setAttribute("data-alert-auto-hide-value", "true");
+    toastEl.innerHTML = `
         ${message}
         <button type="button"
             class="alert-close"
             data-action="click->alert#close"
             aria-label="Fermer">&times;</button>
     `;
-    document.body.appendChild(alertDiv);
+    document.body.appendChild(toastEl);
 }

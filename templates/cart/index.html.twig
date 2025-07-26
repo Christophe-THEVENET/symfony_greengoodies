@@ -46,7 +46,7 @@
                         <span class="cart__total-price f-cart-total-item-price" 
                               data-cart-target="total" 
                               data-cart-total>
-                            {{ cart.totalAmount }}€
+                            {{ cart.totalAmount|number_format(2, ',', ' ') }}€
                         </span>
                     </p>
                     <p class="cart__total-info f-text">Frais de livraison: Offert</p>

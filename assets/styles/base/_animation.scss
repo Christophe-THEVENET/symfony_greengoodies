@@ -101,3 +101,13 @@
         opacity: 0;
     }
 }
+
+
+.toast-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    width: 50rem;
+   
+}

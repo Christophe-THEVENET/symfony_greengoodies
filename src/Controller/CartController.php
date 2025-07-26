@@ -38,7 +38,6 @@ class CartController extends AbstractController
                 'success'    => true,
                 'message'    => 'Produit ajouté au panier',
                 'cart_count' => $this->cartService->getCart()->getItemCount(),
-                'redirectUrl' => $this->generateUrl('app_home'), // Ajout de l'URL d'accueil
             ]);
         } catch (\Exception $e) {
             return $this->json([
@@ -55,7 +54,9 @@ class CartController extends AbstractController
         try {
             $data     = json_decode($request->getContent(), true);
             $quantity = $data['quantity'] ?? 1;
-            $this->cartService->updateQuantity($productId, $quantity);
+            $updatedQuantity = $this->cartService->updateQuantity($productId, $quantity);
+            /* $updatedTotalPrice = $this->cartService->getCart()->getTotalAmount(); */
+            $itemTotalPrice = $this->cartService->getCart()->getItemTotalPrice($productId); // Récupérer le total de l'item
 
             return $this->json([
                 'success' => true,
@@ -63,6 +64,13 @@ class CartController extends AbstractController
                 'cart'    => [
                     'total' => $this->cartService->getCart()->getTotalAmount(),
                     'count' => $this->cartService->getCart()->getItemCount(),
+                    'updatedItem' => [
+                        'product' => [
+                            'id' => $productId,
+                        ],
+                        'quantity' => $updatedQuantity,
+                        'total_price' => $itemTotalPrice, // <= total de l'item, pas du panier
+                    ],
                 ],
             ]);
         } catch (\Exception $e) {
@@ -83,6 +91,10 @@ class CartController extends AbstractController
             return $this->json([
                 'success' => true,
                 'message' => 'Produit retiré du panier',
+                'cart' => [
+                    'total' => $this->cartService->getCart()->getTotalAmount(),
+                    'count' => $this->cartService->getCart()->getItemCount(),
+                ],
             ]);
         } catch (\Exception $e) {
             return $this->json([

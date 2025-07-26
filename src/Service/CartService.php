@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 class CartService
 {
     private CartDto $cart;
-    private bool $cartLoaded = false; // ✅ AJOUTEZ ce flag
+    private bool $cartLoaded = false; 
 
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -32,9 +32,6 @@ class CartService
 
     public function addProduct(int $productId, int $quantity = 1): void
     {
-        // ✅ Charger le panier seulement quand nécessaire
-
-
         $product = $this->productRepository->find($productId);
         if (!$product) {
             throw new \InvalidArgumentException('Produit non trouvé');
@@ -53,12 +50,13 @@ class CartService
         $this->saveCartToSession();
     }
 
-    public function updateQuantity(int $productId, int $quantity): void
+    public function updateQuantity(int $productId, int $quantity): int
     {
         $this->loadCartFromSession();
         $this->cart->updateQuantity($productId, $quantity);
         $this->persistCart();
         $this->saveCartToSession();
+        return $quantity;
     }
 
     public function getCart(): CartDto
@@ -91,10 +89,10 @@ class CartService
             throw new \InvalidArgumentException('Le panier est vide');
         }
 
-        // 🔧 CORRECTION : Forcer la création/synchronisation de l'order
+
         $order = $this->getOrCreateOrder($user);
 
-        // 🔧 IMPORTANT : Toujours synchroniser avant validation
+
         $this->syncOrderItems($order);
 
         // Calculer le total
@@ -202,15 +200,6 @@ class CartService
 
         $this->cart = new CartDto();
 
-        // Charger les produits depuis la session (classique)
-        $cartData = $session->get('cart', []);
-        foreach ($cartData as $productId => $quantity) {
-            $product = $this->productRepository->find($productId);
-            if ($product) {
-                $this->cart->addItem($product, $quantity);
-            }
-        }
-
         // Charger l'Order non validée si présente
         $orderId = $session->get('cart_order_id');
         if ($orderId) {
@@ -223,6 +212,17 @@ class CartService
                     }
                 }
                 $this->cart->setOrderId($orderId);
+                $this->cartLoaded = true;
+                return; // NE PAS charger la session si une commande existe
+            }
+        }
+
+        // Sinon, charger les produits depuis la session
+        $cartData = $session->get('cart', []);
+        foreach ($cartData as $productId => $quantity) {
+            $product = $this->productRepository->find($productId);
+            if ($product) {
+                $this->cart->addItem($product, $quantity);
             }
         }
 

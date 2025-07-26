@@ -80,7 +80,7 @@ class CartDto
         $this->orderId = null;
     }
 
-    private function updateTotalAmount(): void
+    public function updateTotalAmount(): void
     {
         $this->totalAmount = array_sum(array_column($this->items, 'total_price'));
     }
@@ -94,5 +94,15 @@ class CartDto
     public function setOrderId(?int $orderId): void
     {
         $this->orderId = $orderId;
+    }
+
+    public function getItemTotalPrice(int $productId): float
+    {
+        foreach ($this->items as $item) {
+            if ($item['product']->getId() === $productId) {
+                return $item['total_price']; // ou $item['unit_price'] * $item['quantity']
+            }
+        }
+        return 0.0;
     }
 }
