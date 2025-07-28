@@ -1,5 +1,6 @@
 // assets/controllers/cart_controller.js
 import { Controller } from "@hotwired/stimulus";
+import NotificationController from "./notification_controller.js";
 
 export default class extends Controller {
     static values = {
@@ -10,7 +11,9 @@ export default class extends Controller {
 
     static targets = ["quantity", "total"];
 
-    connect() {}
+    connect() {
+    
+    }
 
     async trigger(event) {
         event?.preventDefault();
@@ -41,10 +44,13 @@ export default class extends Controller {
             if (data.success) {
                 this.handleSuccess(data, action);
             } else {
-                this.showToast(data.message || "Erreur", true);
+                NotificationController.display(
+                    data.message || "Erreur",
+                    "error"
+                );
             }
         } catch (error) {
-            this.showToast("Erreur technique", true);
+            NotificationController.display("Erreur technique", "error");
         }
     }
 
@@ -73,8 +79,12 @@ export default class extends Controller {
         switch (action) {
             case "add":
                 /*  this.updateCartCounter(data.cart_count); */
-                showStimulusToast(
+                /*  this.addProductToast(
                     'Produit ajouté au panier ! <button class="btn-toast" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
+                ); */
+                NotificationController.display(
+                    "Produit ajouté au panier !",
+                    "success"
                 );
                 // Suppression de la redirection vers la page d'accueil
                 break;
@@ -103,6 +113,7 @@ export default class extends Controller {
             case "remove":
                 this.element.closest("article, .cart-item, tr")?.remove();
                 this.updateCartDisplay(data.cart);
+                
                 break;
 
             case "clear":
@@ -129,21 +140,21 @@ export default class extends Controller {
                 .replace(".", ",")}€`;
         });
     }
-}
 
-function showStimulusToast(message, type = "success", duration = 5000) {
-    const toastEl = document.createElement("div");
-    toastEl.className = `alert alert-${type}`;
-    toastEl.classList.add("toast-block");
-    toastEl.setAttribute("data-controller", "alert");
-    toastEl.setAttribute("data-alert-duration-value", duration);
-    toastEl.setAttribute("data-alert-auto-hide-value", "true");
-    toastEl.innerHTML = `
+    /*  addProductToast(message, type = "success", duration = 5000) {
+        const toastEl = document.createElement("div");
+        toastEl.className = `alert alert-${type}`;
+        toastEl.classList.add("toast-block");
+        toastEl.setAttribute("data-controller", "alert");
+        toastEl.setAttribute("data-alert-duration-value", duration);
+        toastEl.setAttribute("data-alert-auto-hide-value", "true");
+        toastEl.innerHTML = `
         ${message}
         <button type="button"
             class="alert-close"
             data-action="click->alert#close"
             aria-label="Fermer">&times;</button>
     `;
-    document.body.appendChild(toastEl);
+        document.body.appendChild(toastEl);
+    } */
 }

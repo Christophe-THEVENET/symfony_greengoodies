@@ -4,21 +4,6 @@
 
 {% block body %}
 
-    {% if error %}
-        <div class="alert alert-danger" 
-            data-controller="alert"
-            data-alert-duration-value="5000"
-            data-alert-auto-hide-value="true">
-             {{ error.messageKey|trans(error.messageData, 'security') }}
-            <button type="button" 
-            class="alert-close" 
-            data-action="click->alert#close"
-            aria-label="Fermer">
-            &times;
-            </button>
-        </div>
-    {% endif %}
-
     <section class="login container container--height">
         <div class="login__image">
             <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />

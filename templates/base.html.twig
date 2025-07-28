@@ -13,6 +13,33 @@
         {% endblock %}
     </head>
     <body class="{{ bodyClass ?? 'page-default' }}">
+
+
+        <div {{stimulus_controller('notification')}}></div>
+
+        {# Centralisation des notifications ajoute dans le sessionStorage #}
+        {% set toast = toast is defined ? toast : app.session.get('toast') %}
+        {% set error = error is defined ? error : app.session.get('error') %}
+        {% set loginError = error is defined and error ? error.messageKey|trans(error.messageData, 'security') : null %}
+
+        {% if toast or error or loginError %}
+            <script>
+                {% if toast %}
+                    sessionStorage.setItem('toast', '{{ toast|e('js') }}');
+                {% endif %}
+                {% if error %}
+                    sessionStorage.setItem('error', '{{ error|e('js') }}');
+                {% endif %}
+                {% if loginError %}
+                    sessionStorage.setItem('error', '{{ loginError|e('js') }}');
+                {% endif %}
+            </script>
+            {% if toast %}{% do app.session.remove('toast') %}{% endif %}
+            {% if error %}{% do app.session.remove('error') %}{% endif %}
+        {% endif %}
+
+
+
         {% include "./_partials/_header.html.twig" %}
         <main class="container">
             {% block body %}{% endblock %}

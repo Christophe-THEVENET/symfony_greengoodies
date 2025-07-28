@@ -122,7 +122,7 @@ class CartController extends AbstractController
     }
     // ************** validate cart and create order (bouton valider panier page panier) **************
     #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
-    public function validate(): Response
+    public function validate(Request $request): Response
     {
         if (! $this->getUser()) {
             return $this->redirectToRoute('app_login');
@@ -130,6 +130,7 @@ class CartController extends AbstractController
 
         try {
             $order = $this->cartService->validateCart($this->getUser());
+            $request->getSession()->set('toast', 'Commande validée avec succès !');
 
             /*  a voir notification succès */
             return $this->redirectToRoute('app_account');

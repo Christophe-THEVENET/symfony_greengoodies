@@ -36,8 +36,8 @@
     }
 
     &.alert-success {
-        background-color: rgba(119, 224, 203, 0.342);
-        color: rgba(47, 112, 99, 0.774);
+        background-color: rgb(119, 224, 203);
+        color: rgb(30, 74, 65);
         border-color: #c3e6cb;
     }
 
@@ -102,12 +102,32 @@
     }
 }
 
+// ********************* NOTIFICATION TOAST STYLES *********************
+.notification-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    z-index: 9999;
+    color: #fff;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    opacity: 1;
+    transition: opacity 0.3s;
 
-.toast-block {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    width: 50rem;
-   
+    &.notification-toast--success {
+        background: #5eaa60;
+    }
+
+    &.notification-toast--error {
+        background: #eb6c5e;
+    }
+
+    &.notification-toast--hide {
+        opacity: 0;
+
+    }
 }
