@@ -6,14 +6,6 @@
 
 {% block body %}
 
-       <pre>
-          panier en mémoire:  {{ dump(cart) }}
-       </pre>
-       <pre>
-            panier en session:  {{ dump(app.session.get('cart')) }}
-            order_id en session:  {{ dump(app.session.get('cart_order_id')) }}
-        </pre>
-
            {# ****************** PANIER ****************** #}
 	<section class="cart container container--height">
         <div class="cart__wrapper">

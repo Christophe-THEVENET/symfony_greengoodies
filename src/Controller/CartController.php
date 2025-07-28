@@ -21,6 +21,7 @@ class CartController extends AbstractController
     {
         return $this->render('cart/index.html.twig', [
             'cart' => $this->cartService->getCart(),
+            'cart_count' => $this->cartService->getCart()->getItemCount(),
         ]);
     }
 
@@ -30,6 +31,9 @@ class CartController extends AbstractController
     {
         try {
             $data = json_decode($request->getContent(), true);
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException('Données invalides');
+            }
             $quantity = $data['quantity'] ?? 1;
 
             $this->cartService->addProduct($productId, $quantity);
@@ -53,6 +57,9 @@ class CartController extends AbstractController
     {
         try {
             $data     = json_decode($request->getContent(), true);
+            if (!is_array($data)) {
+                throw new \InvalidArgumentException('Données invalides');
+            }
             $quantity = $data['quantity'] ?? 1;
             $updatedQuantity = $this->cartService->updateQuantity($productId, $quantity);
             $itemTotalPrice = $this->cartService->getCart()->getItemTotalPrice($productId); // Récupérer le total de l'item
@@ -127,7 +134,6 @@ class CartController extends AbstractController
             /*  a voir notification succès */
             return $this->redirectToRoute('app_account');
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
             return $this->redirectToRoute('app_cart');
         }
     }

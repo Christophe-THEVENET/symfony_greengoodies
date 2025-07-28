@@ -20,6 +20,8 @@
     }
 
     &__clear {
+        border: none;
+        background-color: transparent;
         align-self: start;
         margin-bottom: 1rem;
         text-decoration: none;

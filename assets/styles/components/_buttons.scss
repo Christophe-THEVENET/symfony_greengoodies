@@ -31,7 +31,7 @@
 
 // bouton voir le panier dans toast
 .btn-toast {
-    @include button-style(rgba(30, 126, 30, 0.443), $black, $white);
+    @include button-style(rgba(47, 112, 99, 0.774), $black, $white);
     font-size: 0.8rem;
     padding: 0.5rem 1rem;
     border-radius: 0.25rem;

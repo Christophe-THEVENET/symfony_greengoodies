@@ -259,7 +259,7 @@ class CartService
 
     private function generateOrderNumber(): string
     {
-        return 'CMD-' . date('Y') . '-' . str_pad(
+        return 'CMD-'. str_pad(
             $this->orderRepository->getNextOrderNumber(),
             6,
             '0',

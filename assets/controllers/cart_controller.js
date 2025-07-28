@@ -8,18 +8,9 @@ export default class extends Controller {
         quantity: Number,
     };
 
-    static targets = ["quantity", "counter", "total"];
+    static targets = ["quantity", "total"];
 
-    connect() {
-        // Affiche le toast si un message est présent dans le sessionStorage
-        const toastSession = sessionStorage.getItem("toast");
-        if (toastSession) {
-            setTimeout(() => {
-                this.showToast(toastSession);
-                sessionStorage.removeItem("toast");
-            }, 200);
-        }
-    }
+    connect() {}
 
     async trigger(event) {
         event?.preventDefault();
@@ -81,7 +72,7 @@ export default class extends Controller {
     handleSuccess(data, action) {
         switch (action) {
             case "add":
-                this.updateCartCounter(data.cart_count);
+                /*  this.updateCartCounter(data.cart_count); */
                 showStimulusToast(
                     'Produit ajouté au panier ! <button class="btn-toast" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
                 );
@@ -89,7 +80,6 @@ export default class extends Controller {
                 break;
 
             case "update":
-                this.showToast(data.message || "Quantité mise à jour");
                 this.updateCartDisplay(data.cart); // <-- met à jour le DOM (total, compteur, etc)
 
                 // Met à jour la quantité et le total de l'item modifié
@@ -111,13 +101,11 @@ export default class extends Controller {
                 break;
 
             case "remove":
-                this.showToast(data.message || "Produit supprimé");
                 this.element.closest("article, .cart-item, tr")?.remove();
-                this.updateCartDisplay(data.cart); // <-- Ajoute cette ligne
+                this.updateCartDisplay(data.cart);
                 break;
 
             case "clear":
-                this.showToast(data.message || "Panier vidé");
                 if (data.redirectUrl) {
                     sessionStorage.setItem("toast", data.message);
                     window.location.href = data.redirectUrl;
@@ -128,22 +116,7 @@ export default class extends Controller {
         }
     }
 
-    updateCartCounter(count) {
-        const counters = document.querySelectorAll(
-            ".cart-counter, .cart-count"
-        );
-        counters.forEach((counter) => {
-            counter.textContent = count;
-        });
-
-        const badges = document.querySelectorAll("[data-cart-badge]");
-        badges.forEach((badge) => {
-            badge.textContent = count;
-        });
-    }
-
     updateCartDisplay(cart) {
-        console.log("Montant total reçu après suppression :", cart.total);
         if (this.hasTotalTarget) {
             this.totalTarget.textContent = `${Number(cart.total)
                 .toFixed(2)
@@ -155,24 +128,6 @@ export default class extends Controller {
                 .toFixed(2)
                 .replace(".", ",")}€`;
         });
-    }
-
-    showToast(message, isError = false) {
-        if (typeof Toastify !== "undefined") {
-            Toastify({
-                text: message,
-                duration: 3000,
-                close: true,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: isError
-                        ? "linear-gradient(to right, #dc3545, #ff7675)"
-                        : "linear-gradient(to right, #28a745, #00b894)",
-                },
-                escapeMarkup: false,
-            }).showToast();
-        }
     }
 }
 

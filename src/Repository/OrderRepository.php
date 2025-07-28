@@ -52,7 +52,7 @@ class OrderRepository extends ServiceEntityRepository
             $nextSequence = 1;
         }
 
-        return sprintf('CMD-%s-%06d', $currentYear, $nextSequence);
+        return sprintf('%s-%06d', $currentYear, $nextSequence);
     }
 
     // get valid orders for a user
