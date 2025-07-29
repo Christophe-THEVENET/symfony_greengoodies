@@ -7,7 +7,8 @@
 {% block body %}
 
            {# ****************** PANIER ****************** #}
-	<section class="cart container container--height">
+	<section class="cart container container--height"
+    data-controller="cart">
         <div class="cart__wrapper">
             <h1 class="cart__title f-title-page-section">Mon panier</h1>
             
@@ -15,10 +16,8 @@
               {% if cart.items|length > 0 %}
             <button type="button" 
                     class="cart__clear f-text"
-                    {{ stimulus_controller('cart', {
-                        url: path('api_cart_clear')
-                    }) }}
-                    {{ stimulus_action('cart', 'trigger', 'click') }}>
+                    data-cart-url-value="{{ path('api_cart_clear') }}"
+                    data-action="click->cart#trigger">
                 x Vider le panier
             </button>
             {% endif %}
@@ -44,7 +43,9 @@
             
             {# Formulaire de validation (reste en POST classique) #}
             {% if cart.items|length > 0 %}
-                <form class="form-cart-valid" method="POST" action="{{ path('app_cart_validate') }}">
+                <form class="form-cart-valid"
+                      data-action="submit->cart#trigger"
+                      data-cart-url-value="{{ path('api_cart_validate') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('app') }}">
                     <button type="submit" class="btn-secondary">
                         <span class="link">Valider la commande</span>

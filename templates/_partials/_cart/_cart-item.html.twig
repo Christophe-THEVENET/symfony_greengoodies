@@ -11,11 +11,8 @@
                    class="cart__item-qty"
                    value="{{ item.quantity }}"
                    min="1"
-                   data-cart-target="quantity"
-                   {{ stimulus_controller('cart', {
-                       url: path('api_cart_update', {productId: item.product.id})
-                   }) }}
-                   {{ stimulus_action('cart', 'trigger', 'input') }}>
+                   data-cart-url-value="{{ path('api_cart_update', {productId: item.product.id}) }}"
+                   data-action="cart#trigger">
         </p>
         <p class="cart__item-price f-title-page-section">
             Prix unitaire : {{ item.unit_price|number_format(2, ',', ' ') }}€
@@ -27,10 +24,8 @@
     <button type="button"
         class="remove-item"
         title="Supprimer"
-        {{ stimulus_controller('cart', {
-            url: path('api_cart_remove', {productId: item.product.id})
-        }) }}
-        {{ stimulus_action('cart', 'trigger', 'click') }}>
+        data-cart-url-value="{{ path('api_cart_remove', {productId: item.product.id}) }}"
+        data-action="cart#trigger">
         <span aria-label="Supprimer" role="img">🗑️</span>
     </button>
 </article>

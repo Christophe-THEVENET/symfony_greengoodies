@@ -121,21 +121,32 @@ class CartController extends AbstractController
         ]);
     }
     // ************** validate cart and create order (bouton valider panier page panier) **************
-    #[Route('/validate', name: 'app_cart_validate', methods: ['POST'])]
-    public function validate(Request $request): Response
+    #[Route('/validate', name: 'api_cart_validate', methods: ['POST'])]
+    public function validate(Request $request): JsonResponse
     {
         if (! $this->getUser()) {
-            return $this->redirectToRoute('app_login');
+            return $this->json([
+                'success' => false,
+                'message' => 'Vous devez être connecté pour valider la commande.',
+                'redirectUrl' => $this->generateUrl('app_login'),
+            ], 401);
         }
 
         try {
             $order = $this->cartService->validateCart($this->getUser());
             $request->getSession()->set('toast', 'Commande validée avec succès !');
 
-            /*  a voir notification succès */
-            return $this->redirectToRoute('app_account');
+            return $this->json([
+                'success' => true,
+                'message' => 'Commande validée avec succès !',
+                'redirectUrl' => $this->generateUrl('app_home'),
+            ]);
         } catch (\Exception $e) {
-            return $this->redirectToRoute('app_cart');
+            return $this->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'redirectUrl' => $this->generateUrl('app_cart'),
+            ], 400);
         }
     }
 }

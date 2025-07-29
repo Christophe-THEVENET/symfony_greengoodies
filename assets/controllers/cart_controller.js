@@ -3,99 +3,89 @@ import { Controller } from "@hotwired/stimulus";
 import NotificationController from "./notification_controller.js";
 
 export default class extends Controller {
+    static targets = ["total"];
     static values = {
         url: String,
-        productId: Number,
-        quantity: Number,
     };
 
-    static targets = ["quantity", "total"];
-
-    connect() {
-    
-    }
-
     async trigger(event) {
-        event?.preventDefault();
+        event.preventDefault();
+        const target = event.currentTarget;
+        const url = target.dataset.cartUrlValue || this.urlValue;
+        const action = this.getActionType(url);
+
+        let options = {
+            method: "POST",
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",
+            },
+        };
+
+        if (action === "add") {
+            options.headers["Content-Type"] = "application/json";
+            options.body = JSON.stringify(
+                this.prepareQuantityProduct(action, target)
+            );
+        } else if (action === "update") {
+            options.method = "PUT";
+            options.headers["Content-Type"] = "application/json";
+            options.body = JSON.stringify(
+                this.prepareQuantityProduct(action, target)
+            );
+        } else if (action === "remove") {
+            options.method = "DELETE";
+        } else if (action === "validate") {
+            const form = target.closest("form");
+            options.body = new FormData(form);
+            delete options.headers["Content-Type"]; // Important pour FormData
+        }
 
         try {
-            const action = this.getActionType();
-            const quantityProduct = this.prepareQuantityProduct(action);
-
-            // Choix de la méthode HTTP selon l'action
-            let method = "POST";
-            if (action === "update") method = "PUT";
-            if (action === "remove") method = "DELETE";
-
-            const response = await fetch(this.urlValue, {
-                method: method,
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Requested-With": "XMLHttpRequest",
-                },
-                body:
-                    action === "add" || action === "update"
-                        ? JSON.stringify(quantityProduct)
-                        : null,
-            });
-
+            const response = await fetch(url, options);
             const data = await response.json();
 
-            if (data.success) {
-                this.handleSuccess(data, action);
-            } else {
-                NotificationController.display(
-                    data.message || "Erreur",
-                    "error"
-                );
-            }
+            this.handleSuccess(data, action, target);
         } catch (error) {
             NotificationController.display("Erreur technique", "error");
         }
     }
 
-    getActionType() {
-        const url = this.urlValue.toLowerCase();
+    getActionType(url) {
+        url = url.toLowerCase();
         if (url.includes("/add/")) return "add";
         if (url.includes("/update/")) return "update";
         if (url.includes("/remove/")) return "remove";
         if (url.includes("/clear")) return "clear";
+        if (url.includes("/validate")) return "validate";
         return "unknown";
     }
 
-    prepareQuantityProduct(action) {
+    prepareQuantityProduct(action, target) {
         const data = {};
         if (action === "add" || action === "update") {
             let quantity = 1;
-            if (this.hasQuantityTarget && this.quantityTarget.value) {
-                quantity = parseInt(this.quantityTarget.value) || 1;
+            if (target && target.value) {
+                quantity = parseInt(target.value) || 1;
             }
             data.quantity = quantity;
         }
         return data;
     }
 
-    handleSuccess(data, action) {
+    handleSuccess(data, action, target) {
         switch (action) {
             case "add":
-                /*  this.updateCartCounter(data.cart_count); */
-                /*  this.addProductToast(
-                    'Produit ajouté au panier ! <button class="btn-toast" onclick="window.location.href=\'/cart\'">Voir le panier</button>'
-                ); */
                 NotificationController.display(
                     "Produit ajouté au panier !",
                     "success"
                 );
-                // Suppression de la redirection vers la page d'accueil
                 break;
 
             case "update":
-                this.updateCartDisplay(data.cart); // <-- met à jour le DOM (total, compteur, etc)
-
-                // Met à jour la quantité et le total de l'item modifié
+                this.updateCartDisplay(data.cart);
                 if (data.cart && data.cart.updatedItem) {
                     const item = data.cart.updatedItem;
-                    const article = document.querySelector(
+                    const article = this.element.querySelector(
                         `[data-product-id="${item.product.id}"]`
                     );
                     if (article) {
@@ -111,10 +101,13 @@ export default class extends Controller {
                 break;
 
             case "remove":
-                this.element.closest("article, .cart-item, tr")?.remove();
+                // Recharge la page si le panier est vide (par exemple si data.cart.count === 0)
+                if (data.cart.count === 0) {
+                    window.location.reload();
+                    return;
+                }
                 this.updateCartDisplay(data.cart);
-                window.location.reload();
-                
+                target.closest("article")?.remove();
                 break;
 
             case "clear":
@@ -123,6 +116,18 @@ export default class extends Controller {
                     window.location.href = data.redirectUrl;
                 } else {
                     window.location.reload();
+                }
+                break;
+
+            case "validate":
+                if (data.redirectUrl) {
+                    sessionStorage.setItem("toast", data.message || "Commande validée !");
+                    window.location.href = data.redirectUrl;
+                } else {
+                    NotificationController.display(
+                        data.message || "Commande validée !",
+                        "success"
+                    );
                 }
                 break;
         }
@@ -141,21 +146,4 @@ export default class extends Controller {
                 .replace(".", ",")}€`;
         });
     }
-
-    /*  addProductToast(message, type = "success", duration = 5000) {
-        const toastEl = document.createElement("div");
-        toastEl.className = `alert alert-${type}`;
-        toastEl.classList.add("toast-block");
-        toastEl.setAttribute("data-controller", "alert");
-        toastEl.setAttribute("data-alert-duration-value", duration);
-        toastEl.setAttribute("data-alert-auto-hide-value", "true");
-        toastEl.innerHTML = `
-        ${message}
-        <button type="button"
-            class="alert-close"
-            data-action="click->alert#close"
-            aria-label="Fermer">&times;</button>
-    `;
-        document.body.appendChild(toastEl);
-    } */
 }
