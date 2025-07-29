@@ -46,7 +46,21 @@ class CartService
     {
         $this->loadCartFromSession();
         $this->cart->removeItem($productId);
-        $this->persistCart();
+
+        if ($this->cart->isEmpty()) {
+            // Supprimer l'Order non validé si le panier est vide
+            $user = $this->getCurrentUser();
+            if ($user) {
+                $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
+                if ($order) {
+                    $this->entityManager->remove($order);
+                    $this->entityManager->flush();
+                }
+            }
+        } else {
+            $this->persistCart();
+        }
+
         $this->saveCartToSession();
     }
 

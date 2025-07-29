@@ -113,6 +113,7 @@ export default class extends Controller {
             case "remove":
                 this.element.closest("article, .cart-item, tr")?.remove();
                 this.updateCartDisplay(data.cart);
+                window.location.reload();
                 
                 break;
 
