@@ -3,10 +3,12 @@ import { Controller } from "@hotwired/stimulus";
 import NotificationController from "./notification_controller.js";
 
 export default class extends Controller {
-    static targets = ["total"];
+    static targets = ["total", "quantity"];
     static values = {
         url: String,
     };
+
+    connect() {}
 
     async trigger(event) {
         event.preventDefault();
@@ -64,10 +66,14 @@ export default class extends Controller {
         const data = {};
         if (action === "add" || action === "update") {
             let quantity = 1;
-            if (target && target.value) {
+            // Si target n'est pas un input, cherche l'input dans le parent
+            if (this.hasQuantityTarget) {
+                quantity = parseInt(this.quantityTarget.value) || 1;
+            } else if (target && target.tagName === "INPUT") {
                 quantity = parseInt(target.value) || 1;
             }
             data.quantity = quantity;
+            console.log("data.quantity", data.quantity);
         }
         return data;
     }
@@ -121,7 +127,10 @@ export default class extends Controller {
 
             case "validate":
                 if (data.redirectUrl) {
-                    sessionStorage.setItem("toast", data.message || "Commande validée !");
+                    sessionStorage.setItem(
+                        "toast",
+                        data.message || "Commande validée !"
+                    );
                     window.location.href = data.redirectUrl;
                 } else {
                     NotificationController.display(

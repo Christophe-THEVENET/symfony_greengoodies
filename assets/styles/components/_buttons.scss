@@ -8,6 +8,9 @@
     @include button-style($gray-33, $black, $white);
 }
 
+.order-validate {
+    cursor: pointer;
+}
 
 .remove-item {
     @include button-style($gray-66, $black, $white);
