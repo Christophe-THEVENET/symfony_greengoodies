@@ -118,6 +118,7 @@ class CartController extends AbstractController
         return $this->json([
             'success' => true,
             'message' => 'Panier vidé',
+            'redirectUrl' => $this->generateUrl('app_cart'),
         ]);
     }
     // ************** validate cart and create order (bouton valider panier page panier) **************

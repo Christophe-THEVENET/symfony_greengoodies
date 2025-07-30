@@ -3,49 +3,38 @@ import { Controller } from "@hotwired/stimulus";
 import NotificationController from "./notification_controller.js";
 
 export default class extends Controller {
-    static targets = ["total", "quantity"];
-    static values = {
-        url: String,
-    };
-
-    connect() {}
+    static targets = ["quantity", "total"];
+    static values = { url: String };
 
     async trigger(event) {
         event.preventDefault();
-        const target = event.currentTarget;
+        const target = event.currentTarget || this.element;
         const url = target.dataset.cartUrlValue || this.urlValue;
         const action = this.getActionType(url);
 
         let options = {
             method: "POST",
-            headers: {
-                "X-Requested-With": "XMLHttpRequest",
-            },
+            headers: { "X-Requested-With": "XMLHttpRequest" },
         };
 
         if (action === "add") {
             options.headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(
-                this.prepareQuantityProduct(action, target)
-            );
+            options.body = JSON.stringify(this.prepareQuantityProduct(target));
         } else if (action === "update") {
             options.method = "PUT";
             options.headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(
-                this.prepareQuantityProduct(action, target)
-            );
+            options.body = JSON.stringify(this.prepareQuantityProduct(target));
         } else if (action === "remove") {
             options.method = "DELETE";
         } else if (action === "validate") {
             const form = target.closest("form");
             options.body = new FormData(form);
-            delete options.headers["Content-Type"]; // Important pour FormData
+            delete options.headers["Content-Type"];
         }
 
         try {
             const response = await fetch(url, options);
             const data = await response.json();
-
             this.handleSuccess(data, action, target);
         } catch (error) {
             NotificationController.display("Erreur technique", "error");
@@ -62,58 +51,63 @@ export default class extends Controller {
         return "unknown";
     }
 
-    prepareQuantityProduct(action, target) {
-        const data = {};
-        if (action === "add" || action === "update") {
-            let quantity = 1;
-            // Si target n'est pas un input, cherche l'input dans le parent
-            if (this.hasQuantityTarget) {
-                quantity = parseInt(this.quantityTarget.value) || 1;
-            } else if (target && target.tagName === "INPUT") {
-                quantity = parseInt(target.value) || 1;
-            }
-            data.quantity = quantity;
-            console.log("data.quantity", data.quantity);
+    prepareQuantityProduct(target) {
+        let quantity = 1;
+        // Si target est un input quantité
+        if (target && target.tagName === "INPUT") {
+            quantity = parseInt(target.value) || 1;
+        } else if (this.hasQuantityTarget) {
+            quantity = parseInt(this.quantityTarget.value) || 1;
         }
-        return data;
+        return { quantity };
     }
 
     handleSuccess(data, action, target) {
         switch (action) {
             case "add":
                 NotificationController.display(
-                    "Produit ajouté au panier !",
-                    "success"
+                    data.message || "Produit ajouté au panier !",
+                    data.success ? "success" : "error"
                 );
                 break;
 
             case "update":
-                this.updateCartDisplay(data.cart);
                 if (data.cart && data.cart.updatedItem) {
-                    const item = data.cart.updatedItem;
-                    const article = this.element.querySelector(
-                        `[data-product-id="${item.product.id}"]`
-                    );
-                    if (article) {
-                        article.querySelector(".cart__item-qty").value =
-                            item.quantity;
-                        article.querySelector(
-                            ".cart__item-total"
-                        ).textContent = `Total : ${Number(item.total_price)
+                    // Met à jour la quantité et le total de la ligne
+                    if (this.hasQuantityTarget) {
+                        this.quantityTarget.value =
+                            data.cart.updatedItem.quantity;
+                    }
+                    // Cherche le total de la ligne dans le DOM
+                    let totalDiv = this.hasTotalTarget
+                        ? this.totalTarget
+                        : target
+                              .closest("article")
+                              ?.querySelector('[data-cart-target="total"]');
+                    if (totalDiv) {
+                        totalDiv.textContent = `Total : ${Number(
+                            data.cart.updatedItem.total_price
+                        )
                             .toFixed(2)
                             .replace(".", ",")}€`;
                     }
                 }
+                this.updateCartTotal(data.cart?.total);
                 break;
 
             case "remove":
-                // Recharge la page si le panier est vide (par exemple si data.cart.count === 0)
-                if (data.cart.count === 0) {
+                // Recharge la page si le panier est vide
+                if (data.cart?.count === 0) {
                     window.location.reload();
                     return;
                 }
-                this.updateCartDisplay(data.cart);
+                // Supprime la ligne du DOM
                 target.closest("article")?.remove();
+                this.updateCartTotal(data.cart?.total);
+                NotificationController.display(
+                    data.message || "Produit retiré du panier",
+                    data.success ? "success" : "error"
+                );
                 break;
 
             case "clear":
@@ -135,24 +129,17 @@ export default class extends Controller {
                 } else {
                     NotificationController.display(
                         data.message || "Commande validée !",
-                        "success"
+                        data.success ? "success" : "error"
                     );
                 }
                 break;
         }
     }
 
-    updateCartDisplay(cart) {
-        if (this.hasTotalTarget) {
-            this.totalTarget.textContent = `${Number(cart.total)
-                .toFixed(2)
-                .replace(".", ",")}€`;
-        }
-        const totals = document.querySelectorAll("[data-cart-total]");
-        totals.forEach((total) => {
-            total.textContent = `${Number(cart.total)
-                .toFixed(2)
-                .replace(".", ",")}€`;
+    updateCartTotal(total) {
+        if (!total) return;
+        document.querySelectorAll("[data-cart-total]").forEach((el) => {
+            el.textContent = `${Number(total).toFixed(2).replace(".", ",")}€`;
         });
     }
 }
