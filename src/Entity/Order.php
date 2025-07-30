@@ -46,7 +46,8 @@ class Order
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?User $user = null;
 
     /**

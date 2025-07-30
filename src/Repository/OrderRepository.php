@@ -55,8 +55,8 @@ class OrderRepository extends ServiceEntityRepository
         return sprintf('%s-%06d', $currentYear, $nextSequence);
     }
 
-    // get valid orders for a user
-    public function findValidOrdersByUser(User $user): array
+    // get the 5 latest valid orders for a user
+    public function findLastFiveValidOrdersByUser(User $user): array
     {
         return $this->createQueryBuilder('o')
             ->where('o.user = :user')
@@ -64,6 +64,7 @@ class OrderRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
             ->setParameter('isValid', true)
             ->orderBy('o.createdAt', 'DESC')
+            ->setMaxResults(5)
             ->getQuery()
             ->getResult();
     }

@@ -17,6 +17,22 @@
 
         <div {{stimulus_controller('notification')}}></div>
 
+        {# passer de la session PHP à sessionStorage JS (HTTP) #}
+        {#  use my notification stimulus system  #}
+        {% if app.session.get('toast') %}
+        <script>
+            sessionStorage.setItem('toast', '{{ app.session.get('toast')|e('js') }}');
+        </script>
+        {% do app.session.remove('toast') %}
+        {% endif %}
+
+        {% if app.session.get('error') %}
+        <script>
+            sessionStorage.setItem('error', '{{ app.session.get('error')|trans({}, 'security')|e('js') }}');
+        </script>
+        {% do app.session.remove('error') %}
+        {% endif %}
+
 
         {% include "./_partials/_header.html.twig" %}
         <main class="container">

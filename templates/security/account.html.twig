@@ -56,14 +56,21 @@
 
                 <div class="cart__item orders">
                     <h5 class="orders__title f-title-item">Mon accès API</h5>
+                    <form class="form-cart-valid" method="post" action="{{ path('app_account_delete') }}">
                      <button type="submit" class="btn-secondary order-validate">
-                        <span class="link">Valider la commande</span>
+                        <span class="link">Activer mon accès API</span>
                     </button>
+                    </form>
+
                 </div>
                 <div class="cart__item orders">
-                     <button type="submit" class="btn-secondary order-validate">
-                        <span class="link">Valider la commande</span>
-                    </button>
+                    <form class="form-cart-valid" method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
+                        <button type="submit" class="btn-secondary order-validate">
+                            <span class="link">Supprimer mon compte</span>
+                        </button>
+                    </form>
+
                 </div>
 
 			</div>
