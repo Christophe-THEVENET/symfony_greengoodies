@@ -12,9 +12,14 @@
                 <a href="{{ path('app_home') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
                 data-action="click->header#closeOnLink">Produits</a>
                 <a href="{{ path('app_cart') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">Panier</a>
-                <a href="{{ path('app_login') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
-                <a href="{{ path('app_register') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
+                {% if not app.user %}
+                    <a href="{{ path('app_login') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
+                {% endif %}
+                {% if app.user %}
                 <a href="{{ path('app_account') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}">Mon compte</a>
+                {% endif %}
+
                 {% if app.user %}
                     <a
                         href="{{ path('app_logout') }}" 
@@ -47,12 +52,17 @@
                 data-action="click->header#closeOnLink">Produits</a>
                 <a href="{{ path('app_cart') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
                 data-action="click->header#closeOnLink">Panier</a>
-                <a href="{{ path('app_login') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
-                data-action="click->header#closeOnLink">Se connecter</a>
-                <a href="{{ path('app_register') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
-                data-action="click->header#closeOnLink">S'inscrire</a>
+                {% if not app.user %}
+                    <a href="{{ path('app_login') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
+                    data-action="click->header#closeOnLink">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
+                    data-action="click->header#closeOnLink">S'inscrire</a>
+                {% endif %}
+                {% if app.user %}
                 <a href="{{ path('app_account') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}"
                 data-action="click->header#closeOnLink">Mon compte</a>
+                {% endif %}
+
             </nav>
             
             <!-- Overlay -->

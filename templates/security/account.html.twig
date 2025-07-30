@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block body %}
+
 	<section class="cart account container container--height">
 		<div class="cart__wrapper">
 			<h1 class=" cart__title f-title-page-section">
@@ -30,22 +31,16 @@
 								</tr>
 							</thead>
 							<tbody class="orders__table-body">
-								{% for order in orders|default([
-                                    {id: '01', date: '01/01/2024', price: '185,50€'},
-                                    {id: '01', date: '01/01/2024', price: '185,50€'},
-                                    {id: '01', date: '01/01/2024', price: '185,50€'},
-                                    {id: '01', date: '01/01/2024', price: '185,50€'},
-                                    {id: '01', date: '01/01/2024', price: '185,50€'}
-                                ]) %}
+								{% for order in orders %}
 									<tr class="orders__table-row">
 										<td class="f-title-page-section  orders__table-cell orders__table-cell--number">
-											{{ order.id|default('%02d'|format(loop.index)) }}
+											{{ order.orderNumber }}
 										</td>
 										<td class="f-title-page-section orders__table-cell orders__table-cell--date">
-											{{ order.date|default('01/01/2024') }}
+											{{ order.createdAt|date('d/m/Y') }}
 										</td>
 										<td class="f-title-page-section orders__table-cell orders__table-cell--price">
-											{{ order.price|default('185,50€') }}
+											{{ order.totalAmount|number_format(2, ',', ' ') }}€
 										</td>
 									</tr>
 								{% else %}
@@ -58,6 +53,19 @@
 							</tbody>
 						</table>
 				</div>
+
+                <div class="cart__item orders">
+                    <h5 class="orders__title f-title-item">Mon accès API</h5>
+                     <button type="submit" class="btn-secondary order-validate">
+                        <span class="link">Valider la commande</span>
+                    </button>
+                </div>
+                <div class="cart__item orders">
+                     <button type="submit" class="btn-secondary order-validate">
+                        <span class="link">Valider la commande</span>
+                    </button>
+                </div>
+
 			</div>
 
 		</div>
