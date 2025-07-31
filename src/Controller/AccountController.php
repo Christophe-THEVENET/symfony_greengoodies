@@ -14,9 +14,16 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 
+#[Route('/mon-compte')]
 class AccountController extends AbstractController
 {
-    #[Route('/mon-compte', name: 'app_account')]
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TokenStorageInterface $tokenStorage,
+        private CsrfTokenManagerInterface $csrfTokenManager
+    ) {}
+
+    #[Route('/', name: 'app_account')]
     #[IsGranted('ROLE_USER')]
     public function index(OrderRepository $orderRepository): Response
     {
@@ -29,23 +36,19 @@ class AccountController extends AbstractController
         ]);
     }
 
-    #[Route('/mon-compte/supprimer', name: 'app_account_delete', methods: ['POST'])]
+    #[Route('/supprimer', name: 'app_account_delete', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function delete(
-        Request $request,
-         EntityManagerInterface $em,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        TokenStorageInterface $tokenStorage
-          ): Response
+        TokenStorageInterface $tokenStorage,
+        Request $request
+    ): Response
     {
-
         $submittedToken = $request->request->get('_token');
-        if (!$csrfTokenManager->isTokenValid(new CsrfToken('delete_account', $submittedToken))) {
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete_account', $submittedToken))) {
             throw $this->createAccessDeniedException('Token CSRF invalide.');
         }
 
         $user = $this->getUser();
-
 
         //logout l'utilisateur avant de supprimer son compte
         $tokenStorage->setToken(null);
@@ -53,16 +56,43 @@ class AccountController extends AbstractController
         // SOLUTION : Invalider la session utilisateur après suppression
         $request->getSession()->invalidate();
 
-
-        $em->remove($user);
-        $em->flush();
-
-       
-
+        $this->em->remove($user);
+        $this->em->flush();
 
         // add message on session (pour Stimulus)
         $request->getSession()->set('toast', 'Votre compte a bien été supprimé.');
 
         return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/access-api', name: 'api_account_toggle_api', methods: ['POST'])]
+    public function toggleApiAccess(Request $request): Response
+    {
+        $submittedToken = $request->request->get('_token');
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('access_api', $submittedToken))) {
+            if ($request->isXmlHttpRequest()) {
+                return $this->json(['message' => 'Token CSRF invalide.'], 403);
+            }
+            throw $this->createAccessDeniedException('Token CSRF invalide.');
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $enabled = !$user->isApiAccessEnabled();
+        $user->setApiAccessEnabled($enabled);
+        $this->em->flush();
+
+        $message = $enabled ? 'Accès API activé avec succès.' : 'Accès API désactivé avec succès.';
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json([
+                'enabled' => $enabled,
+                'message' => $message
+            ]);
+        }
+        $request->getSession()->set('toast', $message);
+
+        return $this->redirectToRoute('app_account');
     }
 }

@@ -189,4 +189,17 @@ class Product
 
         return $this;
     }
+
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'shortDescription' => $this->shortDescription,
+            'fullDescription' => $this->longDescription,
+            'price' => $this->price,
+            'picture' => $this->imageFilename,
+        ];
+    }
 }
