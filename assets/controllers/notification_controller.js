@@ -1,7 +1,9 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
+    
     connect() {
+        // pour les reponse html session PHP -> sessionStorage JS -> toasts
         const toastSession = sessionStorage.getItem("toast");
         if (toastSession) {
             this.showToast(toastSession, "success");
@@ -12,6 +14,8 @@ export default class extends Controller {
             this.showToast(errorSession, "error");
             sessionStorage.removeItem("error");
         }
+
+        
     }
 
     showToast(message, type = "success", duration = 4000) {
