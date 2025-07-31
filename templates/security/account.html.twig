@@ -56,7 +56,7 @@
 
                 <div class="cart__item orders">
                     <h5 class="orders__title f-title-item">Mon accès API</h5>
-                    <form class="form-cart-valid" method="post" {# action="{{ path('app_account_toggle_api_access') }}" #}>
+                    {# <form class="form-cart-valid" method="post" action="{{ path('app_account_toggle_api_access') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token('toggle_api_access') }}">
                         {% if user.apiAccessEnabled %}
                             <button type="submit" class="btn-secondary order-validate">
@@ -67,7 +67,17 @@
                                 <span class="link">Activer mon accès API</span>
                             </button>
                         {% endif %}
+                    </form> #}
+
+                    <form class="form-cart-valid" method="post" action="{{ path('api_account_toggle_api') }}" 
+                        data-controller="account"
+                        data-action="submit->account#toggleApiAccess">
+                        <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}">
+                        <button type="submit" data-account-target="button" class="btn-secondary order-validate">
+                            <span class="link">{{ app.user.apiAccessEnabled ? 'Désactiver mon accès API' : 'Activer mon accès API' }}</span>
+                        </button>
                     </form>
+
                 </div>
                 
                 <div class="cart__item orders">
