@@ -13,15 +13,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/cart')]
 class CartController extends AbstractController
 {
+    // Messages constants
+    private const MSG_PRODUCT_ADDED = 'Produit ajouté au panier';
+    private const MSG_QUANTITY_UPDATED = 'Quantité mise à jour';
+    private const MSG_PRODUCT_REMOVED = 'Produit retiré du panier';
+    private const MSG_CART_CLEARED = 'Panier vidé';
+    private const MSG_ORDER_VALIDATED = 'Commande validée avec succès !';
+    private const MSG_LOGIN_REQUIRED = 'Vous devez être connecté pour valider la commande.';
+    private const MSG_INVALID_DATA = 'Données invalides';
+
     public function __construct(private CartService $cartService) {}
 
     // ************** cart page **************
     #[Route('/', name: 'app_cart', methods: ['GET'])]
     public function show(): Response
     {
+        $cart = $this->cartService->getCart();
         return $this->render('cart/index.html.twig', [
-            'cart' => $this->cartService->getCart(),
-            'cart_count' => $this->cartService->getCart()->getItemCount(),
+            'cart' => $cart,
+            'cart_count' => $cart->getItemCount(),
         ]);
     }
 
@@ -30,24 +40,18 @@ class CartController extends AbstractController
     public function add(int $productId, Request $request): JsonResponse
     {
         try {
-            $data = json_decode($request->getContent(), true);
-            if (!is_array($data)) {
-                throw new \InvalidArgumentException('Données invalides');
-            }
+            $data = $this->getJsonData($request);
             $quantity = $data['quantity'] ?? 1;
 
             $this->cartService->addProduct($productId, $quantity);
 
             return $this->json([
                 'success'    => true,
-                'message'    => 'Produit ajouté au panier',
+                'message'    => self::MSG_PRODUCT_ADDED,
                 'cart_count' => $this->cartService->getCart()->getItemCount(),
             ]);
         } catch (\Exception $e) {
-            return $this->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->createErrorResponse($e);
         }
     }
 
@@ -56,59 +60,53 @@ class CartController extends AbstractController
     public function update(int $productId, Request $request): JsonResponse
     {
         try {
-            $data     = json_decode($request->getContent(), true);
-            if (!is_array($data)) {
-                throw new \InvalidArgumentException('Données invalides');
-            }
+            $data = $this->getJsonData($request);
             $quantity = $data['quantity'] ?? 1;
             $updatedQuantity = $this->cartService->updateQuantity($productId, $quantity);
-            $itemTotalPrice = $this->cartService->getCart()->getItemTotalPrice($productId); // Récupérer le total de l'item
+            $cart = $this->cartService->getCart();
+            $itemTotalPrice = $cart->getItemTotalPrice($productId);
 
             return $this->json([
                 'success' => true,
-                'message' => 'Quantité mise à jour',
+                'message' => self::MSG_QUANTITY_UPDATED,
                 'cart'    => [
-                    'total' => $this->cartService->getCart()->getTotalAmount(),
-                    'count' => $this->cartService->getCart()->getItemCount(),
+                    'total' => $cart->getTotalAmount(),
+                    'count' => $cart->getItemCount(),
                     'updatedItem' => [
                         'product' => [
                             'id' => $productId,
                         ],
                         'quantity' => $updatedQuantity,
-                        'total_price' => $itemTotalPrice, // <= total de l'item, pas du panier
+                        'total_price' => $itemTotalPrice,
                     ],
                 ],
             ]);
         } catch (\Exception $e) {
-            return $this->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->createErrorResponse($e);
         }
     }
 
-    // remove product from cart (bouton supprimer sur chaque ligne page panier)
+    // ************** remove product from cart (bouton supprimer sur chaque ligne page panier) **************
     #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
     public function remove(int $productId): JsonResponse
     {
         try {
             $this->cartService->removeProduct($productId);
+            $cart = $this->cartService->getCart();
 
             return $this->json([
                 'success' => true,
-                'message' => 'Produit retiré du panier',
+                'message' => self::MSG_PRODUCT_REMOVED,
                 'cart' => [
-                    'total' => $this->cartService->getCart()->getTotalAmount(),
-                    'count' => $this->cartService->getCart()->getItemCount(),
+                    'total' => $cart->getTotalAmount(),
+                    'count' => $cart->getItemCount(),
                 ],
             ]);
         } catch (\Exception $e) {
-            return $this->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 400);
+            return $this->createErrorResponse($e);
         }
     }
+
     // ************** clear cart (bouton vider panier page panier) **************
     #[Route('/clear', name: 'api_cart_clear', methods: ['POST'])]
     public function clear(): JsonResponse
@@ -117,29 +115,30 @@ class CartController extends AbstractController
 
         return $this->json([
             'success' => true,
-            'message' => 'Panier vidé',
+            'message' => self::MSG_CART_CLEARED,
             'redirectUrl' => $this->generateUrl('app_cart'),
         ]);
     }
+
     // ************** validate cart and create order (bouton valider panier page panier) **************
     #[Route('/validate', name: 'api_cart_validate', methods: ['POST'])]
     public function validate(Request $request): JsonResponse
     {
-        if (! $this->getUser()) {
+        if (!$this->getUser()) {
             return $this->json([
                 'success' => false,
-                'message' => 'Vous devez être connecté pour valider la commande.',
+                'message' => self::MSG_LOGIN_REQUIRED,
                 'redirectUrl' => $this->generateUrl('app_login'),
             ], 401);
         }
 
         try {
             $order = $this->cartService->validateCart($this->getUser());
-            $request->getSession()->set('toast', 'Commande validée avec succès !'); 
+            $request->getSession()->set('toast', self::MSG_ORDER_VALIDATED);
 
             return $this->json([
                 'success' => true,
-                'message' => 'Commande validée avec succès !',
+                'message' => self::MSG_ORDER_VALIDATED,
                 'redirectUrl' => $this->generateUrl('app_home'),
             ]);
         } catch (\Exception $e) {
@@ -149,5 +148,30 @@ class CartController extends AbstractController
                 'redirectUrl' => $this->generateUrl('app_cart'),
             ], 400);
         }
+    }
+
+    // ************** Utility methods **************
+
+    /**
+     * Parse and validate JSON data from request
+     */
+    private function getJsonData(Request $request): array
+    {
+        $data = json_decode($request->getContent(), true);
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException(self::MSG_INVALID_DATA);
+        }
+        return $data;
+    }
+
+    /**
+     * Create standardized error response
+     */
+    private function createErrorResponse(\Exception $e, int $status = 400): JsonResponse
+    {
+        return $this->json([
+            'success' => false,
+            'message' => $e->getMessage(),
+        ], $status);
     }
 }
