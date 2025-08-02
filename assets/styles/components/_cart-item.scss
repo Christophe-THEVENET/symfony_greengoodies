@@ -25,9 +25,34 @@
         flex: 1;
         margin-left: 1rem;
     }
+
     &-price {
-      font-size: 1.125rem;
+        font-size: 1.125rem;
         margin-top: 0.5rem;
     }
 
+  
 }
+
+ .cart__item-qty {
+     width: 3rem;
+     border: none;
+
+     &:focus {
+         outline: none;
+     }
+
+     // Ajout pour forcer l'affichage des flèches
+     &::-webkit-inner-spin-button,
+     &::-webkit-outer-spin-button {
+         opacity: 0.7;
+     }
+
+     &::-ms-inner-spin-button {
+         opacity: 0.7;
+     }
+
+     &::-moz-inner-spin-button {
+         opacity: 0.7;
+     }
+ }

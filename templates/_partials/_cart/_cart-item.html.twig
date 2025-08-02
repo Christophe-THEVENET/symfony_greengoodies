@@ -1,11 +1,36 @@
-<div class="cart__item">
+{# templates/cart/_partials/_cart/_cart-item.html.twig #}
+<article  class="cart__item" data-product-id="{{ item.product.id }}">
     <div class="cart__item-image">
-        <img src="{{ asset('./img/products/deodorant.png') }}" alt="Nécessaire, déodorant Bio" class="cart__item">
+        <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" class="cart__item">
     </div>
     <div class="cart__item-details">
-        <p class="cart__item-name f-title-item ">Nécessaire, déodorant Bio</p>
-        <p class="cart__item-quantity f-text">Quantité: 1</p>
-        <p class="cart__item-price f-title-page-section">8,50€</p>
+        <p class="cart__item-name f-title-item ">{{ item.product.name }}</p>
+        <p class="cart__item-quantity f-text">
+            Quantité:
+            <input type="number"
+                   class="cart__item-qty"
+                   data-controller="cart"
+                   data-cart-target="quantity"
+                   value="{{ item.quantity }}"
+                   min="1"
+                   data-cart-url-value="{{ path('api_cart_update', {productId: item.product.id}) }}"
+                   data-action="change->cart#updateQuantity">
+        </p>
+        <p class="cart__item-price f-title-page-section">
+            Prix unitaire : {{ item.unit_price|number_format(2, ',', ' ') }}€
+        </p>
     </div>
-   
-</div>
+    <div class="cart__item-total"
+        data-controller="cart"
+        data-cart-target="total">
+        Total : {{ item.total_price|number_format(2, ',', ' ') }}€
+    </div>
+    <button type="button"
+        class="remove-item"
+        title="Supprimer"
+        data-controller="cart"
+        data-cart-url-value="{{ path('api_cart_remove', {productId: item.product.id}) }}"
+        data-action="click->cart#removeItem">
+        <span aria-label="Supprimer" role="img">🗑️</span>
+    </button>
+</article>

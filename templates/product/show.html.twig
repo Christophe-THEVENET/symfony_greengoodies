@@ -3,9 +3,7 @@
 {% block title %} {{ parent() }} - Produit{% endblock %}
 
 {% block body %}
-
-            {# ****************** PRODUCTS LIST****************** #}
-	<section class="product container container--height">
+<section class="product container container--height">
     <div class="product__content">
         <div class="product__image">
             <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.shortDescription }}" />
@@ -13,18 +11,34 @@
         
         <div class="product__details">
             <div class="product__details-wrapper">
-            <h2 class="product__details-title f-title-page-section">{{ product.name }}</h2>
-            <p class="product__details-price f-product-show-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
-            <p class="product__details-description-title f-product-show-title-description">Description</p>
-            <p class="product__details-description f-product-show-description">
-                {{ product.longDescription|replace({'.': '.<br><br>'})|raw }}
-            </p>
-            <a href="#" class="btn-secondary">
-                <span class="link">Ajouter au panier</span>
-            </a>
+                <h2 class="product__details-title f-title-page-section">{{ product.name }}</h2>
+                <p class="product__details-price f-product-show-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
+                <p class="product__details-description-title f-product-show-title-description">Description</p>
+                <p class="product__details-description f-product-show-description">
+                    {{ product.longDescription|replace({'.': '.<br><br>'})|raw }}
+                </p>
+                
+                <div class="add-to-cart-form f-text"
+                    {{ stimulus_controller('cart', {
+                        url: path('api_cart_add', {productId: product.id}),
+                        productId: product.id
+                    }) }}>
+                    Quantité:
+                    <input type="number" 
+                           value="1" 
+                           min="1" 
+                           max="10" 
+                           data-cart-target="quantity"
+                           class="quantity-input cart__item-qty">
+                    
+                    <button type="button" 
+                            class="btn-secondary"
+                            {{ stimulus_action('cart', 'addToCart', 'click') }}>
+                        <span class="link">Ajouter au panier</span>
+                    </button>
+                </div>
             </div>
         </div>
-        </div>
-    </section>
-
+    </div>
+</section>
 {% endblock %}
