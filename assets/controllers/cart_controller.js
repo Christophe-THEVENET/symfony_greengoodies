@@ -4,142 +4,154 @@ import NotificationController from "./notification_controller.js";
 
 export default class extends Controller {
     static targets = ["quantity", "total"];
-    static values = { url: String };
+    static values = { 
+        url: String,
+        action: String // Nouveau: stocker l'action directement dans le HTML
+    };
 
-    async trigger(event) {
+    // Actions principales - une méthode par action
+    async addToCart(event) {
         event.preventDefault();
-        const target = event.currentTarget || this.element;
-        const url = target.dataset.cartUrlValue || this.urlValue;
-        const action = this.getActionType(url);
-
-        let options = {
+        const quantity = this.getQuantity(event.currentTarget);
+        const url = event.currentTarget.dataset.cartUrlValue || this.urlValue;
+        
+        await this.sendRequest(url, {
             method: "POST",
-            headers: { "X-Requested-With": "XMLHttpRequest" },
+            body: JSON.stringify({ quantity })
+        }, (data) => {
+            NotificationController.display(data.message, data.success ? "success" : "error");
+        });
+    }
+    
+    async updateQuantity(event) {
+        event.preventDefault();
+        const target = event.currentTarget;
+        const quantity = this.getQuantity(target);
+        const url = target.dataset.cartUrlValue || this.urlValue;
+        
+        await this.sendRequest(url, {
+            method: "PUT",
+            body: JSON.stringify({ quantity })
+        }, (data) => {
+            this.updateItemUI(target, data);
+            this.updateCartTotal(data.cart?.total);
+        });
+    }
+    
+    async removeItem(event) {
+        event.preventDefault();
+        const target = event.currentTarget;
+        const url = target.dataset.cartUrlValue || this.urlValue;
+        
+        await this.sendRequest(url, { method: "DELETE" }, (data) => {
+            if (data.cart?.count === 0) {
+                window.location.reload();
+                return;
+            }
+            
+            target.closest("article")?.remove();
+            this.updateCartTotal(data.cart?.total);
+            NotificationController.display(data.message, data.success ? "success" : "error");
+        });
+    }
+    
+    async clearCart(event) {
+        event.preventDefault();
+        const url = event.currentTarget.dataset.cartUrlValue || this.urlValue;
+        
+        await this.sendRequest(url, { method: "POST" }, (data) => {
+            if (data.redirectUrl) {
+                sessionStorage.setItem("toast", data.message);
+                window.location.href = data.redirectUrl;
+            } else {
+                window.location.reload();
+            }
+        });
+    }
+    
+    async validateCart(event) {
+        event.preventDefault();
+        const target = event.currentTarget;
+        const url = target.dataset.cartUrlValue || this.urlValue;
+        const form = target.closest("form");
+        
+        await this.sendRequest(url, {
+            method: "POST",
+            body: new FormData(form)
+        }, (data) => {
+            if (data.redirectUrl) {
+                sessionStorage.setItem("toast", data.message);
+                window.location.href = data.redirectUrl;
+            } else {
+                NotificationController.display(data.message, data.success ? "success" : "error");
+            }
+        });
+    }
+    
+    // Méthodes utilitaires
+    async sendRequest(url, options = {}, callback) {
+        const defaultOptions = {
+            headers: { 
+                "X-Requested-With": "XMLHttpRequest",
+                "Content-Type": "application/json" 
+            }
         };
-
-        if (action === "add") {
-            options.headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(this.prepareQuantityProduct(target));
-        } else if (action === "update") {
-            options.method = "PUT";
-            options.headers["Content-Type"] = "application/json";
-            options.body = JSON.stringify(this.prepareQuantityProduct(target));
-        } else if (action === "remove") {
-            options.method = "DELETE";
-        } else if (action === "validate") {
-            const form = target.closest("form");
-            options.body = new FormData(form);
-            delete options.headers["Content-Type"];
+        
+        // Si FormData, ne pas ajouter Content-Type (le navigateur s'en charge)
+        if (options.body instanceof FormData) {
+            delete defaultOptions.headers["Content-Type"];
         }
-
+        
         try {
-            const response = await fetch(url, options);
+            const response = await fetch(url, {...defaultOptions, ...options});
             const data = await response.json();
-            this.handleSuccess(data, action, target);
+            
+            if (callback && typeof callback === 'function') {
+                callback(data);
+            }
         } catch (error) {
             NotificationController.display("Erreur technique", "error");
         }
     }
-
-    getActionType(url) {
-        url = url.toLowerCase();
-        if (url.includes("/add/")) return "add";
-        if (url.includes("/update/")) return "update";
-        if (url.includes("/remove/")) return "remove";
-        if (url.includes("/clear")) return "clear";
-        if (url.includes("/validate")) return "validate";
-        return "unknown";
-    }
-
-    prepareQuantityProduct(target) {
-        let quantity = 1;
-        // Si target est un input quantité
-        if (target && target.tagName === "INPUT") {
-            quantity = parseInt(target.value) || 1;
-        } else if (this.hasQuantityTarget) {
-            quantity = parseInt(this.quantityTarget.value) || 1;
+    
+    getQuantity(element) {
+        // Si c'est un input, prendre sa valeur
+        if (element.tagName === "INPUT") {
+            return parseInt(element.value) || 1;
         }
-        return { quantity };
+        
+        // Sinon chercher dans les targets
+        const quantityTarget = this.hasQuantityTarget ? this.quantityTarget : null;
+        return quantityTarget ? (parseInt(quantityTarget.value) || 1) : 1;
     }
-
-    handleSuccess(data, action, target) {
-        switch (action) {
-            case "add":
-                NotificationController.display(
-                    data.message || "Produit ajouté au panier !",
-                    data.success ? "success" : "error"
-                );
-                break;
-
-            case "update":
-                if (data.cart && data.cart.updatedItem) {
-                    // Met à jour la quantité et le total de la ligne
-                    if (this.hasQuantityTarget) {
-                        this.quantityTarget.value =
-                            data.cart.updatedItem.quantity;
-                    }
-                    // Cherche le total de la ligne dans le DOM
-                    let totalDiv = this.hasTotalTarget
-                        ? this.totalTarget
-                        : target
-                              .closest("article")
-                              ?.querySelector('[data-cart-target="total"]');
-                    if (totalDiv) {
-                        totalDiv.textContent = `Total : ${Number(
-                            data.cart.updatedItem.total_price
-                        )
-                            .toFixed(2)
-                            .replace(".", ",")}€`;
-                    }
-                }
-                this.updateCartTotal(data.cart?.total);
-                break;
-
-            case "remove":
-                // Recharge la page si le panier est vide
-                if (data.cart?.count === 0) {
-                    window.location.reload();
-                    return;
-                }
-                // Supprime la ligne du DOM
-                target.closest("article")?.remove();
-                this.updateCartTotal(data.cart?.total);
-                NotificationController.display(
-                    data.message || "Produit retiré du panier",
-                    data.success ? "success" : "error"
-                );
-                break;
-
-            case "clear":
-                if (data.redirectUrl) {
-                    sessionStorage.setItem("toast", data.message);
-                    window.location.href = data.redirectUrl;
-                } else {
-                    window.location.reload();
-                }
-                break;
-
-            case "validate":
-                if (data.redirectUrl) {
-                    sessionStorage.setItem(
-                        "toast",
-                        data.message || "Commande validée !"
-                    );
-                    window.location.href = data.redirectUrl;
-                } else {
-                    NotificationController.display(
-                        data.message || "Commande validée !",
-                        data.success ? "success" : "error"
-                    );
-                }
-                break;
+    
+    updateItemUI(target, data) {
+        if (!data.cart?.updatedItem) return;
+        
+        // Mettre à jour la quantité si c'est un input
+        if (this.hasQuantityTarget) {
+            this.quantityTarget.value = data.cart.updatedItem.quantity;
+        }
+        
+        // Mettre à jour le total de ligne
+        const totalElement = this.hasTotalTarget 
+            ? this.totalTarget 
+            : target.closest("article")?.querySelector('[data-cart-target="total"]');
+            
+        if (totalElement) {
+            const formattedPrice = Number(data.cart.updatedItem.total_price)
+                .toFixed(2)
+                .replace(".", ",");
+            totalElement.textContent = `Total : ${formattedPrice}€`;
         }
     }
-
+    
     updateCartTotal(total) {
         if (!total) return;
+        
+        const formattedTotal = Number(total).toFixed(2).replace(".", ",");
         document.querySelectorAll("[data-cart-total]").forEach((el) => {
-            el.textContent = `${Number(total).toFixed(2).replace(".", ",")}€`;
+            el.textContent = `${formattedTotal}€`;
         });
     }
 }

@@ -18,7 +18,7 @@
                     class="cart__clear f-text"
                     data-controller="cart"
                     data-cart-url-value="{{ path('api_cart_clear') }}"
-                    data-action="click->cart#trigger">
+                    data-action="click->cart#clearCart">
                 x Vider le panier
             </button>
             {% endif %}
@@ -46,7 +46,7 @@
             {% if cart.items|length > 0 %}
                 <form class="form-cart-valid"
                     data-controller="cart"
-                    data-action="submit->cart#trigger"
+                    data-action="submit->cart#validateCart"
                     data-cart-url-value="{{ path('api_cart_validate') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token('app') }}">
                     <button type="submit" class="btn-secondary order-validate">

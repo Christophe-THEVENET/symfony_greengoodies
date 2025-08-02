@@ -14,7 +14,7 @@
                    value="{{ item.quantity }}"
                    min="1"
                    data-cart-url-value="{{ path('api_cart_update', {productId: item.product.id}) }}"
-                   data-action="input->cart#trigger">
+                   data-action="change->cart#updateQuantity">
         </p>
         <p class="cart__item-price f-title-page-section">
             Prix unitaire : {{ item.unit_price|number_format(2, ',', ' ') }}€
@@ -30,7 +30,7 @@
         title="Supprimer"
         data-controller="cart"
         data-cart-url-value="{{ path('api_cart_remove', {productId: item.product.id}) }}"
-        data-action="cart#trigger">
+        data-action="click->cart#removeItem">
         <span aria-label="Supprimer" role="img">🗑️</span>
     </button>
 </article>
