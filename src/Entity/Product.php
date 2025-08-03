@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -15,6 +17,7 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -25,6 +28,7 @@ class Product
         minMessage: 'Le nom du produit doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le nom du produit ne peut pas dépasser {{ limit }} caractères.'
     )]
+    #[Groups(['product:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -35,6 +39,7 @@ class Product
         minMessage: 'La description courte doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'La description courte ne peut pas dépasser {{ limit }} caractères.'
     )]
+    #[Groups(['product:read'])]
     private ?string $shortDescription = null;
 
     #[ORM\Column]
@@ -45,6 +50,7 @@ class Product
         max: 9999.99,
         notInRangeMessage: 'Le prix doit être entre {{ min }}€ et {{ max }}€.'
     )]
+    #[Groups(['product:read'])]
     private ?float $price = null;
 
     #[ORM\Column(length: 255)]
@@ -57,6 +63,8 @@ class Product
         pattern: '/\.(jpg|jpeg|png|gif|webp)$/i',
         message: 'Le fichier image doit avoir une extension valide (jpg, jpeg, png, gif, webp).'
     )]
+    #[Groups(['product:read'])]
+    #[SerializedName('picture')]
     private ?string $imageFilename = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -67,6 +75,8 @@ class Product
         minMessage: 'La description longue doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'La description longue ne peut pas dépasser {{ limit }} caractères.'
     )]
+    #[Groups(['product:read'])]
+    #[SerializedName('fullDescription')]
     private ?string $longDescription = null;
 
     #[ORM\Column]
@@ -190,16 +200,4 @@ class Product
         return $this;
     }
 
-
-    public function toArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'shortDescription' => $this->shortDescription,
-            'fullDescription' => $this->longDescription,
-            'price' => $this->price,
-            'picture' => $this->imageFilename,
-        ];
-    }
 }
