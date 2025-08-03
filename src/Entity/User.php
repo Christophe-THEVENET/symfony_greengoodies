@@ -186,7 +186,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->api_access_enabled;
     }
 
-    public function setApiAccessEnabled(bool $api_access_enabled): static
+    public function setApiAccessEnabled(?bool $api_access_enabled): static
     {
         $this->api_access_enabled = $api_access_enabled;
 
