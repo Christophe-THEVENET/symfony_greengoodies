@@ -134,8 +134,7 @@ class CartController extends AbstractController
 
         try {
             $order = $this->cartService->validateCart($this->getUser());
-            $request->getSession()->set('toast', self::MSG_ORDER_VALIDATED);
-
+          
             return $this->json([
                 'success' => true,
                 'message' => self::MSG_ORDER_VALIDATED,
