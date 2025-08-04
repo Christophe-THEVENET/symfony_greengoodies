@@ -19,6 +19,7 @@ export default class extends Controller {
         this.checkForm();
     }
 
+    // eviter de valider a chaque frappe
     checkForm() {
         if (this.timeout) {
             clearTimeout(this.timeout);
@@ -114,6 +115,7 @@ export default class extends Controller {
             password.length > 0
         );
     } // style des inputs en live
+    
     updateField(field, isValid) {
         const value = field.value.trim();
         // Retire les classes de validation précédentes (Nettoie)

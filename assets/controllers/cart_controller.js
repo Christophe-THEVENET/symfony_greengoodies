@@ -96,6 +96,7 @@ export default class extends Controller {
             url,
             {
                 method: "POST",
+                // contient uniquement le token CSRF
                 body: new FormData(form),
             },
             (data) => {
@@ -110,6 +111,33 @@ export default class extends Controller {
                 }
             }
         );
+    }
+
+    // ****** MÉTHODES UTILITAIRES ******
+    updateItemUI(data) {
+        if (!data.cart?.updatedItem) return;
+
+        // Mise à jour de la quantité si l'élément existe
+        if (this.hasQuantityTarget) {
+            this.quantityTarget.value = data.cart.updatedItem.quantity;
+        }
+
+        // Mise à jour du total de ligne
+        if (this.hasTotalTarget) {
+            const formattedPrice = Number(data.cart.updatedItem.total_price)
+                .toFixed(2)
+                .replace(".", ",");
+            this.totalTarget.textContent = `Total : ${formattedPrice}€`;
+        }
+    }
+
+    updateCartTotal(total) {
+        if (!total) return;
+
+        const formattedTotal = Number(total).toFixed(2).replace(".", ",");
+        document.querySelectorAll("[data-cart-total]").forEach((el) => {
+            el.textContent = `${formattedTotal}€`;
+        });
     }
 
     // ****** MÉTHODES UTILITAIRES ******

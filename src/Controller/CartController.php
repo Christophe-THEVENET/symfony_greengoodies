@@ -134,7 +134,7 @@ class CartController extends AbstractController
         }
 
         // 2. Vérification du token CSRF
-        if (!$this->isCsrfTokenValid('app', $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('app_order_validate', $request->request->get('_token'))) {
             return $this->json([
                 'success' => false,
                 'message' => 'Token CSRF invalide.',
