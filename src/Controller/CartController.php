@@ -124,6 +124,7 @@ class CartController extends AbstractController
     #[Route('/validate', name: 'api_cart_validate', methods: ['POST'])]
     public function validate(Request $request): JsonResponse
     {
+        // 1. Vérification de l'authentification
         if (!$this->getUser()) {
             return $this->json([
                 'success' => false,
@@ -132,7 +133,16 @@ class CartController extends AbstractController
             ], 401);
         }
 
+        // 2. Vérification du token CSRF
+        if (!$this->isCsrfTokenValid('app', $request->request->get('_token'))) {
+            return $this->json([
+                'success' => false,
+                'message' => 'Token CSRF invalide.',
+            ], 403);
+        }
+
         try {
+            // 3. Validation du panier
             $order = $this->cartService->validateCart($this->getUser());
 
             return $this->json([
