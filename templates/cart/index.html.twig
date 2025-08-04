@@ -50,7 +50,7 @@
                     url: path('api_cart_validate')
                 }) }}
                 {{ stimulus_action('cart', 'validateCart', 'submit') }}>
-                <input type="hidden" name="_token" value="{{ csrf_token('app') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('app_order_validate') }}">
                 <button type="submit" class="btn-secondary order-validate">
                     <span class="link">Valider la commande</span>
                 </button>
