@@ -28,7 +28,7 @@
                            value="1" 
                            min="1" 
                            max="10" 
-                           data-cart-target="quantity"
+                           {{ stimulus_target('cart', 'quantity') }}
                            class="quantity-input cart__item-qty">
                     
                     <button type="button" 

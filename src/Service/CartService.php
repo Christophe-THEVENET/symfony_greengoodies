@@ -70,10 +70,11 @@ class CartService
 
     public function getCart(): CartDto
     {
-        if (!$this->cartLoaded) {
+        if (! $this->cartLoaded) {
             $this->loadCartFromSession();
             $this->cartLoaded = true;
         }
+
         return $this->cart;
     }
 
@@ -91,8 +92,7 @@ class CartService
         }
 
         // Récupérer la commande non validée ou générer une erreur
-        $order = $this->orderRepository->findUnvalidatedOrderByUser($user)
-            ?? throw new \RuntimeException('Commande introuvable');
+        $order = $this->orderRepository->findUnvalidatedOrderByUser($user) ?? throw new \RuntimeException('Commande introuvable');
 
         // Synchroniser une dernière fois avec le panier
         $this->syncOrderItems($order);
@@ -112,7 +112,7 @@ class CartService
     public function persistCart(): void
     {
         // Ne rien faire si panier vide ou utilisateur non connecté
-        if ($this->cart->isEmpty() || !($user = $this->getCurrentUser())) {
+        if ($this->cart->isEmpty() || ! ($user = $this->getCurrentUser())) {
             return;
         }
 
@@ -133,14 +133,11 @@ class CartService
         }
     }
 
-    /**
-     * Récupère la commande non validée de l'utilisateur ou en crée une nouvelle
-     */
     private function getOrCreateOrder(User $user): Order
     {
         $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
 
-        if (!$order) {
+        if (! $order) {
             $order = new Order();
             $order->setUser($user);
             $order->setIsValid(false);
@@ -151,13 +148,12 @@ class CartService
             $this->entityManager->flush();
             $this->cart->setOrderId($order->getId());
         }
-
         return $order;
     }
 
     private function syncOrderItems(Order $order): void
     {
-        // Supprimer tous les items existants
+        // Nettoie tous les items existants
         foreach ($order->getOrderItems()->toArray() as $item) {
             $order->removeOrderItem($item);
         }
@@ -180,6 +176,7 @@ class CartService
         $order->setTotalAmount($totalAmount);
     }
 
+    // Evite chargements multiples -> tente commande existante, sinon session
     private function loadCartFromSession(): void
     {
         if ($this->cartLoaded) {
@@ -187,7 +184,7 @@ class CartService
         }
 
         $session = $this->getSession();
-        if (!$session) {
+        if (! $session) {
             $this->cartLoaded = true;
             return;
         }
@@ -202,16 +199,16 @@ class CartService
         // Sinon charge depuis les données de session
         $this->loadCartFromSessionData($session);
     }
-    
+
     private function loadCartFromOrder(SessionInterface $session): bool
     {
         $orderId = $session->get('cart_order_id');
-        if (!$orderId) {
+        if (! $orderId) {
             return false;
         }
 
         $order = $this->orderRepository->find($orderId);
-        if (!$order || $order->isValid()) {
+        if (! $order || $order->isValid()) {
             $session->remove('cart_order_id');
             return false;
         }
@@ -241,13 +238,11 @@ class CartService
         $this->cartLoaded = true;
     }
 
-    /**
-     * Supprime la commande non validée si elle existe
-     */
     private function cleanupEmptyOrder(): void
     {
+
         $user = $this->getCurrentUser();
-        if (!$user) {
+        if (! $user) {
             return;
         }
 
@@ -262,7 +257,7 @@ class CartService
     private function saveCartToSession(): void
     {
         $session = $this->getSession();
-        if (!$session) {
+        if (! $session) {
             return;
         }
 
