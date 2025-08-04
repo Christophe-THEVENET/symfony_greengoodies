@@ -1,62 +1,62 @@
 {% extends 'base.html.twig' %}
 
- {% set bodyClass = 'page-pink' %}
+{% set bodyClass = 'page-pink' %}
 
 {% block title %}{{ parent() }} - Panier{% endblock %}
 
 {% block body %}
 
-           {# ****************** PANIER ****************** #}
-	<section class="cart container container--height"
-    >
-        <div class="cart__wrapper">
-            <h1 class="cart__title f-title-page-section">Mon panier</h1>
-            
-            {# Vider le panier #}
-              {% if cart.items|length > 0 %}
-            <button type="button" 
-                    class="cart__clear f-text"
-                    data-controller="cart"
-                    data-cart-url-value="{{ path('api_cart_clear') }}"
-                    data-action="click->cart#clearCart">
-                x Vider le panier
-            </button>
-            {% endif %}
-            
-            <div class="cart__item-wrapper">
-                {% for item in cart.items %}
-                    {% include "./_partials/_cart/_cart-item.html.twig" with { item: item } %}
-                {% else %}
-                    <p class="cart__empty">Votre panier est vide.</p>
-                {% endfor %}
-                <div class="cart__total">
-                    <p class="cart__total-amount f-title-page-section">
-                        Total panier: 
-                        <span class="cart__total-price f-cart-total-item-price" 
-                              data-cart-target="total" 
-                              data-cart-total>
-                            {{ cart.totalAmount|number_format(2, ',', ' ') }}€
-                        </span>
-                    </p>
-                    <p class="cart__total-info f-text">Frais de livraison: Offert</p>
-                </div>
+{# ****************** PANIER ****************** #}
+<section class="cart container container--height">
+    <div class="cart__wrapper">
+        <h1 class="cart__title f-title-page-section">Mon panier</h1>
+        
+        {# Vider le panier #}
+        {% if cart.items|length > 0 %}
+        <button type="button" 
+                class="cart__clear f-text"
+                {{ stimulus_controller('cart', {
+                    url: path('api_cart_clear')
+                }) }}
+                {{ stimulus_action('cart', 'clearCart', 'click') }}>
+            x Vider le panier
+        </button>
+        {% endif %}
+        
+        <div class="cart__item-wrapper">
+            {% for item in cart.items %}
+                {% include "./_partials/_cart/_cart-item.html.twig" with { item: item } %}
+            {% else %}
+                <p class="cart__empty">Votre panier est vide.</p>
+            {% endfor %}
+            <div class="cart__total">
+                <p class="cart__total-amount f-title-page-section">
+                    Total panier: 
+                    <span class="cart__total-price f-cart-total-item-price"
+                          {{ stimulus_controller('cart') }}
+                          {{ stimulus_target('cart', 'total') }}
+                          data-cart-total>
+                        {{ cart.totalAmount|number_format(2, ',', ' ') }}€
+                    </span>
+                </p>
+                <p class="cart__total-info f-text">Frais de livraison: Offert</p>
             </div>
-            
-            {# Formulaire de validation (reste en POST classique) #}
-            {% if cart.items|length > 0 %}
-                <form class="form-cart-valid"
-                    data-controller="cart"
-                    data-action="submit->cart#validateCart"
-                    data-cart-url-value="{{ path('api_cart_validate') }}">
-                    <input type="hidden" name="_token" value="{{ csrf_token('app') }}">
-                    <button type="submit" class="btn-secondary order-validate">
-                        <span class="link">Valider la commande</span>
-                    </button>
-                </form>
-            {% endif %}
         </div>
-
-       
-    </section>
+        
+        {# Formulaire de validation #}
+        {% if cart.items|length > 0 %}
+            <form class="form-cart-valid"
+                {{ stimulus_controller('cart', {
+                    url: path('api_cart_validate')
+                }) }}
+                {{ stimulus_action('cart', 'validateCart', 'submit') }}>
+                <input type="hidden" name="_token" value="{{ csrf_token('app') }}">
+                <button type="submit" class="btn-secondary order-validate">
+                    <span class="link">Valider la commande</span>
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</section>
 
 {% endblock %}
