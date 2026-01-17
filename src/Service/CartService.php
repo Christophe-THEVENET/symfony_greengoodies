@@ -141,7 +141,6 @@ class CartService
                     'exception' => $e,
                 ]);
             }
-            throw $e; // Re-throw pour voir l'erreur en prod
         }
     }
 
