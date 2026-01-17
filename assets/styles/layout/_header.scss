@@ -24,6 +24,33 @@
         }
     }
 
+    // Lien panier avec badge
+    &__cart-link {
+        position: relative;
+    }
+
+    &__cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -12px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        background-color: $gray-33;
+        color: $white;
+        font-size: $fs-10px;
+        font-weight: $fw-600;
+        border-radius: 50%;
+        line-height: 1;
+
+        &--hidden {
+            display: none;
+        }
+    }
+
     // Navigation desktop
     &__nav {
         display: flex;

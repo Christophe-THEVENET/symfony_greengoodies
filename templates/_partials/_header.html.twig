@@ -11,7 +11,14 @@
             <nav class="header__nav">
                 <a href="{{ path('app_home') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
                 data-action="click->header#closeOnLink">Produits</a>
-                <a href="{{ path('app_cart') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">Panier</a>
+                <a href="{{ path('app_cart') }}" class="header__nav-link header__cart-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">
+                    Panier
+                    {% if cart_count() > 0 %}
+                        <span class="header__cart-badge" data-cart-badge>{{ cart_count() }}</span>
+                    {% else %}
+                        <span class="header__cart-badge header__cart-badge--hidden" data-cart-badge></span>
+                    {% endif %}
+                </a>
                 {% if not app.user %}
                     <a href="{{ path('app_login') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
                     <a href="{{ path('app_register') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
@@ -50,8 +57,15 @@
                 {% endif %}
                 <a href="{{ path('app_home') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
                 data-action="click->header#closeOnLink">Produits</a>
-                <a href="{{ path('app_cart') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
-                data-action="click->header#closeOnLink">Panier</a>
+                <a href="{{ path('app_cart') }}" class="header__mobilemenu-link header__cart-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
+                data-action="click->header#closeOnLink">
+                    Panier
+                    {% if cart_count() > 0 %}
+                        <span class="header__cart-badge" data-cart-badge>{{ cart_count() }}</span>
+                    {% else %}
+                        <span class="header__cart-badge header__cart-badge--hidden" data-cart-badge></span>
+                    {% endif %}
+                </a>
                 {% if not app.user %}
                     <a href="{{ path('app_login') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
                     data-action="click->header#closeOnLink">Se connecter</a>
