@@ -78,6 +78,17 @@ class CartService
         return $this->cart;
     }
 
+    /**
+     * Force le rechargement du panier depuis la session.
+     * Utile après un login pour récupérer le panier anonyme.
+     */
+    public function forceReloadFromSession(): void
+    {
+        $this->cartLoaded = false;
+        $this->cart = new CartDto();
+        $this->loadCartFromSession();
+    }
+
     public function clearCart(): void
     {
         $this->cleanupEmptyOrder();
