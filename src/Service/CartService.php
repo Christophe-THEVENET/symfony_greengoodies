@@ -26,7 +26,7 @@ class CartService
         private ProductRepository $productRepository,
         private RequestStack $requestStack,
         private Security $security,
-        LoggerInterface $logger = null
+        private ?LoggerInterface $logger = null
     ) {
         $this->cart = new CartDto();
         $this->loadCartFromSession();
@@ -136,11 +136,12 @@ class CartService
             $this->entityManager->flush();
         } catch (\Exception $e) {
             // Log l'exception avec LoggerInterface
-            if (isset($logger)) {
-                $logger->error('Erreur lors de la persistance du panier : ' . $e->getMessage(), [
+            if ($this->logger) {
+                $this->logger->error('Erreur lors de la persistance du panier : ' . $e->getMessage(), [
                     'exception' => $e,
                 ]);
             }
+            throw $e; // Re-throw pour voir l'erreur en prod
         }
     }
 
