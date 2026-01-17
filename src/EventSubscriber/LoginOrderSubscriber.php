@@ -47,8 +47,8 @@ class LoginOrderSubscriber implements EventSubscriberInterface
         if (!$orderInvalid && $session) {
             $cartData = $session->get('cart', []);
             if (!empty($cartData)) {
-               
-                $this->cartService->persistCart(); 
+                $this->cartService->forceReloadFromSession();
+                $this->cartService->persistCart();
                 $order = $this->orderRepository->findUnvalidatedOrderByUser($user);
                 if ($order) {
                     $session->set('cart_order_id', $order->getId());
