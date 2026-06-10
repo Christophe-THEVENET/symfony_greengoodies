@@ -105,29 +105,38 @@
 // ********************* NOTIFICATION TOAST STYLES *********************
 .notification-toast {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    min-width: 200px;
-    max-width: 400px;
-    padding: 12px 24px;
-    border-radius: 6px;
+    bottom: 24px;
+    right: 24px;
+    min-width: 220px;
+    max-width: 420px;
+    padding: 14px 22px;
+    border-radius: 16px;
     z-index: 9999;
     color: #fff;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    font-family: "Hanken Grotesk", sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(58, 45, 41, 0.18);
     opacity: 1;
-    transition: opacity 0.3s;
+    transform: translateY(0);
+    transition: opacity 0.3s, transform 0.3s;
+    animation: toastIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
     &.notification-toast--success {
-        background: #5eaa60;
+        background: #5E7344;
     }
 
     &.notification-toast--error {
-        background: #eb6c5e;
+        background: #A2594F;
     }
 
     &.notification-toast--hide {
         opacity: 0;
-
+        transform: translateY(12px);
     }
+}
+
+@keyframes toastIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
 }

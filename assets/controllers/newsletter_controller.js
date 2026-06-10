@@ -5,15 +5,32 @@ export default class extends Controller {
 
     subscribe(event) {
         event.preventDefault();
+        var input = this.inputTarget;
+        var email = input.value.trim();
 
-        const email = this.inputTarget.value.trim();
-        if (!email) return;
+        // Supprimer ancien message
+        var old = this.element.parentElement.querySelector(".news__msg");
+        if (old) old.remove();
 
-        this.inputTarget.value = "";
-        this.inputTarget.placeholder = "Merci ! À bientôt ✓";
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            this._msg("Veuillez entrer un email valide.", "error");
+            return;
+        }
 
-        setTimeout(() => {
-            this.inputTarget.placeholder = "Votre email";
-        }, 3000);
+        this._msg("Merci ! Vous êtes inscrit.", "ok");
+        input.value = "";
+    }
+
+    _msg(text, type) {
+        var inner = this.element.closest(".news__inner");
+        if (!inner) return;
+        var old = inner.querySelector(".news__msg");
+        if (old) old.remove();
+
+        var el = document.createElement("p");
+        el.className = "news__msg news__msg--" + type;
+        el.textContent = text;
+        inner.appendChild(el);
+        setTimeout(function () { el.remove(); }, 3500);
     }
 }

@@ -5,10 +5,10 @@
                 <a href="{{ path('app_home') }}" class="logo"><span class="logo__mark">G</span>GreenGoodies</a>
                 <p>Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement, vraiment.</p>
             </div>
-            <div class="footer__col"><h5>Boutique</h5><a href="#">Hygiène & beauté</a><a href="#">Accessoires</a><a href="#">Boissons</a><a href="#">Cartes cadeaux</a></div>
-            <div class="footer__col"><h5>Maison</h5><a href="{{ path('app_home') }}#story">Notre histoire</a><a href="{{ path('app_home') }}#values">Nos valeurs</a><a href="{{ path('app_home') }}#news">Le Journal</a><a href="#">Nous contacter</a></div>
-            <div class="footer__col"><h5>Aide</h5><a href="#">Livraison & retours</a><a href="{{ path('app_account') }}">Mon compte</a><a href="#">CGV</a><a href="#">Confidentialité</a></div>
+            <div class="footer__col"><h5>Boutique</h5><span class="footer__link">Hygiène & beauté</span><span class="footer__link">Accessoires</span><span class="footer__link">Boissons</span><span class="footer__link">Cartes cadeaux</span></div>
+            <div class="footer__col"><h5>Maison</h5><a href="{{ path('app_home') }}#histoire" class="footer__link">Notre histoire</a><a href="{{ path('app_home') }}#valeurs" class="footer__link">Nos valeurs</a><a href="{{ path('app_home') }}#newsletter" class="footer__link">Newsletter</a><a href="#" class="footer__link">Nous contacter</a></div>
+            <div class="footer__col"><h5>Aide</h5><span class="footer__link">Livraison & retours</span><a href="{{ path('app_account') }}" class="footer__link">Mon compte</a><span class="footer__link">CGV</span><span class="footer__link">Confidentialité</span></div>
         </div>
-        <div class="footer__bottom"><span>&copy; <span data-year>{{ 'now'|date('Y') }}</span> GreenGoodies — Lyon, France</span><span>Conçu avec soin pour la planète 🌿</span></div>
+        <div class="footer__bottom"><span>&copy; <span data-year>{{ 'now'|date('Y') }}</span> GreenGoodies — Lyon, France</span><span>Développé par <a href="https://christophethevenet.fr" target="_blank" rel="noopener">Digitob</a></span><span>Conçu avec soin pour la planète 🌿</span></div>
     </div>
 </footer>

@@ -24,6 +24,16 @@
         max-width: 300px;
     }
 
+    &__link {
+        display: block;
+        color: $ink-soft;
+        font-size: 15px;
+        padding: 6px 0;
+        transition: color .3s;
+
+        &[href]:hover { color: $ink; }
+    }
+
     &__col {
         h5 {
             font-family: $fontDisplay;
@@ -32,16 +42,6 @@
             text-transform: uppercase;
             color: $terra;
             margin-bottom: 16px;
-        }
-
-        a {
-            display: block;
-            color: $ink-soft;
-            font-size: 15px;
-            padding: 6px 0;
-            transition: color .3s;
-
-            &:hover { color: $ink; }
         }
     }
 
