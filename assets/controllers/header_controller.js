@@ -6,20 +6,22 @@ export default class extends Controller {
 
     connect() {
         this.isOpen = false;
+        this._onScroll = this._handleScroll.bind(this);
+        window.addEventListener("scroll", this._onScroll, { passive: true });
+        this._handleScroll();
     }
 
     disconnect() {
-        // S'assurer que le scroll est restauré si le contrôleur est déconnecté
         document.body.style.overflow = "";
+        window.removeEventListener("scroll", this._onScroll);
     }
 
+    _handleScroll() {
+        this.element.classList.toggle("is-scrolled", window.scrollY > 24);
+    }
 
     toggle() {
-        if (this.isOpen) {
-            this.close();
-        } else {
-            this.open();
-        }
+        this.isOpen ? this.close() : this.open();
     }
 
     open() {
@@ -27,7 +29,6 @@ export default class extends Controller {
         this.burgerTarget.classList.add(this.activeClass);
         this.mobileMenuTarget.classList.add(this.activeClass);
         this.overlayTarget.classList.add(this.activeClass);
-        // Bloquer le scroll du body
         document.body.style.overflow = "hidden";
     }
 
@@ -36,7 +37,6 @@ export default class extends Controller {
         this.burgerTarget.classList.remove(this.activeClass);
         this.mobileMenuTarget.classList.remove(this.activeClass);
         this.overlayTarget.classList.remove(this.activeClass);
-        // Restaurer le scroll du body
         document.body.style.overflow = "";
     }
 

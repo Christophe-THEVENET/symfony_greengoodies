@@ -12,9 +12,9 @@
 
     &.is-scrolled {
         padding: 11px 0;
-        background: rgba(241, 231, 215, .9);
+        background: rgba(228, 217, 208, .92);
         backdrop-filter: blur(12px);
-        box-shadow: 0 1px 0 rgba(58, 45, 41, .08);
+        box-shadow: 0 4px 24px rgba(58, 45, 41, 0.15);
     }
 
     &__bar {

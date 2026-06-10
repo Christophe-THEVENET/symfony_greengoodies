@@ -13,7 +13,7 @@ export default class extends Controller {
     // ****** AJOUT AU PANIER ******
     async addToCart(event) {
         event.preventDefault();
-        const quantity = parseInt(this.quantityTarget.value) || 1;
+        const quantity = this.hasQuantityTarget ? (parseInt(this.quantityTarget.value) || 1) : 1;
         const url = this.urlValue;
 
         await this.sendRequest(
