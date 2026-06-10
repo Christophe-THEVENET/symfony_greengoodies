@@ -1,122 +1,684 @@
+// ============================================================
+// ACCUEIL — Design fidèle à accueil.html
+// ============================================================
 @use "../abstracts/_all" as *;
 
-.products {
+// Utilitaires
+.wrap { max-width: 1340px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .26em; text-transform: uppercase; color: $terra; }
+.disp { font-family: $fontDisplay; }
 
-    &__header {
-        display: flex;
-        align-items: center;
-        height: 80px;
-        padding: 0 $container-padding;
+// ============================================================
+// HERO
+// ============================================================
+.hero { padding: 170px 0 90px; }
 
-        &-title {
-            text-transform: uppercase;
-            font-size: 0.875rem; // 14px
+.hero__grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 50px;
+    align-items: center;
+
+    @media (max-width: $breakpoint-tablette) {
+        grid-template-columns: 1fr;
+        gap: 46px;
+    }
+}
+
+.hero__eyebrow { margin-bottom: 24px; display: inline-block; }
+
+.hero__title {
+    font-family: $fontDisplay;
+    font-weight: 800;
+    font-size: clamp(56px, 9vw, 128px);
+    line-height: .9;
+    letter-spacing: -.03em;
+
+    .o { color: $terra; }
+    .u {
+        position: relative;
+        display: inline-block;
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: .08em;
+            height: .09em;
+            background: $clay;
+            border-radius: 4px;
         }
     }
+}
+
+.hero__lead { margin-top: 28px; max-width: 440px; font-size: 19px; color: $ink-soft; }
+
+.hero__cta {
+    margin-top: 36px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.hero__rating {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: $ink-soft;
+
+    b { color: $terra; letter-spacing: 2px; }
+}
+
+.hero__media { position: relative; }
+
+.hero__blob {
+    position: relative;
+    aspect-ratio: 1/1;
+    border-radius: 48% 52% 57% 43% / 45% 50% 50% 55%;
+    overflow: hidden;
+    background: $card;
+    box-shadow: 0 40px 80px -40px rgba(50, 36, 27, .5);
+
+    img {
+        width: 100%;
+        height: 112%;
+        object-fit: cover;
+        margin-top: -6%;
+    }
+}
+
+.hero__chip {
+    position: absolute;
+    background: $paper;
+    border-radius: 18px;
+    padding: 14px 18px;
+    box-shadow: 0 20px 40px -22px rgba(50, 36, 27, .6);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &--tl { top: 8%; left: -26px; }
+    &--br { bottom: 10%; right: -22px; }
+
+    &-txt {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+
+    b {
+        font-family: $fontDisplay;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.05;
+        white-space: nowrap;
+    }
+
+    small {
+        font-size: 10.5px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: $ink-soft;
+        white-space: nowrap;
+    }
+
+    .ic {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        background: $olive;
+        display: grid;
+        place-items: center;
+        color: $paper;
+        font-family: $fontDisplay;
+        font-weight: 700;
+    }
+}
+
+// ============================================================
+// TICKER
+// ============================================================
+.ticker {
+    background: $terra;
+    color: $paper;
+    padding: 16px 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 3;
+
+    &__row {
+        display: flex;
+        gap: 50px;
+        white-space: nowrap;
+        animation: ticker-slide 30s linear infinite;
+        width: max-content;
+    }
+
+    &__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-family: $fontDisplay;
+        font-weight: 600;
+        font-size: 21px;
+
+        &::before {
+            content: "✦";
+            color: $clay;
+        }
+    }
+}
+
+@keyframes ticker-slide { to { transform: translateX(-50%); } }
+
+// ============================================================
+// PRODUITS
+// ============================================================
+.products { padding: 110px 0 40px; }
+
+.sec-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 66px;
+
+    .eyebrow { display: block; margin-bottom: 14px; }
+
+    h2 {
+        font-family: $fontDisplay;
+        font-weight: 700;
+        font-size: clamp(40px, 6vw, 78px);
+        line-height: 1;
+        letter-spacing: -.03em;
+        padding-bottom: .06em;
+    }
+
+    p {
+        max-width: 330px;
+        color: $ink-soft;
+        font-size: 15px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+
+    @media (max-width: $breakpoint-tablette) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: $breakpoint-mobile) { grid-template-columns: 1fr; }
+}
+
+.card {
+    background: $paper;
+    border-radius: 22px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    transition: transform .5s, box-shadow .5s;
+
+    &:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 30px 60px -34px rgba(50, 36, 27, .55);
+    }
+
+    &__media {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        background: $card;
+        aspect-ratio: 1/1;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1s;
+        }
+    }
+
+    &:hover &__media img { transform: scale(1.06); }
+
+    &__pill {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        background: $terra;
+        color: $paper;
+        padding: 6px 13px;
+        border-radius: 30px;
+        white-space: nowrap;
+    }
+
+    &__fav {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(248, 241, 230, .9);
+        display: grid;
+        place-items: center;
+        border: none;
+        cursor: pointer;
+        opacity: 0;
+        transform: scale(.8);
+        transition: .4s;
+    }
+
+    &:hover &__fav { opacity: 1; transform: none; }
+
+    &__body {
+        padding: 16px 8px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    &__name {
+        font-family: $fontDisplay;
+        font-size: 21px;
+        font-weight: 600;
+        line-height: 1.05;
+    }
+
+    &__desc {
+        font-size: 14px;
+        color: $ink-soft;
+        flex: 1;
+    }
+
+    &__foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 14px;
+    }
+
+    &__price {
+        font-family: $fontDisplay;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    &__add {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: $ink;
+        color: $paper;
+        border: none;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        transition: .3s;
+
+        &:hover { background: $terra; }
+    }
+}
+
+.products__more {
+    display: flex;
+    justify-content: center;
+    margin-top: 56px;
+}
+
+// Boutons
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 30px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: .35s;
+    text-decoration: none;
+
+    &--solid {
+        background: $terra;
+        color: $paper;
+
+        &:hover { background: $terra-deep; transform: translateY(-2px); }
+    }
+
+    &--ghost {
+        border-color: $ink;
+        color: $ink;
+
+        &:hover { background: $ink; color: $paper; }
+    }
+}
+
+// ============================================================
+// STORY
+// ============================================================
+.story {
+    padding: 120px 0;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: 1.05fr .95fr;
+        gap: 64px;
+        align-items: center;
+
+        @media (max-width: $breakpoint-tablette) {
+            grid-template-columns: 1fr;
+            gap: 46px;
+        }
+    }
+
+    &__media { position: relative; }
+
+    &__media-frame {
+        border-radius: 30px;
+        overflow: hidden;
+        aspect-ratio: 4/5;
+        background: $card;
+        box-shadow: 0 40px 80px -44px rgba(50, 36, 27, .5);
+
+        img {
+            width: 100%;
+            height: 112%;
+            object-fit: cover;
+            margin-top: -6%;
+        }
+    }
+
+    &__badge {
+        position: absolute;
+        right: -20px;
+        bottom: 30px;
+        background: $olive;
+        color: $paper;
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-family: $fontDisplay;
+        font-weight: 600;
+        line-height: 1.1;
+        font-size: 15px;
+        padding: 14px;
+        transform: rotate(-8deg);
+    }
+
+    h2 {
+        font-family: $fontDisplay;
+        font-weight: 700;
+        font-size: clamp(36px, 5vw, 68px);
+        line-height: .98;
+        letter-spacing: -.03em;
+        margin: 16px 0 24px;
+    }
+
+    p {
+        color: $ink-soft;
+        margin-bottom: 18px;
+        max-width: 520px;
+    }
+
+    &__quote {
+        font-family: $fontDisplay;
+        font-weight: 500;
+        font-size: 25px;
+        line-height: 1.35;
+        color: $ink;
+        background: $paper;
+        border-radius: 18px;
+        padding: 24px 26px;
+        margin: 28px 0;
+    }
+
+    &__sign {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 24px;
+
+        b { font-weight: 700; }
+        small { color: $ink-soft; }
+    }
+
+    &__av {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: $clay;
+        color: $paper;
+        display: grid;
+        place-items: center;
+        font-family: $fontDisplay;
+        font-weight: 700;
+    }
+}
+
+// ============================================================
+// VALEURS
+// ============================================================
+.values {
+    padding: 30px 0 120px;
 
     &__list {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); // 3 colonnes sur desktop
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
 
-        @media screen and (max-width: $breakpoint-tablette) {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        // Mobile : 1 colonne
-        @media screen and (max-width: $breakpoint-mobile) {
-            grid-template-columns: 1fr;
-        }
+        @media (max-width: $breakpoint-tablette) { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: $breakpoint-mobile) { grid-template-columns: 1fr; }
     }
 }
 
-.values {
-    &__item {
-        height: 646px;
+.value {
+    background: $ink;
+    color: $paper;
+    border-radius: 26px;
+    padding: 38px 32px;
+    position: relative;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &:nth-child(2) { background: $terra; }
+    &:nth-child(3) { background: $olive; }
+
+    &__num {
+        position: absolute;
+        top: 24px;
+        right: 30px;
+        font-family: $fontDisplay;
+        font-size: 60px;
+        font-weight: 800;
+        opacity: .22;
+        line-height: 1;
+    }
+
+    h4 {
+        font-family: $fontDisplay;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 12px;
+    }
+
+    p { font-size: 15px; opacity: .86; }
+}
+
+// ============================================================
+// TÉMOIGNAGES
+// ============================================================
+.testi {
+    padding: 110px 0;
+    background: $card;
+
+    &__head {
+        text-align: center;
+        margin-bottom: 54px;
+
+        h2 {
+            font-family: $fontDisplay;
+            font-weight: 700;
+            font-size: clamp(36px, 5vw, 68px);
+            margin-top: 12px;
+            letter-spacing: -.03em;
+        }
+    }
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+
+        @media (max-width: $breakpoint-tablette) { grid-template-columns: repeat(2, 1fr); }
+        @media (max-width: $breakpoint-mobile) { grid-template-columns: 1fr; }
+    }
+}
+
+.quote {
+    background: $paper;
+    border-radius: 22px;
+    padding: 32px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    box-shadow: 0 24px 50px -38px rgba(58, 45, 41, .5);
+
+    &__stars { color: $terra; letter-spacing: 3px; font-size: 15px; }
+
+    p { font-size: 19px; line-height: 1.5; font-weight: 500; }
+
+    &__who {
         display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: auto;
 
-        &:first-child {
-            background-color: $beige-dark;
-        }
+        b { display: block; font-size: 14px; }
+        small { font-size: 12px; color: $ink-soft; }
+    }
 
-        &:nth-child(2) {
-            background-color: $green;
-        }
-
-        &.reverse {
-            flex-direction: row-reverse;
-
-            // Cibler le contenu dans reverse
-            .values__item-content {
-                align-items: flex-end;
-
-                &-reverse {
-                    max-width: 30rem;
-                }
-
-            }
-
-
-        }
-
-        &-content {
-            width: 66.66%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 2rem;
-
-        }
-
-        &-title {
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-        }
-
-        &-text {
-            margin-bottom: 1rem;
-            max-width: 26rem;
-        }
-
-
-        &-image {
-            width: 33.33%;
-            overflow: hidden;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-            }
-        }
-
-
-
+    &__av {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: $clay;
+        color: $paper;
+        display: grid;
+        place-items: center;
+        font-family: $fontDisplay;
+        font-weight: 700;
     }
 }
 
-@media screen and (max-width: $breakpoint-tablette) {
+// ============================================================
+// NEWSLETTER
+// ============================================================
+.news {
+    padding: 120px 0;
 
-    .values__item,
-    .values__item.reverse {
-        flex-direction: column;
-        height: auto;
+    &__inner {
+        position: relative;
+        background: $terra;
+        color: $paper;
+        border-radius: 32px;
+        padding: 80px 40px;
+        text-align: center;
+        overflow: hidden;
 
-        &-content {
-            width: 100%;
-            padding: 5rem;
-            min-height: 30rem;
-            justify-content: center;
-        }
-
-        &-image {
-            width: 100%;
-            height: 20rem;
-
-            img {
-                object-fit: cover;
-                object-position: center;
-            }
+        &::after {
+            content: "";
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .08);
+            top: -120px;
+            right: -80px;
         }
     }
+
+    .eyebrow { color: rgba(248, 241, 230, .78); }
+
+    h2 {
+        font-family: $fontDisplay;
+        font-weight: 700;
+        font-size: clamp(38px, 6vw, 80px);
+        line-height: .95;
+        margin: 14px 0 16px;
+        letter-spacing: -.03em;
+    }
+
+    p { max-width: 460px; margin: 0 auto 34px; color: rgba(248, 241, 230, .85); }
+
+    &__form {
+        display: flex;
+        gap: 10px;
+        max-width: 480px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, .14);
+        border: 2px solid rgba(255, 255, 255, .3);
+        border-radius: 40px;
+        padding: 7px 7px 7px 24px;
+
+        input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: $paper;
+            font: inherit;
+            font-size: 15px;
+            outline: none;
+
+            &::placeholder { color: rgba(248, 241, 230, .65); }
+        }
+
+        button {
+            background: $ink;
+            color: $paper;
+            border: none;
+            border-radius: 30px;
+            padding: 14px 26px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .3s;
+
+            &:hover { transform: translateY(-2px); }
+        }
+
+        @media (max-width: $breakpoint-mobile) {
+            flex-direction: column;
+            border-radius: 22px;
+
+            button { width: 100%; }
+        }
+    }
+}
+
+// ============================================================
+// RESPONSIVE (commun)
+// ============================================================
+@media (max-width: 680px) {
+    .wrap { padding: 0 22px; }
+    .hero { padding: 130px 0 70px; }
 }

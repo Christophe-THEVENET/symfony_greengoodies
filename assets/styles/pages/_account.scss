@@ -1,174 +1,349 @@
-// assets/styles/pages/_account.scss
 @use "../abstracts/_all" as *;
 
-.account {
+// ============================================================
+// MON COMPTE
+// ============================================================
+.account-page {
+    @include container;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-block: 3rem 5rem;
 
-    // userinfo item
-    .account__item {
-        margin: 0;
-        height: 4rem;
-        padding: 0;
+    @media screen and (max-width: $breakpoint-tablette) {
+        grid-template-columns: 1fr;
+    }
+}
 
-        .account__item__wrapper {
-            display: flex;
-            margin: 0;
-            height: 100%;
-            width: 100%;
+// --- HEADER COMPTE ---
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 
-        }
-
-        .account__item__image {
-            flex: 1;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                padding: 0;
-            }
-        }
-
-        .account__item__info {
-            flex: 2;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-
-            &-name {
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: rgb(151, 60, 3);
-                margin-right: 2rem;
-                margin-left: 1rem;
-            }
-
-            &-details {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                margin-left: auto;
-                padding-right: 1rem;
-            }
-
-            &-email {
-                font-size: 0.7rem;
-                color: $black;
-            }
-
-            &-date {
-                font-size: 0.6rem;
-                margin-left: auto;
-                /*  color: $text-light; */
-                font-style: italic
-            }
-        }
-
+    &__avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: $card;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-700;
+        color: $ink-soft;
+        flex-shrink: 0;
     }
 
-    // orders item
-    .orders {
-        // Le bloc principal des commandes
-        @include centerElement(column);
-        width: 100%;
-        padding: 4rem;
+    &__greeting {
+        font-family: $fontDisplay;
+        font-size: $fs-h2;
+        font-weight: $fw-600;
+        color: $ink;
+    }
 
+    &__since {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        margin-top: 0.25rem;
+    }
+}
 
-        &__title {
-            margin-bottom: 1.5rem !important;
-            align-self: flex-start;
-            display: block;
+// --- SIDEBAR ---
+.account-sidebar {
+    position: sticky;
+    top: 120px;
+
+    @media screen and (max-width: $breakpoint-tablette) {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        gap: 0.5rem;
+        padding-bottom: 0.5rem;
+        white-space: nowrap;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        border-radius: $radius-md;
+        font-size: $fs-body-sm;
+        font-weight: $fw-500;
+        color: $ink-soft;
+        transition: all 0.2s;
+
+        @media screen and (max-width: $breakpoint-tablette) {
+            flex-shrink: 0;
+            font-size: $fs-caption;
+            padding: 0.5rem 0.75rem;
         }
 
-        &__table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 0.5rem; // ✅ Réduit l'espacement
-
-
-
-            &-head {
-
-
-                &:nth-child(1) {
-                    text-align: left;
-                    width: 45%;
-
-                }
-
-                &:nth-child(2) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-                &:nth-child(3) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-
-
-            }
-
-
-
-            // ✅ &-cell au même niveau que &-row
-            &-cell {
-                vertical-align: middle;
-                text-align: left;
-                font-size: 14px;
-
-
-                &:nth-child(1) {
-                    text-align: left;
-                    width: 45%;
-                }
-
-                &:nth-child(2) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-                &:nth-child(3) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-
-
-                /*   &--header {
-                    font-weight: 600;
-                    color: #6c757d;
-                    font-size: 0.875rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    background-color: #f8f9fa;
-                }
-
-                &--number {
-                    font-weight: 600;
-                    color: $green;
-                    font-size: 1rem;
-                }
-
-                &--date {
-                    color: #6c757d;
-                    font-size: 0.9375rem;
-                }
-
-                &--price {
-                    font-weight: 600;
-                    font-size: 1rem;
-                    color: #212529;
-                }
-
-                &--empty {
-                    text-align: center;
-                    color: #6c757d;
-                    font-style: italic;
-                } */
-            }
+        &:hover {
+            background: rgba($ink, 0.04);
+            color: $ink;
         }
 
+        &.is-active {
+            background: rgba($terra, 0.08);
+            color: $terra;
+            font-weight: $fw-600;
+        }
+
+        svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+    }
+
+    &__logout {
+        margin-top: 1.5rem;
+
+        @media screen and (max-width: $breakpoint-tablette) {
+            display: none;
+        }
+    }
+}
+
+// --- STATS ---
+.account-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+    box-shadow: $shadow-card;
+
+    &__icon {
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-md;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+
+        &--terra {
+            background: rgba($terra, 0.12);
+            color: $terra;
+        }
+
+        &--olive {
+            background: rgba($olive, 0.12);
+            color: $olive;
+        }
+
+        &--clay {
+            background: rgba($clay, 0.12);
+            color: $clay;
+        }
+    }
+
+    &__value {
+        font-family: $fontDisplay;
+        font-size: $fs-h2;
+        font-weight: $fw-700;
+        color: $ink;
+        line-height: 1;
+    }
+
+    &__label {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        margin-top: 0.25rem;
+    }
+}
+
+// --- COMMANDES ---
+.orders-section {
+    margin-bottom: 2.5rem;
+
+    &__title {
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 1rem;
+    }
+}
+
+.order-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: $paper;
+    border-radius: $radius-lg;
+    margin-bottom: 0.75rem;
+    box-shadow: $shadow-card;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-card-hover;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    &__images {
+        display: flex;
+        flex-shrink: 0;
+
+        img {
+            width: 48px;
+            height: 48px;
+            border-radius: $radius-sm;
+            object-fit: cover;
+            border: 2px solid $paper;
+
+            + img {
+                margin-left: -16px;
+            }
+        }
+    }
+
+    &__id {
+        font-family: $fontDisplay;
+        font-size: $fs-body-sm;
+        font-weight: $fw-600;
+        color: $ink;
+        min-width: 100px;
+    }
+
+    &__status {
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        white-space: nowrap;
+
+        &--done {
+            background: rgba($ok, 0.1);
+            color: $ok;
+        }
+
+        &--transit {
+            background: rgba($terra, 0.1);
+            color: $terra;
+        }
+    }
+
+    &__total {
+        margin-left: auto;
+        font-family: $fontDisplay;
+        font-size: $fs-body;
+        font-weight: $fw-600;
+        color: $ink;
+        white-space: nowrap;
+    }
+
+    &__action {
+        @include btn-ghost;
+        @include btn-sm;
+        white-space: nowrap;
+    }
+}
+
+// --- RECHARGE ---
+.recharge {
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 2rem;
+    box-shadow: $shadow-card;
+    margin-bottom: 2.5rem;
+
+    &__title {
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 1rem;
+    }
+
+    &__desc {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        margin-bottom: 1.25rem;
+    }
+
+    &__bar {
+        height: 8px;
+        background: $card;
+        border-radius: $radius-full;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+
+        &-fill {
+            height: 100%;
+            width: 60%;
+            background: $olive;
+            border-radius: $radius-full;
+            transition: width 0.5s $ease-out;
+        }
+    }
+
+    &__info {
+        font-size: $fs-caption;
+        color: $ink-soft;
+
+        strong {
+            color: $terra;
+        }
+    }
+}
+
+// --- SECTIONS COMPTE ---
+.account-section {
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 1.5rem 2rem;
+    box-shadow: $shadow-card;
+    margin-bottom: 1rem;
+
+    &__title {
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 1rem;
+    }
+
+    form {
+        display: flex;
+
+        button {
+            @include btn-ghost;
+            font-size: $fs-body-sm;
+        }
+    }
+
+    .btn--danger {
+        @include btn-base;
+        @include btn-md;
+        background: transparent;
+        color: #e74c3c;
+        border: 1.5px solid rgba(#e74c3c, 0.3);
+
+        &:hover {
+            background: rgba(#e74c3c, 0.06);
+            border-color: #e74c3c;
+        }
     }
 }

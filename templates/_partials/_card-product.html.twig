@@ -1,15 +1,13 @@
-<article class="card-product">
-    <div class="card-product__image">
-        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" 
-             alt="{{ product.shortDescription }}">
+<article class="card-product" data-reveal>
+    <a href="{{ path('app_product_show', { id: product.id }) }}" class="card-product__media" aria-label="Voir {{ product.name }}">
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" loading="lazy"/>
+    </a>
+    <div class="card-product__body">
+        <h3 class="card-product__body-title">{{ product.name }}</h3>
+        <p class="card-product__body-text">{{ product.shortDescription }}</p>
     </div>
-    <div class="card-product__content">
-        <h3 class="card-product__content-title f-card-product-title">{{ product.name }}</h3>
-        <p class="card-product__content-description f-card-product-text ">{{ product.shortDescription }}</p>
-        <p class="card-product__content-price f-card-product-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
-        <a href="{{ path('app_product_show', { id: product.id }) }}" 
-           class="card-product__link btn">
-            <span class="link">Voir le produit</span>
-        </a>
+    <div class="card-product__foot">
+        <span class="card-product__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
+        <a href="{{ path('app_product_show', { id: product.id }) }}" class="card-product__add">Voir</a>
     </div>
 </article>

@@ -1,120 +1,36 @@
 @use "../abstracts/_all" as *;
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 
-
-// ****************** GLOBAL *********************
-// header nav footer
-.f-hfp {
-    font-size: $fs-14px;
+body {
+    font-family: $fontBody;
+    font-size: $fs-body;
     font-weight: $fw-400;
-    color: $gray-33;
-    text-decoration: none;
+    color: $ink;
+    line-height: 1.6;
 }
 
-// title page
-.f-title-page-section {
-    font-size: $fs-20px;
-    font-weight: $fw-500;
-    color: $gray-33;
-}
-
-// title item
-.f-title-item {
-    font-size: $fs-14px;
+h1, h2, h3, h4, h5, h6 {
+    font-family: $fontDisplay;
     font-weight: $fw-600;
-    color: $black;
+    line-height: 1.15;
 }
 
-// text, link, subtitle
-.f-text {
-    font-size: $fs-14px;
-    font-weight: $fw-400;
-    color: $gray-66;
+.display {
+    font-family: $fontDisplay;
+    font-size: $fs-display;
+    font-weight: $fw-700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
 }
 
-// ******************* HOME PAGE *****************
-// ------ hero section ------
-.f-hero-title {
-    font-size: $fs-64px;
-    font-weight: $fw-500;
-    color: $gray-33;
+h1 {
+    font-size: $fs-h1;
 }
 
-.f-hero-text {
-    font-size: $fs-18px;
-    font-weight: $fw-300;
-    color: $gray-33;
+h2 {
+    font-size: $fs-h2;
 }
 
-// ------ product card section ------
-.f-card-product-title {
-    font-size: $fs-16px;
-    font-weight: $fw-600;
-    color: $black;
-}
-
-.f-card-product-text {
-    font-size: $fs-14px;
-    font-weight: $fw-400;
-    color: $gray-66;
-}
-
-.f-card-product-price {
-    font-size: $fs-14px;
-    font-weight: $fw-400;
-    color: $gray-33;
-}
-
-// ------ values section ------
-.f-values-title {
-    font-size: $fs-20px;
-    font-weight: $fw-500;
-    color: $gray-33;
-}
-
-.f-values-text {
-    font-size: $fs-14px;
-    font-weight: $fw-300;
-    color: $gray-33;
-}
-
-// ******************* PRODUCT SHOW PAGE *****************
-.f-product-show-price {
-    font-size: $fs-30px;
-    font-weight: $fw-300;
-    color: $gray-33;
-}
-
-.f-product-show-title-description {
-    font-size: $fs-10px;
-    font-weight: $fw-400;
-    color: $gray-66;
-}
-
-.f-product-show-description {
-    font-size: $fs-14px;
-    font-weight: $fw-400;
-    color: $gray-66;
-}
-
-// ******************* CART PAGE *****************
-// ------ cart item------
-.f-cart-product-item-title {
-    font-size: $fs-14px;
-    font-weight: $fw-600;
-    color: $black;
-}
-
-// ------ total price item------
-.f-cart-total-item-price {
-    font-size: $fs-20px;
-    font-weight: $fw-400;
-    color: $gray-33;
-}
-
-// ******************* MY ACCOUNT PAGE *****************
-.f-comman-item-value {
-    font-size: $fs-14px;
-    font-weight: $fw-500;
-    color: $gray-33;
+h3 {
+    font-size: $fs-h3;
 }

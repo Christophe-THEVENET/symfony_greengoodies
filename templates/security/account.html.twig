@@ -1,95 +1,143 @@
 {% extends 'base.html.twig' %}
 
-{% set bodyClass = 'page-pink' %}
-
-
-{% block title %}
-	{{ parent() }}
-	- Mon compte
-{% endblock %}
+{% block title %}{{ parent() }} — Mon compte{% endblock %}
 
 {% block body %}
 
-	<section class="cart account container container--height">
-		<div class="cart__wrapper">
-			<h1 class=" cart__title f-title-page-section">
-				Mon compte
-			</h1>
-			<div class="cart__item-wrapper">
-				{% include "./_partials/_account/_user-info.html.twig" %}
+<section class="account-page">
+    {# ========== SIDEBAR ========== #}
+    <aside class="account-sidebar">
+        <a href="#" class="account-sidebar__link is-active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Vue d'ensemble
+        </a>
+        <a href="#" class="account-sidebar__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
+            Commandes
+        </a>
+        <a href="#" class="account-sidebar__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Favoris
+        </a>
+        <a href="#" class="account-sidebar__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Adresses
+        </a>
+        <a href="#" class="account-sidebar__link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Profil & sécurité
+        </a>
+        <div class="account-sidebar__logout">
+            <a href="{{ path('app_logout') }}" class="account-sidebar__link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Déconnexion
+            </a>
+        </div>
+    </aside>
 
+    {# ========== CONTENU ========== #}
+    <div class="account-content">
+        {# Header #}
+        <div class="account-header">
+            <div class="account-header__avatar">
+                {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
+            </div>
+            <div>
+                <div class="account-header__greeting">Bonjour, {{ app.user.firstname }}</div>
+                <div class="account-header__since">Membre depuis {{ app.user.createdAt ? app.user.createdAt|date('F Y') : '2023' }}</div>
+            </div>
+        </div>
 
-				<div class="cart__item orders">
-					<h5 class="orders__title f-title-item">Mes commandes</h5>
-
-						<table class="orders__table">
-							<thead class="orders__table-head">
-								<tr>
-									<th class="f-text">N°</th>
-									<th class="f-text">Date</th>
-									<th class="f-text">Prix</th>
-								</tr>
-							</thead>
-							<tbody class="orders__table-body">
-								{% for order in orders %}
-									<tr class="orders__table-row">
-										<td class="f-title-page-section  orders__table-cell orders__table-cell--number">
-											{{ order.orderNumber }}
-										</td>
-										<td class="f-title-page-section orders__table-cell orders__table-cell--date">
-											{{ order.createdAt|date('d/m/Y') }}
-										</td>
-										<td class="f-title-page-section orders__table-cell orders__table-cell--price">
-											{{ order.totalAmount|number_format(2, ',', ' ') }}€
-										</td>
-									</tr>
-								{% else %}
-									<tr class="orders__table-row orders__table-row--empty">
-										<td colspan="3" class="orders__table-cell orders__table-cell--empty">
-											Aucune commande pour le moment
-										</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-				</div>
-
-                <div class="cart__item orders">
-                    <h5 class="orders__title f-title-item">Mon accès API</h5>
-                    {# <form class="form-cart-valid" method="post" action="{{ path('app_account_toggle_api_access') }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token('toggle_api_access') }}">
-                        {% if user.apiAccessEnabled %}
-                            <button type="submit" class="btn-secondary order-validate">
-                                <span class="link">Désactiver mon accès API</span>
-                            </button>
-                        {% else %}
-                            <button type="submit" class="btn-secondary order-validate">
-                                <span class="link">Activer mon accès API</span>
-                            </button>
-                        {% endif %}
-                    </form> #}
-
-                    <form class="form-cart-valid" method="post" action="{{ path('api_account_toggle_api') }}" 
-                        data-controller="account"
-                        data-action="submit->account#toggleApiAccess">
-                        <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}">
-                        <button type="submit" data-account-target="button" class="btn-secondary order-validate">
-                            <span class="link">{{ app.user.apiAccessEnabled ? 'Désactiver mon accès API' : 'Activer mon accès API' }}</span>
-                        </button>
-                    </form>
-
+        {# Stats #}
+        <div class="account-stats">
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--terra">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
                 </div>
-                
-                <div class="cart__item orders">
-                    <form class="form-cart-valid" method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
-                        <button type="submit" class="btn-secondary order-validate">
-                            <span class="link">Supprimer mon compte</span>
-                        </button>
-                    </form>
+                <div class="stat-card__value">{{ orders|length }}</div>
+                <div class="stat-card__label">Commandes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--olive">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 </div>
+                <div class="stat-card__value">23</div>
+                <div class="stat-card__label">Recharges rapportées</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card__icon stat-card__icon--clay">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22c1.25-1.25 2.5-2.5 4-4 1-1 2-2 3-3"/><path d="M12 2C6.5 2 2 6.5 2 12"/><path d="M22 12c0-5.5-4.5-10-10-10"/></svg>
+                </div>
+                <div class="stat-card__value">8,2 kg</div>
+                <div class="stat-card__label">Plastique évité</div>
+            </div>
+        </div>
 
-			</div>
-		</div>
-	</section>
+        {# Commandes récentes #}
+        <div class="orders-section">
+            <h3 class="orders-section__title">Commandes récentes</h3>
+            {% for order in orders %}
+                <div class="order-row">
+                    <div class="order-row__images">
+                        {% for item in order.orderItems %}
+                            <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" />
+                        {% endfor %}
+                    </div>
+                    <div class="order-row__id">#{{ order.orderNumber }}</div>
+                    <span class="order-row__status {{ cycle(['order-row__status--done', 'order-row__status--transit'], loop.index0) }}">
+                        {{ cycle(['Livrée', 'En transit'], loop.index0) }}
+                    </span>
+                    <div class="order-row__total">{{ order.totalAmount|number_format(2, ',', ' ') }}€</div>
+                    <button class="order-row__action">Suivre</button>
+                </div>
+            {% else %}
+                <p style="color:#6E5A52;font-size:0.875rem;">Aucune commande pour le moment.</p>
+            {% endfor %}
+        </div>
+
+        {# Programme recharge #}
+        <div class="recharge">
+            <h3 class="recharge__title">Programme de recharge</h3>
+            <p class="recharge__desc">Rapportez vos contenants vides et cumulez des récompenses. Chaque recharge vous rapproche d'une réduction.</p>
+            <div class="recharge__bar">
+                <div class="recharge__bar-fill" style="width:60%;"></div>
+            </div>
+            <p class="recharge__info"><strong>3 recharges sur 5</strong> — Plus que 2 pour votre prochaine récompense !</p>
+        </div>
+
+        {# Adresse de livraison #}
+        <div class="account-section">
+            <h3 class="account-section__title">Adresse de livraison</h3>
+            <p style="font-size:0.875rem;color:#6E5A52;line-height:1.6;">
+                {{ app.user.firstname }} {{ app.user.lastname }}<br>
+                15 rue de la Paix<br>
+                69002 Lyon<br>
+                {{ app.user.email }}
+            </p>
+        </div>
+
+        {# Accès API #}
+        <div class="account-section">
+            <h3 class="account-section__title">Accès API</h3>
+            <form method="post" action="{{ path('api_account_toggle_api') }}"
+                  data-controller="account"
+                  data-action="submit->account#toggleApiAccess">
+                <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}" />
+                <button type="submit" data-account-target="button">
+                    {{ app.user.apiAccessEnabled ? 'Désactiver mon accès API' : 'Activer mon accès API' }}
+                </button>
+            </form>
+        </div>
+
+        {# Supprimer le compte #}
+        <div class="account-section">
+            <h3 class="account-section__title">Zone dangereuse</h3>
+            <form method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}" />
+                <button type="submit" class="btn--danger">Supprimer mon compte</button>
+            </form>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

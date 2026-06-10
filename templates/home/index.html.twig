@@ -1,49 +1,132 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ parent() }}
-	- Accueil
-{% endblock %}
-
+{% block title %}{{ parent() }} — Terre Vive{% endblock %}
 
 {% block body %}
-	{% include "./_partials/_hero.html.twig" %}
 
-            {# ****************** PRODUCTS LIST****************** #}
-	<section class="products">
-		<div class="products__header">
-			<h2 class="products__header-title f-title-page-section">Nos produits</h2>
-		</div>
-		<div class="products__list">
+{# ========== HERO ========== #}
+<section class="hero">
+    <div class="wrap hero__grid">
+        <div class="hero__copy">
+            <span class="eyebrow hero__eyebrow" data-reveal>Boutique éco-responsable · Lyon</span>
+            <h1 class="hero__title" data-reveal data-reveal-delay="60">
+                <span>Consommer</span><br />
+                <span class="o">autrement,</span><br />
+                <span class="u">vraiment.</span>
+            </h1>
+            <p class="hero__lead" data-reveal data-reveal-delay="140">Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.</p>
+            <div class="hero__cta" data-reveal data-reveal-delay="220">
+                <a href="#products" class="btn btn--solid">Voir la boutique</a>
+                <div class="hero__rating"><b>★★★★★</b><span>+1 200 avis · 4,9/5</span></div>
+            </div>
+        </div>
+        <div class="hero__media" data-reveal="fade">
+            <div class="hero__blob"><img src="{{ asset('img/products/savon.png') }}" alt="Savon bio" data-parallax="0.06" /></div>
+            <div class="hero__chip hero__chip--tl"><span class="ic">%</span><span class="hero__chip-txt"><b>-30% déchet</b><small>vs grande surface</small></span></div>
+            <div class="hero__chip hero__chip--br"><span class="ic">↻</span><span class="hero__chip-txt"><b>100% rechargeable</b><small>emballages consignés</small></span></div>
+        </div>
+    </div>
+</section>
+
+{# ========== TICKER ========== #}
+<div class="ticker" aria-hidden="true">
+    <div class="ticker__row">
+        <span class="ticker__item">Livraison neutre en carbone</span><span class="ticker__item">Zéro déchet</span><span class="ticker__item">Made in France</span><span class="ticker__item">Sans plastique</span><span class="ticker__item">Paiement sécurisé</span>
+        <span class="ticker__item">Livraison neutre en carbone</span><span class="ticker__item">Zéro déchet</span><span class="ticker__item">Made in France</span><span class="ticker__item">Sans plastique</span><span class="ticker__item">Paiement sécurisé</span>
+    </div>
+</div>
+
+{# ========== PRODUITS ========== #}
+<section class="products" id="products">
+    <div class="wrap">
+        <div class="sec-head" data-reveal>
+            <div><span class="eyebrow">La sélection</span><h2>Nos produits</h2></div>
+            <p>Neuf essentiels choisis pour leur qualité, leur durabilité et leur juste fabrication.</p>
+        </div>
+        <div class="grid">
             {% for product in products %}
-                {% include "./_partials/_card-product.html.twig" with {'product': product} %}
-            {% endfor %}
-		</div>
-	</section>
-
-            {# ****************** VALUES ****************** #}
-    <section class="values">
-			<article class="values__item">
-                <div class="values__item-content">
-                    <h3  class="values__item-title f-values-title">notre conviction</h3>
-                    <p class="values__item-text f-values-text ">Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique.</p>
-                </div>
-                 <div class="values__item-image">
-                    <img src="{{ asset('img/site/convictions.png') }}" alt="fleurs décoration">
-                </div>
-            </article>
-
-            <article class="values__item reverse">
-                <div class="values__item-content">
-                    <div class="values__item-content-reverse">
-                        <h3   class="values__item-title f-values-title">NOS VALEURS</h3>
-                        <p class="values__item-text f-values-text">Durabilité : Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité. Éthique : Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques. Écologie : Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.</p>
+                <article class="card" data-reveal data-reveal-delay="{{ (loop.index0 % 3) * 80 }}">
+                    <a class="card__media" href="{{ path('app_product_show', { id: product.id }) }}">
+                        {% if productTags[product.id] is defined %}
+                            <span class="card__pill">{{ productTags[product.id] }}</span>
+                        {% endif %}
+                        <button class="card__fav" aria-label="Favori" onclick="event.preventDefault()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32241B" stroke-width="1.7"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 1.7 5 5 5c2 0 3.2 1.2 4 2.3C9.8 6.2 11 5 13 5c3.3 0 4.6 3.5 3 6.8C16.5 16.4 12 21 12 21z"/></svg>
+                        </button>
+                        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" loading="lazy" />
+                    </a>
+                    <div class="card__body">
+                        <a href="{{ path('app_product_show', { id: product.id }) }}"><h3 class="card__name">{{ product.name }}</h3></a>
+                        <p class="card__desc">{{ product.shortDescription }}</p>
+                        <div class="card__foot">
+                            <span class="card__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
+                            <button class="card__add" aria-label="Ajouter au panier" onclick="event.preventDefault()"
+                                    {{ stimulus_controller('cart', { url: path('api_cart_add', {productId: product.id}), productId: product.id }) }}
+                                    {{ stimulus_action('cart', 'addToCart', 'click') }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="values__item-image">
-                    <img src="{{ asset('img/site/valeurs.png') }}" alt="fleurs décoration">
-                </div>
-            </article>
+                </article>
+            {% endfor %}
+        </div>
+        <div class="products__more" data-reveal><a href="#" class="btn btn--ghost">Voir toute la boutique</a></div>
+    </div>
+</section>
 
-    </section>
+{# ========== HISTOIRE ========== #}
+<section class="story" id="story">
+    <div class="wrap story__grid">
+        <div class="story__media" data-reveal="fade">
+            <div class="story__media-frame"><img src="{{ asset('img/site/hero.png') }}" alt="Atelier GreenGoodies" data-parallax="0.05" /></div>
+            <div class="story__badge">Lyon depuis 2019</div>
+        </div>
+        <div class="story__copy">
+            <span class="eyebrow" data-reveal>Notre histoire</span>
+            <h2 data-reveal data-reveal-delay="60">Une boutique, une conviction.</h2>
+            <p data-reveal data-reveal-delay="120">Tout commence en 2019, à la Croix-Rousse. Aurélie ouvre une petite boutique avec une idée simple : prouver qu'on peut consommer mieux sans renoncer au beau ni au plaisir.</p>
+            <blockquote class="story__quote" data-reveal data-reveal-delay="160">« Chaque produit doit pouvoir être regardé en face : son origine, sa matière, sa fin de vie. »</blockquote>
+            <div class="story__sign" data-reveal data-reveal-delay="200"><div class="story__av">AC</div><div><b>Aurélie C.</b><br /><small>Fondatrice</small></div></div>
+        </div>
+    </div>
+</section>
+
+{# ========== VALEURS ========== #}
+<section class="values" id="values">
+    <div class="wrap">
+        <div class="values__list">
+            <article class="value" data-reveal><span class="value__num">01</span><h4>Durabilité</h4><p>Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.</p></article>
+            <article class="value" data-reveal data-reveal-delay="100"><span class="value__num">02</span><h4>Éthique</h4><p>Nous ne travaillons qu'avec des partenaires qui partagent nos valeurs et rémunèrent justement.</p></article>
+            <article class="value" data-reveal data-reveal-delay="200"><span class="value__num">03</span><h4>Écologie</h4><p>Des pratiques respectueuses de l'écosystème, des matériaux écologiques et une logistique neutre en carbone.</p></article>
+        </div>
+    </div>
+</section>
+
+{# ========== TÉMOIGNAGES ========== #}
+<section class="testi">
+    <div class="wrap">
+        <div class="testi__head" data-reveal><span class="eyebrow">Elles & ils nous font confiance</span><h2>Ce qu'on en dit</h2></div>
+        <div class="testi__grid">
+            <figure class="quote" data-reveal><div class="quote__stars">★★★★★</div><p>« La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
+            <figure class="quote" data-reveal data-reveal-delay="100"><div class="quote__stars">★★★★★</div><p>« Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+            <figure class="quote" data-reveal data-reveal-delay="200"><div class="quote__stars">★★★★★</div><p>« Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
+        </div>
+    </div>
+</section>
+
+{# ========== NEWSLETTER ========== #}
+<section class="news" id="news">
+    <div class="wrap">
+        <div class="news__inner" data-reveal="fade">
+            <span class="eyebrow">Le Journal</span>
+            <h2>Rejoignez le mouvement.</h2>
+            <p>Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.</p>
+            <form class="news__form" onsubmit="return false" data-controller="newsletter">
+                <input type="email" placeholder="vous@exemple.fr" aria-label="Email" data-newsletter-target="input" />
+                <button type="submit" data-action="click->newsletter#subscribe">S'inscrire</button>
+            </form>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

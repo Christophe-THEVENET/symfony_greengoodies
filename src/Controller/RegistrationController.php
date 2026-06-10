@@ -12,15 +12,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-class RegistrationController extends AbstractController
+final class RegistrationController extends AbstractController
 {
-    #[Route('/inscription', name: 'app_register')]
+    #[Route('/inscription', name: 'app_register', methods: ['GET', 'POST'])]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
         Security $security,
-        EntityManagerInterface $entityManager): Response
-    {
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
@@ -28,21 +32,22 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
-
-            // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
             $request->getSession()->set('toast', 'Bienvenue ' . $user->getFirstname() . ' !');
 
             return $security->login($user, 'form_login', 'main');
         }
 
-        return $this->render('registration/register.html.twig', [
+        // En cas d'erreur, réafficher le split-screen avec l'onglet register actif
+        return $this->render('security/login.html.twig', [
+            'last_username' => '',
+            'error' => null,
             'registrationForm' => $form,
+            'activeTab' => 'register',
         ]);
     }
 }

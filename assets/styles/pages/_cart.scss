@@ -1,106 +1,250 @@
 @use "../abstracts/_all" as *;
 
-.cart {
-    @include centerElement;
-    align-items: flex-start;
-    margin: 0 auto;
-    padding: 6rem 0;
+// ============================================================
+// PANIER
+// ============================================================
 
-    &__wrapper {
-        @include centerElement(column);
-        min-width: 55%;
+// Barre progression livraison offerte
+.ship-progress {
+    background: mix($olive, $cream, 20%);
+    text-align: center;
+    padding: 1rem;
+
+    &__text {
+        font-size: $fs-body-sm;
+        font-weight: $fw-500;
+        color: $ink;
+
+        strong {
+            font-family: $fontDisplay;
+        }
+    }
+}
+
+// Layout panier
+.cart-page {
+    @include container;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-block: 3rem 5rem;
+
+    @media screen and (max-width: $breakpoint-tablette) {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Articles
+.bag {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    &__empty {
+        text-align: center;
+        padding: 5rem 0;
+        color: $ink-soft;
+
+        a {
+            color: $terra;
+            font-weight: $fw-600;
+            text-decoration: underline;
+        }
+    }
+}
+
+.bag-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid $line;
+
+    &__image {
+        width: 96px;
+        height: 96px;
+        border-radius: $radius-md;
+        overflow: hidden;
+        background: $card;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__meta {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__name {
+        font-family: $fontDisplay;
+        font-size: $fs-body;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 0.25rem;
+    }
+
+    &__variant {
+        font-size: $fs-caption;
+        color: $ink-soft;
+        margin-bottom: 0.5rem;
+    }
+
+    &__actions {
         display: flex;
-        flex-direction: column;
-        height: 100%; // Prend toute la hauteur disponible
+        align-items: center;
+        gap: 1rem;
+    }
+
+    &__qty {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+
+        input {
+            width: 44px;
+            text-align: center;
+            border: 1.5px solid $line;
+            border-radius: $radius-sm;
+            padding: 0.3rem 0;
+            font-size: $fs-body-sm;
+            font-weight: $fw-600;
+            background: $paper;
+            color: $ink;
+            outline: none;
+
+            &:focus {
+                border-color: $terra;
+            }
+
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+            }
+        }
+    }
+
+    &__remove {
+        @include btn-base;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border-radius: 50%;
+        background: transparent;
+        color: $ink-soft;
+        font-size: $fs-body;
+
+        &:hover {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.08);
+        }
+    }
+
+    &__price {
+        font-family: $fontDisplay;
+        font-size: $fs-body;
+        font-weight: $fw-600;
+        color: $ink;
+        text-align: right;
+        min-width: 80px;
+    }
+}
+
+// Récapitulatif
+.cart-summary {
+    position: sticky;
+    top: 120px;
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 2rem;
+    box-shadow: $shadow-card;
+
+    @media screen and (max-width: $breakpoint-tablette) {
+        position: static;
     }
 
     &__title {
-
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
         margin-bottom: 1.5rem;
     }
 
-    &__clear {
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-        align-self: start;
-        margin-bottom: 1rem;
-        text-decoration: none;
-        border-bottom: 1px solid transparent;
-        line-height: 1;
-        transition: all 0.3s ease;
-
-        &:hover {
-            color: $gray-33;
-            font-weight: $fw-400;
-            border-bottom: 1px solid $gray-33;
-            transition: all 0.3s ease;
-        }
-    }
-
-    &__item-wrapper {
-        width: 100%;
-        @include centerElement(column);
-        gap: 0.3rem;
-    }
-
-    &__total {
-        @include centerElement(column);
-        align-items: flex-end;
-        width: 100%;
-        background-color: $beige-light;
-        padding: 1rem 3rem 1rem 1rem;
-        margin-bottom: 2rem;
-        justify-content: flex-start;
-
-        &-amount {
-            font-size: 0.875rem;
-        }
-
-        &-price {
-            margin-left: 0.1rem;
-        }
-
-        &-info {
-            font-size: 0.75rem;
-            letter-spacing: 0.2px;
-        }
-    }
-
-    
-
-    .form-cart-valid {
-        width: 80%;
+    &__row {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0;
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+
+        &--total {
+            font-family: $fontDisplay;
+            font-size: $fs-price;
+            font-weight: $fw-700;
+            color: $ink;
+            border-top: 2px solid $line;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+        }
+
+        &--discount {
+            color: $olive-deep;
+        }
+    }
+
+    &__promo {
+        display: flex;
+        gap: 0.5rem;
+        margin-block: 1rem;
+
+        input {
+            flex: 1;
+            padding: 0.6rem 1rem;
+            border: 1.5px solid $line;
+            border-radius: $radius-full;
+            font-size: $fs-body-sm;
+            background: $cream;
+            outline: none;
+            min-width: 0;
+
+            &:focus {
+                border-color: $terra;
+            }
+        }
+    }
+
+    &__cta {
+        @include btn-solid;
+        @include btn-block;
+        @include btn-lg;
+        margin-top: 0.5rem;
+    }
+
+    &__reassurance {
+        text-align: center;
         margin-top: 1rem;
+        font-size: $fs-caption;
+        color: $ink-soft;
 
-        button {
-            width: 100%;
+        svg {
+            width: 14px;
+            height: 14px;
+            vertical-align: middle;
+            margin-right: 0.25rem;
+            color: $ok;
         }
     }
 
-}
-
-@media screen and (max-width: $breakpoint-tablette) {
-
-    .cart {
-        &__wrapper {
-            min-width: 65%;
-        }
-    }
-}
-
-@media screen and (max-width: $breakpoint-mobile) {
-
-    .cart {
-        &__wrapper {
-            min-width: 80%;
-            max-width: 95%;
-        }
-
-        .btn-secondary {
-            width: 90%;
-        }
+    &__empty {
+        text-align: center;
+        padding: 2rem 0;
+        color: $ink-soft;
     }
 }

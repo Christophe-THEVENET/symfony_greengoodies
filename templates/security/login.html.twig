@@ -1,74 +1,143 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{parent()}} - Connexion{% endblock %}
+{% block title %}{{ parent() }} — Connexion{% endblock %}
 
 {% block body %}
 
-    <section class="login container container--height">
-        <div class="login__image">
-            <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />
+<div class="auth">
+    {# ========== PANNEAU MARQUE (gauche) ========== #}
+    <div class="auth__brand">
+        <div class="auth__brand-bg">
+            <img src="{{ asset('img/site/register.png') }}" alt="" />
         </div>
-        <div class="login__form">
-            <div class="login__form-wrapper">
+        <div class="auth__brand-halo"></div>
+        <div class="auth__brand-content">
+            <img src="{{ asset('img/logo.svg') }}" alt="GreenGoodies" class="auth__brand-logo" />
+            <p class="auth__brand-pitch">Rejoignez l'épicerie qui fait du bien</p>
+            <div class="auth__brand-features">
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Livraison offerte dès 49 €</span>
+                </div>
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Produits bio, locaux et de saison</span>
+                </div>
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>Programme de fidélité recharge</span>
+                </div>
+            </div>
+            <p class="auth__brand-quote">« GreenGoodies a transformé ma façon de consommer. Je ne reviendrais en arrière pour rien au monde. » — Claire, Lyon 2<sup>e</sup></p>
+        </div>
+    </div>
 
-                <h1 class="login__form-title f-title-page-section">Connexion</h1>               
+    {# ========== PANNEAU FORMULAIRE (droite) ========== #}
+    <div class="auth__form" data-controller="auth" data-auth-active-tab-value="{{ activeTab|default('login') }}">
+        <div class="auth__form-inner">
+            <a href="{{ path('app_home') }}" class="auth__form-back">← Retour à l'accueil</a>
 
-                {% if app.user %}
-                    <div>Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
-                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            {# Onglets #}
+            <div class="auth__form-tabs">
+                <button class="is-active" data-auth-target="tab" data-action="click->auth#showLogin">Connexion</button>
+                <button data-auth-target="tab" data-action="click->auth#showRegister">Inscription</button>
+            </div>
+
+            {# ===== FORMULAIRE CONNEXION ===== #}
+            <div class="auth__panel" data-auth-target="loginPanel">
+                {% if error %}
+                    <div class="form-error" role="alert" style="color:#e74c3c;font-size:0.875rem;margin-bottom:1rem;background:#fdf2f2;padding:0.75rem 1rem;border-radius:8px;">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
                     </div>
                 {% endif %}
 
-                {% if not app.user %}
-                    <form method="post" 
-                        data-controller="login"
-                        data-login-form-type-value="login"
-                        data-action="submit->login#onSubmit">
+                <form method="post" action="{{ path('app_login') }}">
+                    <div class="auth__field">
+                        <label for="login_email">Email</label>
+                        <input type="email" id="login_email" name="_username" value="{{ last_username }}" placeholder="votre@email.fr" required autocomplete="email" />
+                    </div>
+                    <div class="auth__field">
+                        <label for="login_password">Mot de passe</label>
+                        <input type="password" id="login_password" name="_password" placeholder="••••••••" required autocomplete="current-password" />
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
-                        <div class="login__form-item">
-                            <label class="f-text" for="username">Email</label>
-                            <input type="email" 
-                                value="{{ last_username }}" 
-                                name="_username" 
-                                id="username" 
-                                class="form-control" 
-                                autocomplete="email" 
-                                required 
-                                autofocus
-                                data-login-target="email"
-                                data-action="input->login#checkForm">
-                        </div>
-                                
-                        <div class="login__form-item">
-                            <label class="f-text" for="password">Mot de passe</label>
-                            <input type="password" 
-                                name="_password" 
-                                id="password" 
-                                class="form-control" 
-                                autocomplete="current-password" 
-                                required
-                                data-login-target="password"
-                                data-action="input->login#checkForm">
-                        </div>
+                    <div class="auth__options">
+                        <label>
+                            <input type="checkbox" name="_remember_me" checked />
+                            Se souvenir de moi
+                        </label>
+                        <a href="#">Mot de passe oublié ?</a>
+                    </div>
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button type="submit" class="auth__submit">Se connecter</button>
+                </form>
+            </div>
 
-                        <div class="login__form-checkbox">
-                            <input type="checkbox" name="_remember_me" id="_remember_me">
-                            <label class="f-text" for="_remember_me">Se souvenir de moi</label>
-                        </div>
+            {# ===== FORMULAIRE INSCRIPTION ===== #}
+            <div class="auth__panel" data-auth-target="registerPanel" hidden>
+                {{ form_start(registrationForm, { attr: { novalidate: 'novalidate' } }) }}
 
-                        <button class="btn btn-secondary" 
-                            type="submit"
-                            data-login-target="submitButton"
-                            disabled>
-                            <span class="link">Connexion</span>
-                        </button>
-                        
-                    </form>
-                    <div class="login__link"><a class="login__link-a f-text" href="{{ path('app_register') }}">Pas encore de compte ? S'inscrire</a></div>
-                {% endif %}
+                <div class="auth__field">
+                    <label for="registration_form_firstname">{{ form_label(registrationForm.firstname) }}</label>
+                    {{ form_widget(registrationForm.firstname, { attr: { placeholder: 'Votre prénom' } }) }}
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_lastname">{{ form_label(registrationForm.lastname) }}</label>
+                    {{ form_widget(registrationForm.lastname, { attr: { placeholder: 'Votre nom' } }) }}
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_email">{{ form_label(registrationForm.email) }}</label>
+                    {{ form_widget(registrationForm.email, { attr: { placeholder: 'votre@email.fr' } }) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_plainPassword_first">{{ form_label(registrationForm.plainPassword.first) }}</label>
+                    {{ form_widget(registrationForm.plainPassword.first, { attr: { placeholder: 'Min. 8 caractères', 'data-login-target': 'password' } }) }}
+                    <div class="password-requirements">
+                        <small>Le mot de passe doit contenir :</small>
+                        <ul>
+                            <li><span class="requirement-icon">○</span> 8-32 caractères</li>
+                            <li><span class="requirement-icon">○</span> 1 majuscule</li>
+                            <li><span class="requirement-icon">○</span> 1 minuscule</li>
+                            <li><span class="requirement-icon">○</span> 1 chiffre</li>
+                            <li><span class="requirement-icon">○</span> 1 caractère spécial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_plainPassword_second">{{ form_label(registrationForm.plainPassword.second) }}</label>
+                    {{ form_widget(registrationForm.plainPassword.second, { attr: { placeholder: 'Confirmez le mot de passe' } }) }}
+                </div>
+                {{ form_errors(registrationForm.plainPassword) }}
+
+                <div class="auth__options">
+                    <label>
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        J'accepte les <a href="#">CGV</a> et la <a href="#">politique de confidentialité</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth__submit">Créer mon compte</button>
+
+                {{ form_end(registrationForm) }}
+            </div>
+
+            {# Séparateur #}
+            <div class="auth__divider">ou continuer avec</div>
+
+            <div class="auth__social">
+                <button type="button">Google</button>
+                <button type="button">Apple</button>
             </div>
         </div>
-    </section>
+    </div>
+</div>
+
 {% endblock %}

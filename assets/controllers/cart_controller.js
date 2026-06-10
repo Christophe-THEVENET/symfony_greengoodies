@@ -97,6 +97,23 @@ export default class extends Controller {
         });
     }
 
+    // ****** QUANTITÉ +/- ******
+    increment() {
+        if (!this.hasQuantityTarget) return;
+        const input = this.quantityTarget;
+        const max = parseInt(input.max) || 99;
+        const val = parseInt(input.value) || 1;
+        if (val < max) input.value = val + 1;
+    }
+
+    decrement() {
+        if (!this.hasQuantityTarget) return;
+        const input = this.quantityTarget;
+        const min = parseInt(input.min) || 1;
+        const val = parseInt(input.value) || 1;
+        if (val > min) input.value = val - 1;
+    }
+
     // ****** VALIDATION DU PANIER ******
     async validateCart(event) {
         event.preventDefault();
