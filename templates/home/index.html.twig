@@ -16,7 +16,7 @@
             </h1>
             <p class="hero__lead" data-reveal data-reveal-delay="140">Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.</p>
             <div class="hero__cta" data-reveal data-reveal-delay="220">
-                <a href="#products" class="btn btn--solid">Voir la boutique</a>
+                <a href="#produits" class="btn btn--solid">Voir la boutique</a>
                 <div class="hero__rating"><b>★★★★★</b><span>+1 200 avis · 4,9/5</span></div>
             </div>
         </div>
@@ -37,7 +37,7 @@
 </div>
 
 {# ========== PRODUITS ========== #}
-<section class="products" id="products">
+<section class="products" id="produits">
     <div class="wrap">
         <div class="sec-head" data-reveal>
             <div><span class="eyebrow">La sélection</span><h2>Nos produits</h2></div>
@@ -70,12 +70,10 @@
                 </article>
             {% endfor %}
         </div>
-        <div class="products__more" data-reveal><a href="#" class="btn btn--ghost">Voir toute la boutique</a></div>
-    </div>
 </section>
 
 {# ========== HISTOIRE ========== #}
-<section class="story" id="story">
+<section class="story" id="histoire">
     <div class="wrap story__grid">
         <div class="story__media" data-reveal="fade">
             <div class="story__media-frame"><img src="{{ asset('img/site/hero.png') }}" alt="Atelier GreenGoodies" data-parallax="0.05" /></div>
@@ -92,33 +90,58 @@
 </section>
 
 {# ========== VALEURS ========== #}
-<section class="values" id="values">
+<section class="values" id="valeurs">
     <div class="wrap">
         <div class="values__list">
             <article class="value" data-reveal><span class="value__num">01</span><h4>Durabilité</h4><p>Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.</p></article>
-            <article class="value" data-reveal data-reveal-delay="100"><span class="value__num">02</span><h4>Éthique</h4><p>Nous ne travaillons qu'avec des partenaires qui partagent nos valeurs et rémunèrent justement.</p></article>
+            <article class="value" data-reveal data-reveal-delay="100"><span class="value__num">02</span><h4>Éthique</h4><p>Nous travaillons avec des partenaires qui partagent nos valeurs et rémunèrent justement. Circuit court, traçabilité totale.</p></article>
             <article class="value" data-reveal data-reveal-delay="200"><span class="value__num">03</span><h4>Écologie</h4><p>Des pratiques respectueuses de l'écosystème, des matériaux écologiques et une logistique neutre en carbone.</p></article>
         </div>
     </div>
 </section>
 
-{# ========== TÉMOIGNAGES ========== #}
+{# ========== TÉMOIGNAGES CAROUSEL ========== #}
 <section class="testi">
     <div class="wrap">
-        <div class="testi__head" data-reveal><span class="eyebrow">Elles & ils nous font confiance</span><h2>Ce qu'on en dit</h2></div>
-        <div class="testi__grid">
-            <figure class="quote" data-reveal><div class="quote__stars">★★★★★</div><p>« La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
-            <figure class="quote" data-reveal data-reveal-delay="100"><div class="quote__stars">★★★★★</div><p>« Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
-            <figure class="quote" data-reveal data-reveal-delay="200"><div class="quote__stars">★★★★★</div><p>« Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
+        <div class="testi__head"><span class="eyebrow">Elles & ils nous font confiance</span><h2>Ce qu'on en dit</h2></div>
+        <div class="testi__carousel" data-controller="carousel" data-carousel-interval-value="4000">
+            <div class="testi__track" data-carousel-target="track">
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Le savon à l'eucalyptus dure 3 fois plus longtemps que mes anciens gels douche. »</p><figcaption class="quote__who"><span class="quote__av">AD</span><span><b>Antoine D.</b><br /><small>Caluire</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★☆</div><p>« Livraison rapide et emballage 100% compostable. Mention spéciale pour le petit mot manuscrit. »</p><figcaption class="quote__who"><span class="quote__av">LB</span><span><b>Léa B.</b><br /><small>Bron</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Je recharge mes contenants depuis 2 ans. Zéro plastique, zéro regret. »</p><figcaption class="quote__who"><span class="quote__av">PR</span><span><b>Paul R.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                </div>
+            </div>
+            <div class="testi__nav">
+                <button class="testi__arrow" data-action="click->carousel#prev" aria-label="Précédent">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="testi__arrow" data-action="click->carousel#next" aria-label="Suivant">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 </section>
 
 {# ========== NEWSLETTER ========== #}
-<section class="news" id="news">
+<section class="news" id="newsletter">
     <div class="wrap">
         <div class="news__inner" data-reveal="fade">
-            <span class="eyebrow">Le Journal</span>
+            <span class="eyebrow">Newsletter</span>
             <h2>Rejoignez le mouvement.</h2>
             <p>Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.</p>
             <form class="news__form" onsubmit="return false" data-controller="newsletter">
