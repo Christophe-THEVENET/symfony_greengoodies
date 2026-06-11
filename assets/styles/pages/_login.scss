@@ -175,6 +175,19 @@ html.page-auth, body.page-auth { height: 100%; margin: 0; overflow: hidden; }
     &__field {
         margin-bottom: 1.25rem;
 
+        // Liste d'erreurs serveur (form_errors) — identique au contact
+        ul {
+            list-style: none;
+            margin: 0.4rem 0 0;
+            padding: 0;
+
+            li {
+                font-size: $fs-caption;
+                font-weight: $fw-500;
+                color: $terra;
+            }
+        }
+
         label {
             display: block;
             font-size: $fs-body-sm;

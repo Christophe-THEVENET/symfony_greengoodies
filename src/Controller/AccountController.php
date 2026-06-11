@@ -169,7 +169,12 @@ class AccountController extends AbstractController
             : $this->translator->trans('toast.api_disabled');
 
         if ($request->isXmlHttpRequest()) {
-            return $this->json(['enabled' => $enabled, 'message' => $message]);
+            return $this->json([
+                'enabled' => $enabled,
+                'message' => $message,
+                // Libellé du bouton pour le nouvel état (traduit)
+                'label' => $this->translator->trans($enabled ? 'account.api_disable' : 'account.api_enable'),
+            ]);
         }
 
         return $this->toastRedirect($enabled ? 'toast.api_enabled' : 'toast.api_disabled', 'profil');

@@ -99,9 +99,20 @@
         background: $cream;
         outline: none;
         resize: vertical;
-        transition: border-color 0.2s;
+        transition: border-color 0.2s, box-shadow 0.2s;
 
-        &:focus { border-color: $terra; }
+        &:focus { border-color: $olive; box-shadow: 0 0 0 3px rgba($olive, 0.15); }
+
+        &.valid {
+            border-color: $ok;
+            background: rgba($ok, 0.04);
+            box-shadow: 0 0 0 2px rgba($ok, 0.15);
+        }
+        &.invalid {
+            border-color: $terra;
+            background: rgba($terra, 0.04);
+            box-shadow: 0 0 0 2px rgba($terra, 0.15);
+        }
     }
 
     .btn--block {

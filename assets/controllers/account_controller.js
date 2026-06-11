@@ -21,12 +21,14 @@ export default class extends Controller {
             const data = await response.json();
 
             if (response.ok) {
-                // Met à jour le texte du span à l'intérieur du bouton
-                const span = this.buttonTarget.querySelector("span.link");
-                if (span) {
-                    span.textContent = data.enabled
-                        ? "Désactiver mon accès API"
-                        : "Activer mon accès API";
+                // Met à jour le libellé du bouton avec le texte traduit renvoyé
+                if (data.label) {
+                    const span = this.buttonTarget.querySelector("span.link");
+                    if (span) {
+                        span.textContent = data.label;
+                    } else {
+                        this.buttonTarget.textContent = data.label;
+                    }
                 }
                 NotificationController.display(data.message, "success");
             } else {
