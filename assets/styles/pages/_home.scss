@@ -343,6 +343,7 @@
         transition: .3s;
 
         &:hover { background: $terra; }
+        &:disabled { cursor: default; opacity: .65; }
     }
 }
 

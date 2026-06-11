@@ -13,25 +13,38 @@ export default class extends Controller {
     // ****** AJOUT AU PANIER ******
     async addToCart(event) {
         event.preventDefault();
+
+        // Anti-spam : on ignore le click si une requête est déjà en cours
+        // pour ce bouton, et on le désactive le temps de l'aller-retour.
+        if (this.pending) return;
+        this.pending = true;
+        const button = event.currentTarget;
+        if (button) button.disabled = true;
+
         const quantity = this.hasQuantityTarget ? (parseInt(this.quantityTarget.value) || 1) : 1;
         const url = this.urlValue;
 
-        await this.sendRequest(
-            url,
-            {
-                method: "POST",
-                body: JSON.stringify({ quantity }),
-            },
-            (data) => {
-                NotificationController.display(
-                    data.message,
-                    data.success ? "success" : "error"
-                );
-                if (data.cart_count !== undefined) {
-                    this.updateCartBadge(data.cart_count);
+        try {
+            await this.sendRequest(
+                url,
+                {
+                    method: "POST",
+                    body: JSON.stringify({ quantity }),
+                },
+                (data) => {
+                    NotificationController.display(
+                        data.message,
+                        data.success ? "success" : "error"
+                    );
+                    if (data.cart_count !== undefined) {
+                        this.updateCartBadge(data.cart_count);
+                    }
                 }
-            }
-        );
+            );
+        } finally {
+            this.pending = false;
+            if (button) button.disabled = false;
+        }
     }
 
     // ****** MISE À JOUR DE QUANTITÉ ******

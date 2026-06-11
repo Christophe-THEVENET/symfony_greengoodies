@@ -19,9 +19,10 @@
 }
 
 // --- PHOTO PRODUIT (image unique) ---
+// Épinglée en haut de sa colonne (align-self: start) avec une hauteur fixe
+// (aspect-ratio) : elle ne bouge pas quand l'accordéon change la hauteur de
+// la colonne d'infos. Pas de sticky pour éviter tout saut au repli/dépli.
 .product-media {
-    position: sticky;
-    top: 100px;
     align-self: start;
     aspect-ratio: 4 / 5;
     border-radius: $radius-xl;
@@ -34,10 +35,6 @@
         height: 100%;
         object-fit: cover;
         object-position: center;
-    }
-
-    @media screen and (max-width: $breakpoint-tablette) {
-        position: static;
     }
 }
 
