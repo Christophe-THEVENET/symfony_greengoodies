@@ -194,6 +194,40 @@ account:
     danger_title: Danger zone
     delete_account: Delete my account
     delete_confirm: Are you sure you want to delete your account? This action is irreversible.
+    stat_addresses: Addresses
+    stat_member_year: Member since
+    profile_title: Personal information
+    email_locked: Your email address cannot be changed (it is your login identifier).
+    save_profile: Save
+    password_title: Change password
+    save_password: Update password
+    current_password: Current password
+    new_password: New password
+    new_password_confirm: Confirm new password
+
+# Addresses
+address:
+    label: Label
+    label_placeholder: Home, Office…
+    line1: Address
+    line1_placeholder: Street number and name
+    line2: Address line 2
+    line2_placeholder: Apartment, floor… (optional)
+    postal_code: Postal code
+    city: City
+    country: Country
+    is_default: Set as default address
+    default_badge: Default
+    set_default: Set as default
+    edit: Edit
+    delete: Delete
+    delete_confirm: Delete this address?
+    empty: You don't have any saved address yet.
+    add_title: Add an address
+    edit_title: Edit address
+    add: Add address
+    save: Save
+    cancel: Cancel
 
 # Notifications (toasts)
 toast:
@@ -208,6 +242,12 @@ toast:
     order_validated: Order successfully placed!
     login_required: You must be logged in to place the order.
     invalid_data: Invalid data
+    profile_updated: Profile updated
+    password_updated: Password updated
+    address_added: Address added
+    address_updated: Address updated
+    address_deleted: Address deleted
+    address_default_set: Default address set
 
 # ===== Products (from DB fixtures, used as translation keys) =====
 "Kit d'hygiène recyclable": Recyclable hygiene kit

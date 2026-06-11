@@ -13,6 +13,20 @@
 "Le prénom ne peut pas être vide.": First name cannot be empty.
 "Le nom de famille ne peut pas être vide.": Last name cannot be empty.
 
+# Changement de mot de passe
+"Le mot de passe actuel est incorrect.": The current password is incorrect.
+"Entrez un nouveau mot de passe.": Please enter a new password.
+"Les mots de passe ne correspondent pas.": The passwords do not match.
+
+# Adresses
+"Le libellé est obligatoire.": The label is required.
+"Le libellé ne peut pas dépasser {{ limit }} caractères.": "The label cannot exceed {{ limit }} characters."
+"L'adresse est obligatoire.": The address is required.
+"Le code postal est obligatoire.": The postal code is required.
+"Le code postal n'est pas valide.": The postal code is not valid.
+"La ville est obligatoire.": The city is required.
+"Le pays est obligatoire.": The country is required.
+
 # Sécurité (CSRF)
 "Token CSRF invalide.": Invalid CSRF token.
 

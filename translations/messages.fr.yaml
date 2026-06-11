@@ -194,6 +194,40 @@ account:
     danger_title: Zone dangereuse
     delete_account: Supprimer mon compte
     delete_confirm: Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+    stat_addresses: Adresses
+    stat_member_year: Membre depuis
+    profile_title: Informations personnelles
+    email_locked: L'adresse email ne peut pas être modifiée (identifiant de connexion).
+    save_profile: Enregistrer
+    password_title: Changer le mot de passe
+    save_password: Mettre à jour le mot de passe
+    current_password: Mot de passe actuel
+    new_password: Nouveau mot de passe
+    new_password_confirm: Confirmer le nouveau mot de passe
+
+# Adresses
+address:
+    label: Libellé
+    label_placeholder: Maison, Bureau…
+    line1: Adresse
+    line1_placeholder: N° et nom de rue
+    line2: Complément
+    line2_placeholder: Appartement, étage… (optionnel)
+    postal_code: Code postal
+    city: Ville
+    country: Pays
+    is_default: Définir comme adresse par défaut
+    default_badge: Par défaut
+    set_default: Définir par défaut
+    edit: Modifier
+    delete: Supprimer
+    delete_confirm: Supprimer cette adresse ?
+    empty: Vous n'avez pas encore d'adresse enregistrée.
+    add_title: Ajouter une adresse
+    edit_title: Modifier l'adresse
+    add: Ajouter l'adresse
+    save: Enregistrer
+    cancel: Annuler
 
 # Notifications (toasts)
 toast:
@@ -208,6 +242,12 @@ toast:
     order_validated: Commande validée avec succès !
     login_required: Vous devez être connecté pour valider la commande.
     invalid_data: Données invalides
+    profile_updated: Profil mis à jour
+    password_updated: Mot de passe mis à jour
+    address_added: Adresse ajoutée
+    address_updated: Adresse mise à jour
+    address_deleted: Adresse supprimée
+    address_default_set: Adresse par défaut définie
 
 # ===== Products (from DB fixtures, used as translation keys) =====
 "Kit d'hygiène recyclable": Kit d'hygiène recyclable

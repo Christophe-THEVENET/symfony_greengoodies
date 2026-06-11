@@ -70,8 +70,14 @@
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        width: 100%;
         padding: 0.75rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: left;
         border-radius: $radius-md;
+        font-family: inherit;
         font-size: $fs-body-sm;
         font-weight: $fw-500;
         color: $ink-soft;
@@ -261,55 +267,95 @@
     }
 }
 
-// --- RECHARGE ---
-.recharge {
-    background: $paper;
-    border-radius: $radius-xl;
-    padding: 2rem;
-    box-shadow: $shadow-card;
-    margin-bottom: 2.5rem;
+// --- PANNEAUX (onglets) ---
+.account-panel[hidden] { display: none; }
 
-    &__title {
+.order-row__date {
+    font-size: $fs-caption;
+    color: $ink-soft;
+    white-space: nowrap;
+}
+
+.account-empty {
+    color: $ink-soft;
+    font-size: $fs-body-sm;
+    padding: 1rem 0;
+}
+
+// --- CARNET D'ADRESSES ---
+.address-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.address-card {
+    position: relative;
+    background: $paper;
+    border: 1.5px solid $line;
+    border-radius: $radius-lg;
+    padding: 1.25rem 1.5rem;
+    box-shadow: $shadow-card;
+
+    &--default {
+        border-color: $terra;
+    }
+
+    &__badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        color: $paper;
+        background: $terra;
+        padding: 0.15rem 0.6rem;
+        border-radius: $radius-full;
+    }
+
+    &__label {
         font-family: $fontDisplay;
-        font-size: $fs-h3;
+        font-size: $fs-body;
         font-weight: $fw-600;
         color: $ink;
+        margin-bottom: 0.5rem;
+    }
+
+    &__body {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        line-height: 1.6;
         margin-bottom: 1rem;
     }
 
-    &__desc {
-        font-size: $fs-body-sm;
-        color: $ink-soft;
-        margin-bottom: 1.25rem;
-    }
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
 
-    &__bar {
-        height: 8px;
-        background: $card;
-        border-radius: $radius-full;
-        overflow: hidden;
-        margin-bottom: 0.75rem;
-
-        &-fill {
-            height: 100%;
-            width: 60%;
-            background: $olive;
-            border-radius: $radius-full;
-            transition: width 0.5s $ease-out;
-        }
-    }
-
-    &__info {
-        font-size: $fs-caption;
-        color: $ink-soft;
-
-        strong {
-            color: $terra;
-        }
+        form { display: inline; }
     }
 }
 
-// --- SECTIONS COMPTE ---
+// Boutons d'action discrets (liens)
+.link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    font-size: $fs-body-sm;
+    color: $ink-soft;
+    text-decoration: underline;
+    transition: color 0.2s;
+
+    &:hover { color: $terra; }
+    &--danger:hover { color: #e74c3c; }
+}
+
+// --- SECTIONS COMPTE (profil, sécurité) ---
 .account-section {
     background: $paper;
     border-radius: $radius-xl;
@@ -322,16 +368,11 @@
         font-size: $fs-h3;
         font-weight: $fw-600;
         color: $ink;
-        margin-bottom: 1rem;
+        margin-bottom: 1.25rem;
     }
 
-    form {
-        display: flex;
-
-        button {
-            @include btn-ghost;
-            font-size: $fs-body-sm;
-        }
+    &--danger {
+        border: 1.5px solid rgba(#e74c3c, 0.2);
     }
 
     .btn--danger {
@@ -345,5 +386,73 @@
             background: rgba(#e74c3c, 0.06);
             border-color: #e74c3c;
         }
+    }
+}
+
+// --- CHAMPS DE FORMULAIRE ---
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+
+    label {
+        font-size: $fs-body-sm;
+        font-weight: $fw-600;
+        color: $ink;
+    }
+
+    input:not([type="checkbox"]) {
+        width: 100%;
+        padding: 0.7rem 0.9rem;
+        border: 1.5px solid $line;
+        border-radius: $radius-md;
+        font: inherit;
+        font-size: $fs-body-sm;
+        color: $ink;
+        background: $cream;
+        outline: none;
+        transition: border-color 0.2s;
+
+        &:focus { border-color: $terra; }
+
+        &:disabled {
+            color: $ink-soft;
+            background: rgba($ink, 0.04);
+            cursor: not-allowed;
+        }
+    }
+
+    &__hint {
+        font-size: $fs-caption;
+        color: $ink-soft;
+    }
+
+    &--check {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+
+        label { font-weight: $fw-500; color: $ink-soft; }
+    }
+}
+
+.address-form,
+.account-section form.address-form {
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        @media screen and (max-width: $breakpoint-mobile) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
     }
 }

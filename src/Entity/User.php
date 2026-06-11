@@ -72,10 +72,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user', orphanRemoval: true, cascade: ['remove'])]
     private Collection $orders;
 
+    /**
+     * @var Collection<int, Address>
+     */
+    #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    #[ORM\OrderBy(['isDefault' => 'DESC', 'createdAt' => 'DESC'])]
+    private Collection $addresses;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->orders = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -233,5 +241,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Address>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): static
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): static
+    {
+        if ($this->addresses->removeElement($address)) {
+            if ($address->getUser() === $this) {
+                $address->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Retourne l'adresse marquée par défaut, ou la première disponible.
+     */
+    public function getDefaultAddress(): ?Address
+    {
+        foreach ($this->addresses as $address) {
+            if ($address->isDefault()) {
+                return $address;
+            }
+        }
+
+        return $this->addresses->first() ?: null;
     }
 }
