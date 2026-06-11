@@ -295,7 +295,8 @@
     background: $paper;
     border-radius: $radius-lg;
     padding: 1.25rem 1.5rem;
-    box-shadow: $shadow-card;
+    // Ombre plus marquée : la carte se détache du fond crème (sans bordure)
+    box-shadow: 0 8px 28px rgba(58, 45, 41, 0.12);
 
     &--default {
         background: rgba($terra, 0.03);

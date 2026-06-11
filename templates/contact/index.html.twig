@@ -20,7 +20,7 @@
                 </li>
                 <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
-                    <span>bonjour@greengoodies.space</span>
+                    <span>contact@greengoodies.space</span>
                 </li>
                 <li>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
@@ -31,13 +31,13 @@
 
         {# ===== Colonne formulaire ===== #}
         <div class="contact__form-wrap">
-            {{ form_start(contactForm, { attr: { class: 'contact-form', novalidate: 'novalidate' } }) }}
+            {{ form_start(contactForm, { attr: { class: 'contact-form' } }) }}
                 <div class="contact-form__row">
-                    <div class="field">{{ form_label(contactForm.name) }}{{ form_widget(contactForm.name) }}{{ form_errors(contactForm.name) }}</div>
-                    <div class="field">{{ form_label(contactForm.email) }}{{ form_widget(contactForm.email) }}{{ form_errors(contactForm.email) }}</div>
+                    <div class="field">{{ form_label(contactForm.name) }}{{ form_widget(contactForm.name) }}{% include '_partials/_form-error.html.twig' with {'errors': contactForm.name.vars.errors} %}</div>
+                    <div class="field">{{ form_label(contactForm.email) }}{{ form_widget(contactForm.email) }}{% include '_partials/_form-error.html.twig' with {'errors': contactForm.email.vars.errors} %}</div>
                 </div>
-                <div class="field">{{ form_label(contactForm.subject) }}{{ form_widget(contactForm.subject) }}{{ form_errors(contactForm.subject) }}</div>
-                <div class="field">{{ form_label(contactForm.message) }}{{ form_widget(contactForm.message) }}{{ form_errors(contactForm.message) }}</div>
+                <div class="field">{{ form_label(contactForm.subject) }}{{ form_widget(contactForm.subject) }}{% include '_partials/_form-error.html.twig' with {'errors': contactForm.subject.vars.errors} %}</div>
+                <div class="field">{{ form_label(contactForm.message) }}{{ form_widget(contactForm.message) }}{% include '_partials/_form-error.html.twig' with {'errors': contactForm.message.vars.errors} %}</div>
 
                 {# Honeypot anti-bot (masqué) #}
                 {{ form_row(contactForm.website) }}
