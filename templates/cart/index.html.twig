@@ -24,8 +24,8 @@
                         <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" />
                     </div>
                     <div class="bag-item__meta">
-                        <div class="bag-item__name">{{ item.product.name }}</div>
-                        <div class="bag-item__variant">{{ item.product.shortDescription|slice(0, 60) }}…</div>
+                        <div class="bag-item__name">{{ item.product.name|trans }}</div>
+                        <div class="bag-item__variant">{{ item.product.shortDescription|trans|slice(0, 60) }}…</div>
                         <div class="bag-item__actions">
                             <div class="bag-item__qty">
                                 <button type="button" class="qty-btn" data-action="click->cart#decrement" aria-label="Moins">−</button>

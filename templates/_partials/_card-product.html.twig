@@ -3,8 +3,8 @@
         <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" loading="lazy" />
     </a>
     <div class="card__body">
-        <a href="{{ path('app_product_show', { slug: product.slug }) }}"><h3 class="card__name">{{ product.name }}</h3></a>
-        <p class="card__desc">{{ product.shortDescription }}</p>
+        <a href="{{ path('app_product_show', { slug: product.slug }) }}"><h3 class="card__name">{{ product.name|trans }}</h3></a>
+        <p class="card__desc">{{ product.shortDescription|trans }}</p>
         <div class="card__foot">
             <span class="card__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
             <a class="card__add" href="{{ path('app_product_show', { slug: product.slug }) }}" aria-label="{{ product.name }}">

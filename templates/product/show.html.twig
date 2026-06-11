@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} — {{ product.name }}{% endblock %}
+{% block title %}{{ parent() }} — {{ product.name|trans }}{% endblock %}
 
 {% block body %}
 
 <section class="product-detail" data-controller="accordion">
     {# ========== PHOTO ========== #}
     <div class="product-media">
-        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" />
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name|trans }}" />
     </div>
 
     {# ========== INFOS ========== #}
@@ -16,7 +16,7 @@
 
         <span class="product-info__category">{{ 'product.category'|trans }}</span>
 
-        <h1 class="product-info__title">{{ product.name }}</h1>
+        <h1 class="product-info__title">{{ product.name|trans }}</h1>
 
         {# Note #}
         <div class="product-info__rating">
@@ -83,7 +83,7 @@
                 </button>
                 <div class="accordion__panel is-open">
                     <div class="accordion__panel-inner">
-                        {{ product.longDescription|nl2br }}
+                        {{ product.longDescription|trans|nl2br }}
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@
                 </button>
                 <div class="accordion__panel">
                     <div class="accordion__panel-inner">
-                        <p>{{ product.shortDescription }}</p>
+                        <p>{{ product.shortDescription|trans }}</p>
                         <p style="margin-top:0.5rem;">{{ 'product.acc_composition_extra'|trans }}</p>
                     </div>
                 </div>
