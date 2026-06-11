@@ -1,0 +1,212 @@
+# Navigation / header
+nav:
+    products: Produits
+    story: Notre histoire
+    values: Valeurs
+    newsletter: Newsletter
+    cart: Panier
+    account: Mon compte
+    login: Se connecter
+    logout: Se déconnecter
+
+# Footer
+footer:
+    tagline: Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement, vraiment.
+    shop: Boutique
+    shop_hygiene: Hygiène & beauté
+    shop_accessories: Accessoires
+    shop_drinks: Boissons
+    shop_giftcards: Cartes cadeaux
+    house: Maison
+    our_story: Notre histoire
+    our_values: Nos valeurs
+    contact: Nous contacter
+    help: Aide
+    shipping_returns: Livraison & retours
+    cgv: CGV
+    privacy: Confidentialité
+    copyright: '%year% GreenGoodies — Lyon, France'
+    developed_by: Développé par
+    crafted: Conçu avec soin pour la planète 🌿
+
+# Accueil
+home:
+    hero:
+        eyebrow: Boutique éco-responsable · Lyon
+        title_1: Consommer
+        title_2: autrement,
+        title_3: vraiment.
+        lead: Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.
+        cta: Voir la boutique
+        rating: '+1 200 avis · 4,9/5'
+        chip_waste: -30% déchet
+        chip_waste_sub: vs grande surface
+        chip_refill: 100% rechargeable
+        chip_refill_sub: emballages consignés
+    ticker:
+        carbon: Livraison neutre en carbone
+        zero_waste: Zéro déchet
+        made_in_france: Made in France
+        no_plastic: Sans plastique
+        secure_payment: Paiement sécurisé
+    products:
+        eyebrow: La sélection
+        title: Nos produits
+        intro: Neuf essentiels choisis pour leur qualité, leur durabilité et leur juste fabrication.
+    story:
+        eyebrow: Notre histoire
+        title: Une boutique, une conviction.
+        text: "Tout commence en 2019, à la Croix-Rousse. Aurélie ouvre une petite boutique avec une idée simple : prouver qu'on peut consommer mieux sans renoncer au beau ni au plaisir."
+        quote: "« Chaque produit doit pouvoir être regardé en face : son origine, sa matière, sa fin de vie. »"
+        founder: Fondatrice
+        badge: Lyon depuis 2019
+    values:
+        durability_title: Durabilité
+        durability_text: Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.
+        ethics_title: Éthique
+        ethics_text: Nous travaillons avec des partenaires qui partagent nos valeurs et rémunèrent justement. Circuit court, traçabilité totale.
+        ecology_title: Écologie
+        ecology_text: Des pratiques respectueuses de l'écosystème, des matériaux écologiques et une logistique neutre en carbone.
+    testi:
+        eyebrow: Elles & ils nous font confiance
+        title: Ce qu'on en dit
+        q1: « La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »
+        q2: « Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »
+        q3: « Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »
+        q4: « Le savon à l'eucalyptus dure 3 fois plus longtemps que mes anciens gels douche. »
+        q5: « Livraison rapide et emballage 100% compostable. Mention spéciale pour le petit mot manuscrit. »
+        q6: « Je recharge mes contenants depuis 2 ans. Zéro plastique, zéro regret. »
+    news:
+        eyebrow: Newsletter
+        title: Rejoignez le mouvement.
+        text: Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.
+        placeholder: vous@exemple.fr
+        cta: S'inscrire
+
+# Fiche produit
+product:
+    back: Retour aux produits
+    category: Hygiène & Beauté
+    reviews: '(128 avis)'
+    scent_label: Senteur
+    qty_label: Quantité
+    add_to_cart: Ajouter au panier
+    favorite: Ajouter aux favoris
+    guarantee_free_shipping: Livraison offerte dès 49€
+    guarantee_returns: Retour gratuit sous 30 jours
+    guarantee_secure: Paiement 100% sécurisé
+    guarantee_packaging: Emballage compostable
+    acc_description: Description
+    acc_composition: Composition & caractéristiques
+    acc_composition_extra: Fabriqué en France · Ingrédients 100% naturels · Sans parabène · Non testé sur les animaux.
+    acc_shipping: Livraison & retours
+    acc_shipping_text: "Livraison standard : 3-5 jours ouvrés (4,90€). Offerte dès 49€ d'achat. Retours acceptés sous 30 jours, produit non ouvert."
+    trust_delivery_title: Livraison rapide
+    trust_delivery_text: Expédition sous 24h, livraison en 3-5 jours
+    trust_secure_title: Paiement sécurisé
+    trust_secure_text: Transactions cryptées SSL 256-bit
+    trust_satisfied_title: Satisfait ou remboursé
+    trust_satisfied_text: Retour gratuit sous 30 jours
+    trust_zerowaste_title: Zéro déchet
+    trust_zerowaste_text: Emballages recyclables ou compostables
+    related_eyebrow: Vous aimerez aussi
+    related_title: Produits similaires
+
+# Panier
+cart:
+    ship_remaining_pre: Plus que
+    ship_remaining_post: pour la livraison offerte
+    ship_unlocked: 🎉 Livraison offerte !
+    empty: Votre panier est vide.
+    discover: Découvrir nos produits →
+    summary_title: Récapitulatif
+    subtotal: Sous-total
+    shipping: Livraison
+    shipping_free: Offerte
+    eco_discount: Réduction éco (-10%)
+    promo_placeholder: Code promo
+    promo_apply: Appliquer
+    total: Total
+    checkout: Passer la commande
+    reassurance: Paiement 100% sécurisé · Retour gratuit 30 jours
+    clear: Vider le panier
+    summary_empty: Ajoutez des produits pour voir le récapitulatif.
+
+# Connexion / Inscription
+auth:
+    brand_pitch: Rejoignez l'épicerie qui fait du bien
+    brand_feature_shipping: Livraison offerte dès 49 €
+    brand_feature_products: Produits bio, locaux et de saison
+    brand_feature_loyalty: Programme de fidélité recharge
+    brand_quote: "« GreenGoodies a transformé ma façon de consommer. Je ne reviendrais en arrière pour rien au monde. » — Claire, Lyon 2ᵉ"
+    back: Retour à l'accueil
+    tab_login: Connexion
+    tab_register: Inscription
+    email: Email
+    password: Mot de passe
+    remember: Se souvenir de moi
+    forgot: Mot de passe oublié ?
+    submit_login: Se connecter
+    ph_firstname: Votre prénom
+    ph_lastname: Votre nom
+    ph_email: votre@email.fr
+    ph_password_min: Min. 8 caractères
+    ph_password_confirm: Confirmez le mot de passe
+    pwd_req_title: "Le mot de passe doit contenir :"
+    pwd_req_length: 8-32 caractères
+    pwd_req_upper: 1 majuscule
+    pwd_req_lower: 1 minuscule
+    pwd_req_number: 1 chiffre
+    pwd_req_special: 1 caractère spécial
+    terms_pre: J'accepte les
+    terms_cgv: CGV
+    terms_and: et la
+    terms_privacy: politique de confidentialité
+    submit_register: Créer mon compte
+    divider: ou continuer avec
+
+# Mon compte
+account:
+    nav_overview: Vue d'ensemble
+    nav_orders: Commandes
+    nav_favorites: Favoris
+    nav_addresses: Adresses
+    nav_profile: Profil & sécurité
+    nav_logout: Déconnexion
+    greeting: Bonjour
+    member_since: Membre depuis
+    stat_orders: Commandes
+    stat_refills: Recharges rapportées
+    stat_plastic: Plastique évité
+    orders_title: Commandes récentes
+    status_delivered: Livrée
+    status_transit: En transit
+    track: Suivre
+    no_orders: Aucune commande pour le moment.
+    recharge_title: Programme de recharge
+    recharge_desc: Rapportez vos contenants vides et cumulez des récompenses. Chaque recharge vous rapproche d'une réduction.
+    recharge_info_pre: 3 recharges sur 5
+    recharge_info_post: Plus que 2 pour votre prochaine récompense !
+    address_title: Adresse de livraison
+    api_title: Accès API
+    api_disable: Désactiver mon accès API
+    api_enable: Activer mon accès API
+    danger_title: Zone dangereuse
+    delete_account: Supprimer mon compte
+    delete_confirm: Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+
+# Notifications (toasts)
+toast:
+    welcome: Bienvenue %name% !
+    account_deleted: Votre compte a bien été supprimé.
+    api_enabled: Accès API activé avec succès.
+    api_disabled: Accès API désactivé avec succès.
+
+# Libellés de formulaire
+form:
+    firstname: Prénom
+    lastname: Nom
+    email: Email
+    password: Mot de passe
+    password_confirm: Confirmer le mot de passe
+    agree_terms: J'accepte les CGU de GreenGoodies

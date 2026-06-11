@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/mon-compte')]
 class AccountController extends AbstractController
@@ -20,7 +21,8 @@ class AccountController extends AbstractController
     public function __construct(
         private EntityManagerInterface $em,
         private TokenStorageInterface $tokenStorage,
-        private CsrfTokenManagerInterface $csrfTokenManager
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private TranslatorInterface $translator
     ) {}
 
     #[Route('/', name: 'app_account')]
@@ -60,7 +62,7 @@ class AccountController extends AbstractController
         $this->em->flush();
 
         // add message on session (pour Stimulus)
-        $request->getSession()->set('toast', 'Votre compte a bien été supprimé.');
+        $request->getSession()->set('toast', $this->translator->trans('toast.account_deleted'));
 
         return $this->redirectToRoute('app_home');
     }
@@ -83,7 +85,9 @@ class AccountController extends AbstractController
         $user->setApiAccessEnabled($enabled);
         $this->em->flush();
 
-        $message = $enabled ? 'Accès API activé avec succès.' : 'Accès API désactivé avec succès.';
+        $message = $enabled
+            ? $this->translator->trans('toast.api_enabled')
+            : $this->translator->trans('toast.api_disabled');
 
         if ($request->isXmlHttpRequest()) {
             return $this->json([

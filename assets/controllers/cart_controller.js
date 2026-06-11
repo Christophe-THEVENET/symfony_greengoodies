@@ -173,10 +173,10 @@ export default class extends Controller {
         document.querySelectorAll("[data-cart-badge]").forEach((badge) => {
             if (count > 0) {
                 badge.textContent = count;
-                badge.classList.remove("header__cart-badge--hidden");
+                badge.style.display = "";
             } else {
-                badge.textContent = "";
-                badge.classList.add("header__cart-badge--hidden");
+                badge.textContent = "0";
+                badge.style.display = "none";
             }
         });
     }

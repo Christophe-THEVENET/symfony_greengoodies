@@ -13,34 +13,34 @@
         <div class="auth__brand-halo"></div>
         <div class="auth__brand-content">
             <img src="{{ asset('img/logo.svg') }}" alt="GreenGoodies" class="auth__brand-logo" />
-            <p class="auth__brand-pitch">Rejoignez l'épicerie qui fait du bien</p>
+            <p class="auth__brand-pitch">{{ 'auth.brand_pitch'|trans }}</p>
             <div class="auth__brand-features">
                 <div class="auth__brand-feature">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Livraison offerte dès 49 €</span>
+                    <span>{{ 'auth.brand_feature_shipping'|trans }}</span>
                 </div>
                 <div class="auth__brand-feature">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Produits bio, locaux et de saison</span>
+                    <span>{{ 'auth.brand_feature_products'|trans }}</span>
                 </div>
                 <div class="auth__brand-feature">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Programme de fidélité recharge</span>
+                    <span>{{ 'auth.brand_feature_loyalty'|trans }}</span>
                 </div>
             </div>
-            <p class="auth__brand-quote">« GreenGoodies a transformé ma façon de consommer. Je ne reviendrais en arrière pour rien au monde. » — Claire, Lyon 2<sup>e</sup></p>
+            <p class="auth__brand-quote">{{ 'auth.brand_quote'|trans }}</p>
         </div>
     </div>
 
     {# ========== PANNEAU FORMULAIRE (droite) ========== #}
     <div class="auth__form" data-controller="auth" data-auth-active-tab-value="{{ activeTab|default('login') }}">
         <div class="auth__form-inner">
-            <a href="{{ path('app_home') }}" class="auth__form-back">← Retour à l'accueil</a>
+            <a href="{{ path('app_home') }}" class="auth__form-back">← {{ 'auth.back'|trans }}</a>
 
             {# Onglets #}
             <div class="auth__form-tabs">
-                <button class="is-active" data-auth-target="tab" data-action="click->auth#showLogin">Connexion</button>
-                <button data-auth-target="tab" data-action="click->auth#showRegister">Inscription</button>
+                <button class="is-active" data-auth-target="tab" data-action="click->auth#showLogin">{{ 'auth.tab_login'|trans }}</button>
+                <button data-auth-target="tab" data-action="click->auth#showRegister">{{ 'auth.tab_register'|trans }}</button>
             </div>
 
             {# ===== FORMULAIRE CONNEXION ===== #}
@@ -53,11 +53,11 @@
 
                 <form method="post" action="{{ path('app_login') }}">
                     <div class="auth__field">
-                        <label for="login_email">Email</label>
-                        <input type="email" id="login_email" name="_username" value="{{ last_username }}" placeholder="votre@email.fr" required autocomplete="email" />
+                        <label for="login_email">{{ 'auth.email'|trans }}</label>
+                        <input type="email" id="login_email" name="_username" value="{{ last_username }}" placeholder="{{ 'auth.ph_email'|trans }}" required autocomplete="email" />
                     </div>
                     <div class="auth__field">
-                        <label for="login_password">Mot de passe</label>
+                        <label for="login_password">{{ 'auth.password'|trans }}</label>
                         <input type="password" id="login_password" name="_password" placeholder="••••••••" required autocomplete="current-password" />
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
@@ -65,12 +65,12 @@
                     <div class="auth__options">
                         <label>
                             <input type="checkbox" name="_remember_me" checked />
-                            Se souvenir de moi
+                            {{ 'auth.remember'|trans }}
                         </label>
-                        <a href="#">Mot de passe oublié ?</a>
+                        <a href="#">{{ 'auth.forgot'|trans }}</a>
                     </div>
 
-                    <button type="submit" class="auth__submit">Se connecter</button>
+                    <button type="submit" class="auth__submit">{{ 'auth.submit_login'|trans }}</button>
                 </form>
             </div>
 
@@ -80,57 +80,57 @@
 
                 <div class="auth__field">
                     <label for="registration_form_firstname">{{ form_label(registrationForm.firstname) }}</label>
-                    {{ form_widget(registrationForm.firstname, { attr: { placeholder: 'Votre prénom' } }) }}
+                    {{ form_widget(registrationForm.firstname, { attr: { placeholder: 'auth.ph_firstname'|trans } }) }}
                     {{ form_errors(registrationForm.firstname) }}
                 </div>
 
                 <div class="auth__field">
                     <label for="registration_form_lastname">{{ form_label(registrationForm.lastname) }}</label>
-                    {{ form_widget(registrationForm.lastname, { attr: { placeholder: 'Votre nom' } }) }}
+                    {{ form_widget(registrationForm.lastname, { attr: { placeholder: 'auth.ph_lastname'|trans } }) }}
                     {{ form_errors(registrationForm.lastname) }}
                 </div>
 
                 <div class="auth__field">
                     <label for="registration_form_email">{{ form_label(registrationForm.email) }}</label>
-                    {{ form_widget(registrationForm.email, { attr: { placeholder: 'votre@email.fr' } }) }}
+                    {{ form_widget(registrationForm.email, { attr: { placeholder: 'auth.ph_email'|trans } }) }}
                     {{ form_errors(registrationForm.email) }}
                 </div>
 
                 <div class="auth__field">
                     <label for="registration_form_plainPassword_first">{{ form_label(registrationForm.plainPassword.first) }}</label>
-                    {{ form_widget(registrationForm.plainPassword.first, { attr: { placeholder: 'Min. 8 caractères', 'data-login-target': 'password' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.first, { attr: { placeholder: 'auth.ph_password_min'|trans, 'data-login-target': 'password' } }) }}
                     <div class="password-requirements">
-                        <small>Le mot de passe doit contenir :</small>
+                        <small>{{ 'auth.pwd_req_title'|trans }}</small>
                         <ul>
-                            <li><span class="requirement-icon">○</span> 8-32 caractères</li>
-                            <li><span class="requirement-icon">○</span> 1 majuscule</li>
-                            <li><span class="requirement-icon">○</span> 1 minuscule</li>
-                            <li><span class="requirement-icon">○</span> 1 chiffre</li>
-                            <li><span class="requirement-icon">○</span> 1 caractère spécial</li>
+                            <li><span class="requirement-icon">○</span> {{ 'auth.pwd_req_length'|trans }}</li>
+                            <li><span class="requirement-icon">○</span> {{ 'auth.pwd_req_upper'|trans }}</li>
+                            <li><span class="requirement-icon">○</span> {{ 'auth.pwd_req_lower'|trans }}</li>
+                            <li><span class="requirement-icon">○</span> {{ 'auth.pwd_req_number'|trans }}</li>
+                            <li><span class="requirement-icon">○</span> {{ 'auth.pwd_req_special'|trans }}</li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="auth__field">
                     <label for="registration_form_plainPassword_second">{{ form_label(registrationForm.plainPassword.second) }}</label>
-                    {{ form_widget(registrationForm.plainPassword.second, { attr: { placeholder: 'Confirmez le mot de passe' } }) }}
+                    {{ form_widget(registrationForm.plainPassword.second, { attr: { placeholder: 'auth.ph_password_confirm'|trans } }) }}
                 </div>
                 {{ form_errors(registrationForm.plainPassword) }}
 
                 <div class="auth__options">
                     <label>
                         {{ form_widget(registrationForm.agreeTerms) }}
-                        J'accepte les <a href="#">CGV</a> et la <a href="#">politique de confidentialité</a>
+                        {{ 'auth.terms_pre'|trans }} <a href="#">{{ 'auth.terms_cgv'|trans }}</a> {{ 'auth.terms_and'|trans }} <a href="#">{{ 'auth.terms_privacy'|trans }}</a>
                     </label>
                 </div>
 
-                <button type="submit" class="auth__submit">Créer mon compte</button>
+                <button type="submit" class="auth__submit">{{ 'auth.submit_register'|trans }}</button>
 
                 {{ form_end(registrationForm) }}
             </div>
 
             {# Séparateur #}
-            <div class="auth__divider">ou continuer avec</div>
+            <div class="auth__divider">{{ 'auth.divider'|trans }}</div>
 
             <div class="auth__social">
                 <button type="button">Google</button>

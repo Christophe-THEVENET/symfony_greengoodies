@@ -27,3 +27,16 @@ initReveal();
 document.addEventListener("turbo:render", function () {
     initReveal();
 });
+
+// Scroll smooth sans hashtag dans l'URL
+document.addEventListener("click", function (e) {
+    var link = e.target.closest("[data-scroll]");
+    if (!link) return;
+    e.preventDefault();
+    var id = link.getAttribute("data-scroll");
+    var el = document.getElementById(id);
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", "/" + id);
+    }
+});

@@ -5,31 +5,31 @@
         </a>
 
         <nav class="nav" data-nav>
-            <a href="{{ path('app_home') }}#produits">Produits</a>
-            <a href="{{ path('app_home') }}#histoire">Notre histoire</a>
-            <a href="{{ path('app_home') }}#valeurs">Valeurs</a>
-            <a href="{{ path('app_home') }}#newsletter">Newsletter</a>
+            <a href="#" data-scroll="produits">{{ 'nav.products'|trans }}</a>
+            <a href="#" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
+            <a href="#" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
+            <a href="#" data-scroll="newsletter">{{ 'nav.newsletter'|trans }}</a>
         </nav>
 
         <div class="header__right">
             <div class="lang">
-                <button class="is-active" data-lang-btn="fr">FR</button>
+                <a href="{{ path('app_locale', {_locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? 'is-active' }}" hreflang="fr">FR</a>
                 <span>/</span>
-                <button data-lang-btn="en">EN</button>
+                <a href="{{ path('app_locale', {_locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? 'is-active' }}" hreflang="en">EN</a>
             </div>
 
             {% if app.user %}
-                <a href="{{ path('app_account') }}" class="icon-btn" aria-label="Compte">
+                <a href="{{ path('app_account') }}" class="icon-btn" aria-label="{{ 'nav.account'|trans }}">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                 </a>
             {% else %}
-                <a href="{{ path('app_login') }}" class="icon-btn" aria-label="Se connecter">
+                <a href="{{ path('app_login') }}" class="icon-btn" aria-label="{{ 'nav.login'|trans }}">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                 </a>
             {% endif %}
 
             <a href="{{ path('app_cart') }}" class="cart-btn">
-                <span>Panier</span>
+                <span>{{ 'nav.cart'|trans }}</span>
                 {% if cart_count() > 0 %}
                     <span class="badge" data-cart-badge>{{ cart_count() }}</span>
                 {% else %}
@@ -45,14 +45,14 @@
 
     {# Menu mobile #}
     <nav class="nav" data-header-target="mobileMenu" data-nav style="display:none">
-        <a href="{{ path('app_home') }}" data-action="click->header#closeOnLink">Produits</a>
-        <a href="{{ path('app_home') }}#story" data-action="click->header#closeOnLink">Notre histoire</a>
-        <a href="{{ path('app_cart') }}" data-action="click->header#closeOnLink">Panier</a>
+        <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
+        <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
+        <a href="{{ path('app_cart') }}" data-action="click->header#closeOnLink">{{ 'nav.cart'|trans }}</a>
         {% if app.user %}
-            <a href="{{ path('app_account') }}" data-action="click->header#closeOnLink">Mon compte</a>
-            <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            <a href="{{ path('app_account') }}" data-action="click->header#closeOnLink">{{ 'nav.account'|trans }}</a>
+            <a href="{{ path('app_logout') }}">{{ 'nav.logout'|trans }}</a>
         {% else %}
-            <a href="{{ path('app_login') }}" data-action="click->header#closeOnLink">Se connecter</a>
+            <a href="{{ path('app_login') }}" data-action="click->header#closeOnLink">{{ 'nav.login'|trans }}</a>
         {% endif %}
     </nav>
 

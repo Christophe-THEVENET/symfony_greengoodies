@@ -103,12 +103,13 @@
     font-size: 12px;
     font-weight: 700;
 
-    button {
+    button, a {
         background: none;
         border: none;
         cursor: pointer;
         color: $ink-soft;
         font: inherit;
+        text-decoration: none;
         padding: 4px 6px;
         border-radius: 6px;
 

@@ -1,0 +1,212 @@
+# Navigation / header
+nav:
+    products: Products
+    story: Our story
+    values: Values
+    newsletter: Newsletter
+    cart: Cart
+    account: My account
+    login: Sign in
+    logout: Sign out
+
+# Footer
+footer:
+    tagline: A Lyon-based shop for organic, ethical and eco-friendly goods. Consume differently, for real.
+    shop: Shop
+    shop_hygiene: Hygiene & beauty
+    shop_accessories: Accessories
+    shop_drinks: Drinks
+    shop_giftcards: Gift cards
+    house: Company
+    our_story: Our story
+    our_values: Our values
+    contact: Contact us
+    help: Help
+    shipping_returns: Shipping & returns
+    cgv: Terms
+    privacy: Privacy
+    copyright: '%year% GreenGoodies — Lyon, France'
+    developed_by: Built by
+    crafted: Crafted with care for the planet 🌿
+
+# Home
+home:
+    hero:
+        eyebrow: Eco-friendly shop · Lyon
+        title_1: Consume
+        title_2: differently,
+        title_3: for real.
+        lead: Organic, ethical and zero-waste products, chosen one by one. For the bathroom, the kitchen and everyday life — beautiful, useful, made to last.
+        cta: Shop now
+        rating: '+1,200 reviews · 4.9/5'
+        chip_waste: -30% waste
+        chip_waste_sub: vs supermarket
+        chip_refill: 100% refillable
+        chip_refill_sub: returnable packaging
+    ticker:
+        carbon: Carbon-neutral delivery
+        zero_waste: Zero waste
+        made_in_france: Made in France
+        no_plastic: Plastic-free
+        secure_payment: Secure payment
+    products:
+        eyebrow: The edit
+        title: Our products
+        intro: Nine essentials chosen for their quality, durability and honest making.
+    story:
+        eyebrow: Our story
+        title: One shop, one conviction.
+        text: "It all began in 2019, in the Croix-Rousse district. Aurélie opened a small shop with a simple idea: proving that we can consume better without giving up beauty or pleasure."
+        quote: "“Every product must stand up to scrutiny: its origin, its material, its end of life.”"
+        founder: Founder
+        badge: Lyon since 2019
+    values:
+        durability_title: Durability
+        durability_text: Products chosen to last, refillable and repairable, that respect the environment at every step.
+        ethics_title: Ethics
+        ethics_text: We work with partners who share our values and pay fairly. Short supply chain, full traceability.
+        ecology_title: Ecology
+        ecology_text: Practices that respect the ecosystem, eco-friendly materials and carbon-neutral logistics.
+    testi:
+        eyebrow: They trust us
+        title: What they say
+        q1: "“The lavender & patchouli candle fills the whole house without any chemical smell.”"
+        q2: "“Finally a shop where I can buy with my eyes closed. Everything is beautiful and well thought out.”"
+        q3: "“The make-up remover pads replaced hundreds of cotton ones. Real impact.”"
+        q4: "“The eucalyptus soap lasts 3 times longer than my old shower gels.”"
+        q5: "“Fast delivery and 100% compostable packaging. Special mention for the handwritten note.”"
+        q6: "“I've been refilling my containers for 2 years. Zero plastic, zero regrets.”"
+    news:
+        eyebrow: Newsletter
+        title: Join the movement.
+        text: Zero-waste tips, new arrivals and stories from our makers — one letter a month, never more.
+        placeholder: you@example.com
+        cta: Subscribe
+
+# Product page
+product:
+    back: Back to products
+    category: Hygiene & Beauty
+    reviews: '(128 reviews)'
+    scent_label: Scent
+    qty_label: Quantity
+    add_to_cart: Add to cart
+    favorite: Add to favorites
+    guarantee_free_shipping: Free shipping from €49
+    guarantee_returns: Free returns within 30 days
+    guarantee_secure: 100% secure payment
+    guarantee_packaging: Compostable packaging
+    acc_description: Description
+    acc_composition: Composition & features
+    acc_composition_extra: Made in France · 100% natural ingredients · Paraben-free · Not tested on animals.
+    acc_shipping: Shipping & returns
+    acc_shipping_text: "Standard delivery: 3-5 business days (€4.90). Free from €49 spent. Returns accepted within 30 days, unopened product."
+    trust_delivery_title: Fast delivery
+    trust_delivery_text: Shipped within 24h, delivered in 3-5 days
+    trust_secure_title: Secure payment
+    trust_secure_text: 256-bit SSL encrypted transactions
+    trust_satisfied_title: Satisfied or refunded
+    trust_satisfied_text: Free returns within 30 days
+    trust_zerowaste_title: Zero waste
+    trust_zerowaste_text: Recyclable or compostable packaging
+    related_eyebrow: You may also like
+    related_title: Similar products
+
+# Cart
+cart:
+    ship_remaining_pre: Only
+    ship_remaining_post: away from free shipping
+    ship_unlocked: 🎉 Free shipping unlocked!
+    empty: Your cart is empty.
+    discover: Discover our products →
+    summary_title: Summary
+    subtotal: Subtotal
+    shipping: Shipping
+    shipping_free: Free
+    eco_discount: Eco discount (-10%)
+    promo_placeholder: Promo code
+    promo_apply: Apply
+    total: Total
+    checkout: Place order
+    reassurance: 100% secure payment · Free 30-day returns
+    clear: Empty cart
+    summary_empty: Add products to see the summary.
+
+# Sign in / Sign up
+auth:
+    brand_pitch: Join the grocery that does good
+    brand_feature_shipping: Free shipping from €49
+    brand_feature_products: Organic, local and seasonal products
+    brand_feature_loyalty: Refill loyalty programme
+    brand_quote: "“GreenGoodies transformed the way I consume. I wouldn't go back for anything in the world.” — Claire, Lyon"
+    back: Back to home
+    tab_login: Sign in
+    tab_register: Sign up
+    email: Email
+    password: Password
+    remember: Remember me
+    forgot: Forgot password?
+    submit_login: Sign in
+    ph_firstname: Your first name
+    ph_lastname: Your last name
+    ph_email: you@email.com
+    ph_password_min: Min. 8 characters
+    ph_password_confirm: Confirm your password
+    pwd_req_title: "Password must contain:"
+    pwd_req_length: 8-32 characters
+    pwd_req_upper: 1 uppercase letter
+    pwd_req_lower: 1 lowercase letter
+    pwd_req_number: 1 digit
+    pwd_req_special: 1 special character
+    terms_pre: I accept the
+    terms_cgv: Terms
+    terms_and: and the
+    terms_privacy: privacy policy
+    submit_register: Create my account
+    divider: or continue with
+
+# My account
+account:
+    nav_overview: Overview
+    nav_orders: Orders
+    nav_favorites: Favorites
+    nav_addresses: Addresses
+    nav_profile: Profile & security
+    nav_logout: Sign out
+    greeting: Hello
+    member_since: Member since
+    stat_orders: Orders
+    stat_refills: Refills returned
+    stat_plastic: Plastic avoided
+    orders_title: Recent orders
+    status_delivered: Delivered
+    status_transit: In transit
+    track: Track
+    no_orders: No orders yet.
+    recharge_title: Refill programme
+    recharge_desc: Bring back your empty containers and earn rewards. Every refill brings you closer to a discount.
+    recharge_info_pre: 3 refills out of 5
+    recharge_info_post: 2 more for your next reward!
+    address_title: Shipping address
+    api_title: API access
+    api_disable: Disable my API access
+    api_enable: Enable my API access
+    danger_title: Danger zone
+    delete_account: Delete my account
+    delete_confirm: Are you sure you want to delete your account? This action is irreversible.
+
+# Notifications (toasts)
+toast:
+    welcome: Welcome %name%!
+    account_deleted: Your account has been deleted.
+    api_enabled: API access successfully enabled.
+    api_disabled: API access successfully disabled.
+
+# Form labels
+form:
+    firstname: First name
+    lastname: Last name
+    email: Email
+    password: Password
+    password_confirm: Confirm password
+    agree_terms: I accept the GreenGoodies terms of use

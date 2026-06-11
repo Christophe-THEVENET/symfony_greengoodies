@@ -8,22 +8,22 @@
 <section class="hero">
     <div class="wrap hero__grid">
         <div class="hero__copy">
-            <span class="eyebrow hero__eyebrow" data-reveal>Boutique éco-responsable · Lyon</span>
+            <span class="eyebrow hero__eyebrow" data-reveal>{{ 'home.hero.eyebrow'|trans }}</span>
             <h1 class="hero__title" data-reveal data-reveal-delay="60">
-                <span>Consommer</span><br />
-                <span class="o">autrement,</span><br />
-                <span class="u">vraiment.</span>
+                <span>{{ 'home.hero.title_1'|trans }}</span><br />
+                <span class="o">{{ 'home.hero.title_2'|trans }}</span><br />
+                <span class="u">{{ 'home.hero.title_3'|trans }}</span>
             </h1>
-            <p class="hero__lead" data-reveal data-reveal-delay="140">Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.</p>
+            <p class="hero__lead" data-reveal data-reveal-delay="140">{{ 'home.hero.lead'|trans }}</p>
             <div class="hero__cta" data-reveal data-reveal-delay="220">
-                <a href="#produits" class="btn btn--solid">Voir la boutique</a>
-                <div class="hero__rating"><b>★★★★★</b><span>+1 200 avis · 4,9/5</span></div>
+                <a href="#" data-scroll="produits" class="btn btn--solid">{{ 'home.hero.cta'|trans }}</a>
+                <div class="hero__rating"><b>★★★★★</b><span>{{ 'home.hero.rating'|trans }}</span></div>
             </div>
         </div>
         <div class="hero__media" data-reveal="fade">
             <div class="hero__blob"><img src="{{ asset('img/products/savon.png') }}" alt="Savon bio" data-parallax="0.06" /></div>
-            <div class="hero__chip hero__chip--tl"><span class="ic">%</span><span class="hero__chip-txt"><b>-30% déchet</b><small>vs grande surface</small></span></div>
-            <div class="hero__chip hero__chip--br"><span class="ic">↻</span><span class="hero__chip-txt"><b>100% rechargeable</b><small>emballages consignés</small></span></div>
+            <div class="hero__chip hero__chip--tl"><span class="ic">%</span><span class="hero__chip-txt"><b>{{ 'home.hero.chip_waste'|trans }}</b><small>{{ 'home.hero.chip_waste_sub'|trans }}</small></span></div>
+            <div class="hero__chip hero__chip--br"><span class="ic">↻</span><span class="hero__chip-txt"><b>{{ 'home.hero.chip_refill'|trans }}</b><small>{{ 'home.hero.chip_refill_sub'|trans }}</small></span></div>
         </div>
     </div>
 </section>
@@ -31,8 +31,8 @@
 {# ========== TICKER ========== #}
 <div class="ticker" aria-hidden="true">
     <div class="ticker__row">
-        <span class="ticker__item">Livraison neutre en carbone</span><span class="ticker__item">Zéro déchet</span><span class="ticker__item">Made in France</span><span class="ticker__item">Sans plastique</span><span class="ticker__item">Paiement sécurisé</span>
-        <span class="ticker__item">Livraison neutre en carbone</span><span class="ticker__item">Zéro déchet</span><span class="ticker__item">Made in France</span><span class="ticker__item">Sans plastique</span><span class="ticker__item">Paiement sécurisé</span>
+        {% set tickerItems = ['home.ticker.carbon', 'home.ticker.zero_waste', 'home.ticker.made_in_france', 'home.ticker.no_plastic', 'home.ticker.secure_payment'] %}
+        {% for i in 1..2 %}{% for key in tickerItems %}<span class="ticker__item">{{ key|trans }}</span>{% endfor %}{% endfor %}
     </div>
 </div>
 
@@ -40,8 +40,8 @@
 <section class="products" id="produits">
     <div class="wrap">
         <div class="sec-head" data-reveal>
-            <div><span class="eyebrow">La sélection</span><h2>Nos produits</h2></div>
-            <p>Neuf essentiels choisis pour leur qualité, leur durabilité et leur juste fabrication.</p>
+            <div><span class="eyebrow">{{ 'home.products.eyebrow'|trans }}</span><h2>{{ 'home.products.title'|trans }}</h2></div>
+            <p>{{ 'home.products.intro'|trans }}</p>
         </div>
         <div class="grid">
             {% for product in products %}
@@ -70,6 +70,7 @@
                 </article>
             {% endfor %}
         </div>
+    </div>
 </section>
 
 {# ========== HISTOIRE ========== #}
@@ -77,14 +78,14 @@
     <div class="wrap story__grid">
         <div class="story__media" data-reveal="fade">
             <div class="story__media-frame"><img src="{{ asset('img/site/hero.png') }}" alt="Atelier GreenGoodies" data-parallax="0.05" /></div>
-            <div class="story__badge">Lyon depuis 2019</div>
+            <div class="story__badge">{{ 'home.story.badge'|trans }}</div>
         </div>
         <div class="story__copy">
-            <span class="eyebrow" data-reveal>Notre histoire</span>
-            <h2 data-reveal data-reveal-delay="60">Une boutique, une conviction.</h2>
-            <p data-reveal data-reveal-delay="120">Tout commence en 2019, à la Croix-Rousse. Aurélie ouvre une petite boutique avec une idée simple : prouver qu'on peut consommer mieux sans renoncer au beau ni au plaisir.</p>
-            <blockquote class="story__quote" data-reveal data-reveal-delay="160">« Chaque produit doit pouvoir être regardé en face : son origine, sa matière, sa fin de vie. »</blockquote>
-            <div class="story__sign" data-reveal data-reveal-delay="200"><div class="story__av">AC</div><div><b>Aurélie C.</b><br /><small>Fondatrice</small></div></div>
+            <span class="eyebrow" data-reveal>{{ 'home.story.eyebrow'|trans }}</span>
+            <h2 data-reveal data-reveal-delay="60">{{ 'home.story.title'|trans }}</h2>
+            <p data-reveal data-reveal-delay="120">{{ 'home.story.text'|trans }}</p>
+            <blockquote class="story__quote" data-reveal data-reveal-delay="160">{{ 'home.story.quote'|trans }}</blockquote>
+            <div class="story__sign" data-reveal data-reveal-delay="200"><div class="story__av">AC</div><div><b>Aurélie C.</b><br /><small>{{ 'home.story.founder'|trans }}</small></div></div>
         </div>
     </div>
 </section>
@@ -93,9 +94,9 @@
 <section class="values" id="valeurs">
     <div class="wrap">
         <div class="values__list">
-            <article class="value" data-reveal><span class="value__num">01</span><h4>Durabilité</h4><p>Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.</p></article>
-            <article class="value" data-reveal data-reveal-delay="100"><span class="value__num">02</span><h4>Éthique</h4><p>Nous travaillons avec des partenaires qui partagent nos valeurs et rémunèrent justement. Circuit court, traçabilité totale.</p></article>
-            <article class="value" data-reveal data-reveal-delay="200"><span class="value__num">03</span><h4>Écologie</h4><p>Des pratiques respectueuses de l'écosystème, des matériaux écologiques et une logistique neutre en carbone.</p></article>
+            <article class="value" data-reveal><span class="value__num">01</span><h4>{{ 'home.values.durability_title'|trans }}</h4><p>{{ 'home.values.durability_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="100"><span class="value__num">02</span><h4>{{ 'home.values.ethics_title'|trans }}</h4><p>{{ 'home.values.ethics_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="200"><span class="value__num">03</span><h4>{{ 'home.values.ecology_title'|trans }}</h4><p>{{ 'home.values.ecology_text'|trans }}</p></article>
         </div>
     </div>
 </section>
@@ -103,26 +104,26 @@
 {# ========== TÉMOIGNAGES CAROUSEL ========== #}
 <section class="testi">
     <div class="wrap">
-        <div class="testi__head"><span class="eyebrow">Elles & ils nous font confiance</span><h2>Ce qu'on en dit</h2></div>
+        <div class="testi__head"><span class="eyebrow">{{ 'home.testi.eyebrow'|trans }}</span><h2>{{ 'home.testi.title'|trans }}</h2></div>
         <div class="testi__carousel" data-controller="carousel" data-carousel-interval-value="4000">
             <div class="testi__track" data-carousel-target="track">
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q1'|trans }}</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
                 </div>
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q2'|trans }}</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
                 </div>
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q3'|trans }}</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
                 </div>
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Le savon à l'eucalyptus dure 3 fois plus longtemps que mes anciens gels douche. »</p><figcaption class="quote__who"><span class="quote__av">AD</span><span><b>Antoine D.</b><br /><small>Caluire</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q4'|trans }}</p><figcaption class="quote__who"><span class="quote__av">AD</span><span><b>Antoine D.</b><br /><small>Caluire</small></span></figcaption></figure>
                 </div>
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★☆</div><p>« Livraison rapide et emballage 100% compostable. Mention spéciale pour le petit mot manuscrit. »</p><figcaption class="quote__who"><span class="quote__av">LB</span><span><b>Léa B.</b><br /><small>Bron</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★☆</div><p>{{ 'home.testi.q5'|trans }}</p><figcaption class="quote__who"><span class="quote__av">LB</span><span><b>Léa B.</b><br /><small>Bron</small></span></figcaption></figure>
                 </div>
                 <div class="testi__slide" data-carousel-target="slide">
-                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>« Je recharge mes contenants depuis 2 ans. Zéro plastique, zéro regret. »</p><figcaption class="quote__who"><span class="quote__av">PR</span><span><b>Paul R.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q6'|trans }}</p><figcaption class="quote__who"><span class="quote__av">PR</span><span><b>Paul R.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
                 </div>
             </div>
             <div class="testi__nav">
@@ -141,12 +142,12 @@
 <section class="news" id="newsletter">
     <div class="wrap">
         <div class="news__inner" data-reveal="fade">
-            <span class="eyebrow">Newsletter</span>
-            <h2>Rejoignez le mouvement.</h2>
-            <p>Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.</p>
+            <span class="eyebrow">{{ 'home.news.eyebrow'|trans }}</span>
+            <h2>{{ 'home.news.title'|trans }}</h2>
+            <p>{{ 'home.news.text'|trans }}</p>
             <form class="news__form" onsubmit="return false" data-controller="newsletter">
-                <input type="email" placeholder="vous@exemple.fr" aria-label="Email" data-newsletter-target="input" />
-                <button type="submit" data-action="click->newsletter#subscribe">S'inscrire</button>
+                <input type="email" placeholder="{{ 'home.news.placeholder'|trans }}" aria-label="Email" data-newsletter-target="input" />
+                <button type="submit" data-action="click->newsletter#subscribe">{{ 'home.news.cta'|trans }}</button>
             </form>
         </div>
     </div>

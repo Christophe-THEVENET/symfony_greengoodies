@@ -22,20 +22,20 @@ class RegistrationForm extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom',
+                'label' => 'form.firstname',
                 'required' => true,
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'form.lastname',
                 'required' => true,
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email',
+                'label' => 'form.email',
                 'required' => true,
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
-                'label' => 'J\'accepte les CGU de GreenGoodies',
+                'label' => 'form.agree_terms',
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Vous devez accepter nos conditions.',
@@ -46,7 +46,7 @@ class RegistrationForm extends AbstractType
                 'type' => PasswordType::class,
                 'mapped' => false,
                 'first_options'  => [
-                    'label' => 'Mot de passe',
+                    'label' => 'form.password',
                     'toggle' => true,
                     'hidden_label' => 'Masquer',
                     'visible_label' => 'Afficher',
@@ -54,7 +54,7 @@ class RegistrationForm extends AbstractType
                     'hidden_icon' => null, // <-- Ajout ici
                 ],
                 'second_options' => [
-                    'label' => 'Confirmer le mot de passe',
+                    'label' => 'form.password_confirm',
                     'toggle' => true,
                     'hidden_label' => 'Masquer',
                     'visible_label' => 'Afficher',

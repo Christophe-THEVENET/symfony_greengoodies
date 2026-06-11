@@ -11,13 +11,13 @@
 {% if cart.items|length > 0 and remaining > 0 %}
     <div class="ship-progress">
         <p class="ship-progress__text">
-            Plus que <strong>{{ remaining|number_format(2, ',', ' ') }}€</strong> pour la livraison offerte
+            {{ 'cart.ship_remaining_pre'|trans }} <strong>{{ remaining|number_format(2, ',', ' ') }}€</strong> {{ 'cart.ship_remaining_post'|trans }}
         </p>
     </div>
 {% endif %}
 {% if cart.items|length > 0 and remaining <= 0 %}
     <div class="ship-progress">
-        <p class="ship-progress__text">🎉 Livraison offerte !</p>
+        <p class="ship-progress__text">{{ 'cart.ship_unlocked'|trans }}</p>
     </div>
 {% endif %}
 
@@ -64,15 +64,15 @@
             {% endfor %}
         {% else %}
             <div class="bag__empty">
-                <p>Votre panier est vide.</p>
-                <p><a href="{{ path('app_home') }}">Découvrir nos produits →</a></p>
+                <p>{{ 'cart.empty'|trans }}</p>
+                <p><a href="{{ path('app_home') }}">{{ 'cart.discover'|trans }}</a></p>
             </div>
         {% endif %}
     </div>
 
     {# ========== RÉCAPITULATIF ========== #}
     <div class="cart-summary">
-        <h3 class="cart-summary__title">Récapitulatif</h3>
+        <h3 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h3>
 
         {% if cart.items|length > 0 %}
             {% set shipping = remaining > 0 ? 4.90 : 0 %}
@@ -80,25 +80,25 @@
             {% set total = subtotal + shipping - ecoDiscount %}
 
             <div class="cart-summary__row">
-                <span>Sous-total</span>
+                <span>{{ 'cart.subtotal'|trans }}</span>
                 <span>{{ subtotal|number_format(2, ',', ' ') }}€</span>
             </div>
             <div class="cart-summary__row">
-                <span>Livraison</span>
-                <span>{{ shipping > 0 ? shipping|number_format(2, ',', ' ') ~ '€' : 'Offerte' }}</span>
+                <span>{{ 'cart.shipping'|trans }}</span>
+                <span>{{ shipping > 0 ? shipping|number_format(2, ',', ' ') ~ '€' : 'cart.shipping_free'|trans }}</span>
             </div>
             <div class="cart-summary__row cart-summary__row--discount">
-                <span>Réduction éco (-10%)</span>
+                <span>{{ 'cart.eco_discount'|trans }}</span>
                 <span>−{{ ecoDiscount|number_format(2, ',', ' ') }}€</span>
             </div>
 
             <div class="cart-summary__promo">
-                <input type="text" placeholder="Code promo" />
-                <button type="button" class="btn btn--ghost btn--sm">Appliquer</button>
+                <input type="text" placeholder="{{ 'cart.promo_placeholder'|trans }}" />
+                <button type="button" class="btn btn--ghost btn--sm">{{ 'cart.promo_apply'|trans }}</button>
             </div>
 
             <div class="cart-summary__row cart-summary__row--total">
-                <span>Total</span>
+                <span>{{ 'cart.total'|trans }}</span>
                 <span data-cart-total>{{ total|number_format(2, ',', ' ') }}€</span>
             </div>
 
@@ -107,12 +107,12 @@
                 }) }}
                 {{ stimulus_action('cart', 'validateCart', 'submit') }}>
                 <input type="hidden" name="_token" value="{{ csrf_token('app_order_validate') }}" />
-                <button type="submit" class="cart-summary__cta">Passer la commande</button>
+                <button type="submit" class="cart-summary__cta">{{ 'cart.checkout'|trans }}</button>
             </form>
 
             <p class="cart-summary__reassurance">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                Paiement 100% sécurisé · Retour gratuit 30 jours
+                {{ 'cart.reassurance'|trans }}
             </p>
 
             {# Vider le panier #}
@@ -120,11 +120,11 @@
                 <button type="button" class="btn btn--ghost btn--sm"
                     {{ stimulus_controller('cart', { url: path('api_cart_clear') }) }}
                     {{ stimulus_action('cart', 'clearCart', 'click') }}>
-                    Vider le panier
+                    {{ 'cart.clear'|trans }}
                 </button>
             </div>
         {% else %}
-            <div class="cart-summary__empty">Ajoutez des produits pour voir le récapitulatif.</div>
+            <div class="cart-summary__empty">{{ 'cart.summary_empty'|trans }}</div>
         {% endif %}
     </div>
 </section>

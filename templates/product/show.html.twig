@@ -25,14 +25,14 @@
 
     {# ========== INFOS ========== #}
     <div class="product-info">
-        <a href="{{ path('app_home') }}" class="product-info__back">← Retour aux produits</a>
+        <a href="{{ path('app_home') }}" class="product-info__back">← {{ 'product.back'|trans }}</a>
 
-        <span class="product-info__category">Hygiène & Beauté</span>
+        <span class="product-info__category">{{ 'product.category'|trans }}</span>
 
         <div style="display:flex;align-items:flex-start;gap:1rem;">
             <h1 class="product-info__title">{{ product.name }}</h1>
             {# Bouton favori #}
-            <button class="btn--icon" data-controller="favorite" data-action="click->favorite#toggle" data-favorite-target="btn" aria-label="Ajouter aux favoris">
+            <button class="btn--icon" data-controller="favorite" data-action="click->favorite#toggle" data-favorite-target="btn" aria-label="{{ 'product.favorite'|trans }}">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </button>
         </div>
@@ -41,7 +41,7 @@
         <div class="product-info__rating">
             <span class="product-info__rating-stars">★★★★★</span>
             <span>4.8</span>
-            <a href="#reviews">(128 avis)</a>
+            <a href="#reviews">{{ 'product.reviews'|trans }}</a>
         </div>
 
         {# Prix #}
@@ -54,7 +54,7 @@
 
         {# Sélecteur de senteur #}
         <div class="scent-picker">
-            <span class="scent-picker__label">Senteur</span>
+            <span class="scent-picker__label">{{ 'product.scent_label'|trans }}</span>
             <div class="scent-picker__options">
                 <button class="scent-picker__btn is-active" data-scent-picker-target="btn" data-action="click->scent-picker#select" data-scent="original">Lavande & Patchouli</button>
                 <button class="scent-picker__btn" data-scent-picker-target="btn" data-action="click->scent-picker#select" data-scent="eucalyptus">Eucalyptus</button>
@@ -68,7 +68,7 @@
                 productId: product.id
             }) }}>
             <div class="qty-selector">
-                <span class="qty-selector__label">Quantité</span>
+                <span class="qty-selector__label">{{ 'product.qty_label'|trans }}</span>
                 <button class="qty-btn" data-action="click->cart#decrement" aria-label="Moins">−</button>
                 <input type="number" class="qty-selector__input" value="1" min="1" max="20"
                        {{ stimulus_target('cart', 'quantity') }} />
@@ -78,7 +78,7 @@
             <div class="product-cta">
                 <button type="button" class="btn btn--solid"
                         {{ stimulus_action('cart', 'addToCart', 'click') }}>
-                    Ajouter au panier — {{ product.price|number_format(2, ',', ' ') }}€
+                    {{ 'product.add_to_cart'|trans }} — {{ product.price|number_format(2, ',', ' ') }}€
                 </button>
             </div>
         </div>
@@ -87,19 +87,19 @@
         <div class="guarantees">
             <div class="guarantees__item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>Livraison offerte dès 49€</span>
+                <span>{{ 'product.guarantee_free_shipping'|trans }}</span>
             </div>
             <div class="guarantees__item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>Retour gratuit sous 30 jours</span>
+                <span>{{ 'product.guarantee_returns'|trans }}</span>
             </div>
             <div class="guarantees__item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>Paiement 100% sécurisé</span>
+                <span>{{ 'product.guarantee_secure'|trans }}</span>
             </div>
             <div class="guarantees__item">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-                <span>Emballage compostable</span>
+                <span>{{ 'product.guarantee_packaging'|trans }}</span>
             </div>
         </div>
 
@@ -107,7 +107,7 @@
         <div class="accordion">
             <div class="accordion__item">
                 <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="true">
-                    Description
+                    {{ 'product.acc_description'|trans }}
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="accordion__panel is-open">
@@ -118,24 +118,24 @@
             </div>
             <div class="accordion__item">
                 <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
-                    Composition & caractéristiques
+                    {{ 'product.acc_composition'|trans }}
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="accordion__panel">
                     <div class="accordion__panel-inner">
                         <p>{{ product.shortDescription }}</p>
-                        <p style="margin-top:0.5rem;">Fabriqué en France · Ingrédients 100% naturels · Sans parabène · Non testé sur les animaux.</p>
+                        <p style="margin-top:0.5rem;">{{ 'product.acc_composition_extra'|trans }}</p>
                     </div>
                 </div>
             </div>
             <div class="accordion__item">
                 <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
-                    Livraison & retours
+                    {{ 'product.acc_shipping'|trans }}
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
                 </button>
                 <div class="accordion__panel">
                     <div class="accordion__panel-inner">
-                        <p>Livraison standard : 3-5 jours ouvrés (4,90€). Offerte dès 49€ d'achat. Retours acceptés sous 30 jours, produit non ouvert.</p>
+                        <p>{{ 'product.acc_shipping_text'|trans }}</p>
                     </div>
                 </div>
             </div>
@@ -147,23 +147,23 @@
 <div class="trust">
     <div class="trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
-        <div class="trust__item-title">Livraison rapide</div>
-        <p class="trust__item-text">Expédition sous 24h, livraison en 3-5 jours</p>
+        <div class="trust__item-title">{{ 'product.trust_delivery_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_delivery_text'|trans }}</p>
     </div>
     <div class="trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <div class="trust__item-title">Paiement sécurisé</div>
-        <p class="trust__item-text">Transactions cryptées SSL 256-bit</p>
+        <div class="trust__item-title">{{ 'product.trust_secure_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_secure_text'|trans }}</p>
     </div>
     <div class="trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
-        <div class="trust__item-title">Satisfait ou remboursé</div>
-        <p class="trust__item-text">Retour gratuit sous 30 jours</p>
+        <div class="trust__item-title">{{ 'product.trust_satisfied_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_satisfied_text'|trans }}</p>
     </div>
     <div class="trust__item">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 22c1.25-1.25 2.5-2.5 4-4 1-1 2-2 3-3"/><path d="M12 2C6.5 2 2 6.5 2 12"/><path d="M22 12c0-5.5-4.5-10-10-10"/></svg>
-        <div class="trust__item-title">Zéro déchet</div>
-        <p class="trust__item-text">Emballages recyclables ou compostables</p>
+        <div class="trust__item-title">{{ 'product.trust_zerowaste_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_zerowaste_text'|trans }}</p>
     </div>
 </div>
 
@@ -171,8 +171,8 @@
 {% if relatedProducts|length > 0 %}
     <div class="sec-head">
         <div>
-            <span class="sec-head__eyebrow">Vous aimerez aussi</span>
-            <h2 class="sec-head__title">Produits similaires</h2>
+            <span class="sec-head__eyebrow">{{ 'product.related_eyebrow'|trans }}</span>
+            <h2 class="sec-head__title">{{ 'product.related_title'|trans }}</h2>
         </div>
     </div>
     <div class="container" style="padding-bottom:5rem;">

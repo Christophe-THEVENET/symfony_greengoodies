@@ -1,0 +1,37 @@
+# Traductions anglaises des messages de validation.
+# Clé = message source français (convention Symfony : le message par défaut sert de clé).
+# En FR, le message source s'affiche tel quel (pas de catalogue validators.fr nécessaire).
+
+# Compte / inscription
+"Vous devez accepter nos conditions.": You must accept our terms.
+"Entrez un mot de passe": Please enter a password
+"Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et faire entre 8 et 32 caractères.": "The password must contain at least one uppercase letter, one lowercase letter, one digit, one special character and be between 8 and 32 characters long."
+"Le mot de passe n'est pas assez fort.": The password is not strong enough.
+"Un compte avec cet email existe déjà.": An account with this email already exists.
+"L'email ne peut pas être vide.": Email cannot be empty.
+"L'email n'est pas valide.": The email is not valid.
+"Le prénom ne peut pas être vide.": First name cannot be empty.
+"Le nom de famille ne peut pas être vide.": Last name cannot be empty.
+
+# Sécurité (CSRF)
+"Token CSRF invalide.": Invalid CSRF token.
+
+# Produit
+"Le nom du produit ne peut pas être vide.": Product name cannot be empty.
+"La description courte ne peut pas être vide.": Short description cannot be empty.
+"Le prix est obligatoire.": Price is required.
+"Le prix doit être positif.": Price must be positive.
+"Le nom du fichier image est obligatoire.": Image file name is required.
+"Le fichier image doit avoir une extension valide (jpg, jpeg, png, gif, webp).": "The image file must have a valid extension (jpg, jpeg, png, gif, webp)."
+"La description longue ne peut pas être vide.": Long description cannot be empty.
+
+# Commande
+"Le montant total est obligatoire.": Total amount is required.
+"Le montant total doit être positif ou nul.": Total amount must be positive or zero.
+"Le numéro de commande ne peut contenir que des lettres majuscules, des chiffres, des tirets et des underscores.": "The order number can only contain uppercase letters, digits, hyphens and underscores."
+"La quantité est obligatoire.": Quantity is required.
+"La quantité doit être positive.": Quantity must be positive.
+"Le prix unitaire est obligatoire.": Unit price is required.
+"Le prix unitaire doit être positif.": Unit price must be positive.
+"Le prix total est obligatoire.": Total price is required.
+"Le prix total doit être positif ou nul.": Total price must be positive or zero.

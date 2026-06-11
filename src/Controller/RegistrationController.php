@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class RegistrationController extends AbstractController
 {
@@ -20,6 +21,7 @@ final class RegistrationController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher,
         Security $security,
         EntityManagerInterface $entityManager,
+        TranslatorInterface $translator,
     ): Response {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_home');
@@ -37,7 +39,7 @@ final class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $request->getSession()->set('toast', 'Bienvenue ' . $user->getFirstname() . ' !');
+            $request->getSession()->set('toast', $translator->trans('toast.welcome', ['%name%' => $user->getFirstname()]));
 
             return $security->login($user, 'form_login', 'main');
         }

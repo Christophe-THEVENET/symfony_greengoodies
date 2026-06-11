@@ -3,12 +3,12 @@
         <div class="footer__top">
             <div class="footer__brand">
                 <a href="{{ path('app_home') }}" class="logo"><span class="logo__mark">G</span>GreenGoodies</a>
-                <p>Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement, vraiment.</p>
+                <p>{{ 'footer.tagline'|trans }}</p>
             </div>
-            <div class="footer__col"><h5>Boutique</h5><span class="footer__link">Hygiène & beauté</span><span class="footer__link">Accessoires</span><span class="footer__link">Boissons</span><span class="footer__link">Cartes cadeaux</span></div>
-            <div class="footer__col"><h5>Maison</h5><a href="{{ path('app_home') }}#histoire" class="footer__link">Notre histoire</a><a href="{{ path('app_home') }}#valeurs" class="footer__link">Nos valeurs</a><a href="{{ path('app_home') }}#newsletter" class="footer__link">Newsletter</a><a href="#" class="footer__link">Nous contacter</a></div>
-            <div class="footer__col"><h5>Aide</h5><span class="footer__link">Livraison & retours</span><a href="{{ path('app_account') }}" class="footer__link">Mon compte</a><span class="footer__link">CGV</span><span class="footer__link">Confidentialité</span></div>
+            <div class="footer__col"><h5>{{ 'footer.shop'|trans }}</h5><span class="footer__link">{{ 'footer.shop_hygiene'|trans }}</span><span class="footer__link">{{ 'footer.shop_accessories'|trans }}</span><span class="footer__link">{{ 'footer.shop_drinks'|trans }}</span><span class="footer__link">{{ 'footer.shop_giftcards'|trans }}</span></div>
+            <div class="footer__col"><h5>{{ 'footer.house'|trans }}</h5><a href="{{ path('app_home') }}#histoire" class="footer__link">{{ 'footer.our_story'|trans }}</a><a href="{{ path('app_home') }}#valeurs" class="footer__link">{{ 'footer.our_values'|trans }}</a><a href="{{ path('app_home') }}#newsletter" class="footer__link">{{ 'nav.newsletter'|trans }}</a><a href="#" class="footer__link">{{ 'footer.contact'|trans }}</a></div>
+            <div class="footer__col"><h5>{{ 'footer.help'|trans }}</h5><span class="footer__link">{{ 'footer.shipping_returns'|trans }}</span><a href="{{ path('app_account') }}" class="footer__link">{{ 'nav.account'|trans }}</a><span class="footer__link">{{ 'footer.cgv'|trans }}</span><span class="footer__link">{{ 'footer.privacy'|trans }}</span></div>
         </div>
-        <div class="footer__bottom"><span>&copy; <span data-year>{{ 'now'|date('Y') }}</span> GreenGoodies — Lyon, France</span><span>Développé par <a href="https://christophethevenet.fr" target="_blank" rel="noopener">Digitob</a></span><span>Conçu avec soin pour la planète 🌿</span></div>
+        <div class="footer__bottom"><span>&copy; {{ 'footer.copyright'|trans({'%year%': 'now'|date('Y')}) }}</span><span>{{ 'footer.developed_by'|trans }} <a href="https://christophethevenet.fr" target="_blank" rel="noopener">Digitob</a></span><span>{{ 'footer.crafted'|trans }}</span></div>
     </div>
 </footer>
