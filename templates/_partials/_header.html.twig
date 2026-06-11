@@ -12,30 +12,40 @@
         </nav>
 
         <div class="header__right">
-            <div class="lang">
-                <a href="{{ path('app_locale', {_locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? 'is-active' }}" hreflang="fr">FR</a>
-                <span>/</span>
-                <a href="{{ path('app_locale', {_locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? 'is-active' }}" hreflang="en">EN</a>
-            </div>
-
+            {# 1. Connexion / Compte #}
             {% if app.user %}
-                <a href="{{ path('app_account') }}" class="icon-btn" aria-label="{{ 'nav.account'|trans }}">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
-                </a>
+                <div class="account-menu">
+                    <button type="button" class="account-menu__trigger" aria-haspopup="true">
+                        {{ app.user.firstname }}
+                        <svg class="account-menu__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="account-menu__dropdown" role="menu">
+                        <a href="{{ path('app_account') }}" role="menuitem">{{ 'nav.account'|trans }}</a>
+                        <a href="{{ path('app_logout') }}" role="menuitem">{{ 'nav.logout'|trans }}</a>
+                    </div>
+                </div>
             {% else %}
                 <a href="{{ path('app_login') }}" class="icon-btn" aria-label="{{ 'nav.login'|trans }}">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
                 </a>
             {% endif %}
 
-            <a href="{{ path('app_cart') }}" class="cart-btn">
-                <span>{{ 'nav.cart'|trans }}</span>
+            {# 2. Panier (icône) #}
+            <a href="{{ path('app_cart') }}" class="cart-btn" aria-label="{{ 'nav.cart'|trans }}">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                 {% if cart_count() > 0 %}
                     <span class="badge" data-cart-badge>{{ cart_count() }}</span>
                 {% else %}
                     <span class="badge" data-cart-badge style="display:none;"></span>
                 {% endif %}
             </a>
+
+            {# 3. Langue (actif discret) #}
+            <div class="lang">
+                <a href="{{ path('app_locale', {_locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? 'is-active' }}" hreflang="fr">FR</a>
+                <span>/</span>
+                <a href="{{ path('app_locale', {_locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? 'is-active' }}" hreflang="en">EN</a>
+            </div>
 
             <button class="burger" data-header-target="burger" data-action="click->header#toggle" aria-label="Menu" aria-expanded="false">
                 <span></span><span></span><span></span>
