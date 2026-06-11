@@ -72,6 +72,7 @@ class CartController extends AbstractController
                 'cart'    => [
                     'total' => $cart->getTotalAmount(),
                     'count' => $cart->getItemCount(),
+                    'summary' => $cart->getSummary(),
                     'updatedItem' => [
                         'product' => [
                             'id' => $productId,
@@ -100,6 +101,7 @@ class CartController extends AbstractController
                 'cart' => [
                     'total' => $cart->getTotalAmount(),
                     'count' => $cart->getItemCount(),
+                    'summary' => $cart->getSummary(),
                 ],
             ]);
         } catch (\Exception $e) {

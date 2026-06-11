@@ -4,24 +4,11 @@
 
 {% block body %}
 
-{# Barre progression livraison offerte #}
-{% set subtotal = cart.totalAmount %}
-{% set shippingThreshold = 49 %}
-{% set remaining = shippingThreshold - subtotal %}
-{% if cart.items|length > 0 and remaining > 0 %}
-    <div class="ship-progress">
-        <p class="ship-progress__text">
-            {{ 'cart.ship_remaining_pre'|trans }} <strong>{{ remaining|number_format(2, ',', ' ') }}€</strong> {{ 'cart.ship_remaining_post'|trans }}
-        </p>
-    </div>
-{% endif %}
-{% if cart.items|length > 0 and remaining <= 0 %}
-    <div class="ship-progress">
-        <p class="ship-progress__text">{{ 'cart.ship_unlocked'|trans }}</p>
-    </div>
-{% endif %}
+{# Récapitulatif calculé côté serveur (source unique : CartDto) #}
+{% set s = cart.summary %}
 
 <section class="cart-page">
+    <div class="cart-page__grid">
     {# ========== LISTE ARTICLES ========== #}
     <div class="bag">
         {% if cart.items|length > 0 %}
@@ -52,7 +39,7 @@
                             <button type="button" class="bag-item__remove"
                                     {{ stimulus_action('cart', 'removeItem', 'click') }}
                                     aria-label="Retirer du panier">
-                                ×
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
                             </button>
                         </div>
                     </div>
@@ -70,26 +57,33 @@
         {% endif %}
     </div>
 
-    {# ========== RÉCAPITULATIF ========== #}
-    <div class="cart-summary">
-        <h3 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h3>
+    {# ========== COLONNE DROITE ========== #}
+    <div class="cart-aside">
+        {% if not cart.isEmpty %}
+            <p class="ship-note" data-ship-progress
+               data-pre="{{ 'cart.ship_remaining_pre'|trans }}"
+               data-post="{{ 'cart.ship_remaining_post'|trans }}"
+               data-unlocked="{{ 'cart.ship_unlocked'|trans }}">
+                <span data-ship-text>{% if s.freeShippingRemaining > 0 %}{{ 'cart.ship_remaining_pre'|trans }} <strong>{{ s.freeShippingRemaining|number_format(2, ',', ' ') }}€</strong> {{ 'cart.ship_remaining_post'|trans }}{% else %}{{ 'cart.ship_unlocked'|trans }}{% endif %}</span>
+            </p>
+        {% endif %}
 
-        {% if cart.items|length > 0 %}
-            {% set shipping = remaining > 0 ? 4.90 : 0 %}
-            {% set ecoDiscount = subtotal * 0.10 %}
-            {% set total = subtotal + shipping - ecoDiscount %}
+        {# Récapitulatif #}
+        <div class="cart-summary">
+            <h3 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h3>
 
+        {% if not cart.isEmpty %}
             <div class="cart-summary__row">
                 <span>{{ 'cart.subtotal'|trans }}</span>
-                <span>{{ subtotal|number_format(2, ',', ' ') }}€</span>
+                <span data-cart-subtotal>{{ s.subtotal|number_format(2, ',', ' ') }}€</span>
             </div>
             <div class="cart-summary__row">
                 <span>{{ 'cart.shipping'|trans }}</span>
-                <span>{{ shipping > 0 ? shipping|number_format(2, ',', ' ') ~ '€' : 'cart.shipping_free'|trans }}</span>
+                <span data-cart-shipping data-free-label="{{ 'cart.shipping_free'|trans }}">{{ s.shipping > 0 ? s.shipping|number_format(2, ',', ' ') ~ '€' : 'cart.shipping_free'|trans }}</span>
             </div>
             <div class="cart-summary__row cart-summary__row--discount">
                 <span>{{ 'cart.eco_discount'|trans }}</span>
-                <span>−{{ ecoDiscount|number_format(2, ',', ' ') }}€</span>
+                <span data-cart-discount>−{{ s.ecoDiscount|number_format(2, ',', ' ') }}€</span>
             </div>
 
             <div class="cart-summary__promo">
@@ -99,7 +93,7 @@
 
             <div class="cart-summary__row cart-summary__row--total">
                 <span>{{ 'cart.total'|trans }}</span>
-                <span data-cart-total>{{ total|number_format(2, ',', ' ') }}€</span>
+                <span data-cart-total>{{ s.total|number_format(2, ',', ' ') }}€</span>
             </div>
 
             <form {{ stimulus_controller('cart', {
@@ -126,6 +120,8 @@
         {% else %}
             <div class="cart-summary__empty">{{ 'cart.summary_empty'|trans }}</div>
         {% endif %}
+        </div>
+    </div>
     </div>
 </section>
 

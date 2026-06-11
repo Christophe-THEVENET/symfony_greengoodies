@@ -4,34 +4,47 @@
 // PANIER
 // ============================================================
 
-// Barre progression livraison offerte
-.ship-progress {
-    background: mix($olive, $cream, 20%);
-    text-align: center;
-    padding: 1rem;
+// Layout panier — espacement sous le header fixe, comme la fiche produit
+.cart-page {
+    @include container;
+    padding-block: 130px 5rem;
 
-    &__text {
-        font-size: $fs-body-sm;
-        font-weight: $fw-500;
-        color: $ink;
+    @media screen and (max-width: $breakpoint-tablette) {
+        padding-block: 110px 4rem;
+    }
 
-        strong {
-            font-family: $fontDisplay;
+    &__grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 3rem;
+        align-items: start;
+
+        @media screen and (max-width: $breakpoint-tablette) {
+            grid-template-columns: 1fr;
         }
     }
 }
 
-// Layout panier
-.cart-page {
-    @include container;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 3rem;
-    align-items: start;
-    padding-block: 3rem 5rem;
+// Colonne droite : texte livraison + encadré récap
+.cart-aside {
+    position: sticky;
+    top: 120px;
 
     @media screen and (max-width: $breakpoint-tablette) {
-        grid-template-columns: 1fr;
+        position: static;
+    }
+}
+
+// Texte "livraison offerte" simple, juste au-dessus du récap
+.ship-note {
+    text-align: center;
+    font-size: $fs-body-sm;
+    color: $ink-soft;
+    margin-bottom: 0.85rem;
+
+    strong {
+        font-family: $fontDisplay;
+        color: $olive-deep;
     }
 }
 
@@ -104,40 +117,45 @@
     &__qty {
         display: flex;
         align-items: center;
-        gap: 0.25rem;
+        gap: 0.35rem;
 
         input {
-            width: 44px;
+            width: 36px;
             text-align: center;
-            border: 1.5px solid $line;
-            border-radius: $radius-sm;
-            padding: 0.3rem 0;
-            font-size: $fs-body-sm;
-            font-weight: $fw-600;
-            background: $paper;
+            border: none;
+            background: transparent;
+            padding: 0;
+            font-family: $fontDisplay;
+            font-size: $fs-body;
+            font-weight: $fw-700;
             color: $ink;
             outline: none;
 
-            &:focus {
-                border-color: $terra;
-            }
-
+            -moz-appearance: textfield;
             &::-webkit-inner-spin-button,
             &::-webkit-outer-spin-button {
                 -webkit-appearance: none;
+                margin: 0;
             }
         }
     }
 
     &__remove {
         @include btn-base;
-        width: 32px;
-        height: 32px;
+        display: grid;
+        place-items: center;
+        width: 36px;
+        height: 36px;
         padding: 0;
         border-radius: 50%;
         background: transparent;
         color: $ink-soft;
-        font-size: $fs-body;
+        transition: color 0.2s, background 0.2s;
+
+        svg {
+            width: 18px;
+            height: 18px;
+        }
 
         &:hover {
             color: #e74c3c;
@@ -157,16 +175,10 @@
 
 // Récapitulatif
 .cart-summary {
-    position: sticky;
-    top: 120px;
     background: $paper;
     border-radius: $radius-xl;
     padding: 2rem;
     box-shadow: $shadow-card;
-
-    @media screen and (max-width: $breakpoint-tablette) {
-        position: static;
-    }
 
     &__title {
         font-family: $fontDisplay;
