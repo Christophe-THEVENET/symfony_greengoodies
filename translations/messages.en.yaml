@@ -8,6 +8,7 @@ nav:
     account: My account
     login: Sign in
     logout: Sign out
+    contact: Contact
 
 # Footer
 footer:
@@ -248,6 +249,31 @@ toast:
     address_updated: Address updated
     address_deleted: Address deleted
     address_default_set: Default address set
+
+# Newsletter
+newsletter:
+    subscribed: Thank you! You're now subscribed to the newsletter.
+    already: This email is already subscribed.
+    invalid: Please enter a valid email.
+    rate_limited: Too many attempts. Please try again later.
+
+# Contact
+contact:
+    eyebrow: Let's talk
+    title: Contact us
+    lead: A question, a suggestion, a partnership? Write to us, we reply within 48 business hours.
+    hours: Monday to Saturday, 9am–7pm
+    name: Name
+    name_placeholder: Your name
+    email: Email
+    email_placeholder: you@example.com
+    subject: Subject
+    subject_placeholder: What is your message about
+    message: Message
+    message_placeholder: Your message…
+    send: Send message
+    success: Thank you! Your message has been sent.
+    rate_limited: Too many messages sent. Please try again later.
 
 # ===== Products (from DB fixtures, used as translation keys) =====
 "Kit d'hygiène recyclable": Recyclable hygiene kit

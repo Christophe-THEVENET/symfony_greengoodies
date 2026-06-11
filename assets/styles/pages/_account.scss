@@ -293,13 +293,12 @@
 .address-card {
     position: relative;
     background: $paper;
-    border: 1.5px solid $line;
     border-radius: $radius-lg;
     padding: 1.25rem 1.5rem;
     box-shadow: $shadow-card;
 
     &--default {
-        border-color: $terra;
+        background: rgba($terra, 0.03);
     }
 
     &__badge {

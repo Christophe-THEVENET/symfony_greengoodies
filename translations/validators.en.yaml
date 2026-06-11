@@ -18,6 +18,17 @@
 "Entrez un nouveau mot de passe.": Please enter a new password.
 "Les mots de passe ne correspondent pas.": The passwords do not match.
 
+# Contact
+"Le nom est obligatoire.": The name is required.
+"Le nom ne peut pas dépasser {{ limit }} caractères.": "The name cannot exceed {{ limit }} characters."
+"L'email est obligatoire.": The email is required.
+"Le sujet est obligatoire.": The subject is required.
+"Le message est obligatoire.": The message is required.
+"Le message doit contenir au moins {{ limit }} caractères.": "The message must be at least {{ limit }} characters long."
+
+# Newsletter
+"Cet email est déjà inscrit.": This email is already subscribed.
+
 # Adresses
 "Le libellé est obligatoire.": The label is required.
 "Le libellé ne peut pas dépasser {{ limit }} caractères.": "The label cannot exceed {{ limit }} characters."

@@ -145,9 +145,9 @@
             <span class="eyebrow">{{ 'home.news.eyebrow'|trans }}</span>
             <h2>{{ 'home.news.title'|trans }}</h2>
             <p>{{ 'home.news.text'|trans }}</p>
-            <form class="news__form" onsubmit="return false" data-controller="newsletter">
+            <form class="news__form" onsubmit="return false" data-controller="newsletter" data-newsletter-url-value="{{ path('app_newsletter_subscribe') }}">
                 <input type="email" placeholder="{{ 'home.news.placeholder'|trans }}" aria-label="Email" data-newsletter-target="input" />
-                <button type="submit" data-action="click->newsletter#subscribe">{{ 'home.news.cta'|trans }}</button>
+                <button type="submit" data-newsletter-target="button" data-action="click->newsletter#subscribe">{{ 'home.news.cta'|trans }}</button>
             </form>
         </div>
     </div>

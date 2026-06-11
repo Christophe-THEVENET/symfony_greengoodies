@@ -8,7 +8,7 @@
             <a href="{{ path('app_home') }}#produits" data-scroll="produits">{{ 'nav.products'|trans }}</a>
             <a href="{{ path('app_home') }}#histoire" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
             <a href="{{ path('app_home') }}#valeurs" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
-            <a href="{{ path('app_home') }}#newsletter" data-scroll="newsletter">{{ 'nav.newsletter'|trans }}</a>
+            <a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a>
         </nav>
 
         <div class="header__right">
@@ -57,6 +57,7 @@
     <nav class="nav" data-header-target="mobileMenu" data-nav style="display:none">
         <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
         <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
+        <a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a>
         <a href="{{ path('app_cart') }}" data-action="click->header#closeOnLink">{{ 'nav.cart'|trans }}</a>
         {% if app.user %}
             <a href="{{ path('app_account') }}" data-action="click->header#closeOnLink">{{ 'nav.account'|trans }}</a>
