@@ -213,19 +213,19 @@ html.page-auth, body.page-auth { height: 100%; margin: 0; overflow: hidden; }
 
             &:focus {
                 border-color: $olive;
-                box-shadow: 0 0 0 3px rgba($olive, 0.15);
+                box-shadow: inset 0 0 0 1.5px rgba($olive, 0.5);
             }
 
             &.valid {
                 border-color: $ok;
                 background: rgba($ok, 0.04);
-                box-shadow: 0 0 0 2px rgba($ok, 0.15);
+                box-shadow: inset 0 0 0 1.5px rgba($ok, 0.5);
             }
 
             &.invalid {
                 border-color: $terra;
                 background: rgba($terra, 0.04);
-                box-shadow: 0 0 0 2px rgba($terra, 0.15);
+                box-shadow: inset 0 0 0 1.5px rgba($terra, 0.5);
             }
         }
     }
