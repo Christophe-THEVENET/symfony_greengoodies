@@ -169,19 +169,6 @@
             </div>
 
             <div class="account-section">
-                <h3 class="account-section__title">{{ 'account.password_title'|trans }}</h3>
-                {{ form_start(passwordForm, { attr: { novalidate: 'novalidate' } }) }}
-                    <div class="field">{{ form_label(passwordForm.currentPassword) }}{{ form_widget(passwordForm.currentPassword) }}{{ form_errors(passwordForm.currentPassword) }}</div>
-                    <div class="address-form__row">
-                        <div class="field">{{ form_label(passwordForm.plainPassword.first) }}{{ form_widget(passwordForm.plainPassword.first) }}</div>
-                        <div class="field">{{ form_label(passwordForm.plainPassword.second) }}{{ form_widget(passwordForm.plainPassword.second) }}</div>
-                    </div>
-                    {{ form_errors(passwordForm.plainPassword) }}
-                    <button type="submit" class="btn btn--solid">{{ 'account.save_password'|trans }}</button>
-                {{ form_end(passwordForm) }}
-            </div>
-
-            <div class="account-section">
                 <h3 class="account-section__title">{{ 'account.api_title'|trans }}</h3>
                 <form method="post" action="{{ path('api_account_toggle_api') }}" data-controller="account" data-action="submit->account#toggleApiAccess">
                     <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}" />

@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\Entity\Address;
 use App\Entity\User;
 use App\Form\AddressType;
-use App\Form\ChangePasswordType;
 use App\Form\ProfileType;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,9 +14,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -34,12 +30,11 @@ class AccountController extends AbstractController
         private TokenStorageInterface $tokenStorage,
         private CsrfTokenManagerInterface $csrfTokenManager,
         private TranslatorInterface $translator,
-        private UserPasswordHasherInterface $passwordHasher,
         private RequestStack $requestStack,
     ) {}
 
     #[Route('/', name: 'app_account')]
-    public function index(Request $request, OrderRepository $orderRepository, RateLimiterFactory $accountPasswordLimiter): Response
+    public function index(Request $request, OrderRepository $orderRepository): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -50,21 +45,6 @@ class AccountController extends AbstractController
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
             $this->em->flush();
             return $this->toastRedirect('toast.profile_updated', 'profil');
-        }
-
-        // --- Formulaire mot de passe ---
-        $passwordForm = $this->createForm(ChangePasswordType::class);
-        $passwordForm->handleRequest($request);
-        if ($passwordForm->isSubmitted()) {
-            // Anti brute-force du mot de passe actuel
-            if (!$accountPasswordLimiter->create((string) $user->getId())->consume()->isAccepted()) {
-                throw new TooManyRequestsHttpException(null, $this->translator->trans('toast.rate_limited'));
-            }
-            if ($passwordForm->isValid()) {
-                $user->setPassword($this->passwordHasher->hashPassword($user, $passwordForm->get('plainPassword')->getData()));
-                $this->em->flush();
-                return $this->toastRedirect('toast.password_updated', 'profil');
-            }
         }
 
         // --- Formulaire ajout d'adresse ---
@@ -79,7 +59,7 @@ class AccountController extends AbstractController
             return $this->toastRedirect('toast.address_added', 'adresses');
         }
 
-        return $this->renderAccount($user, $orderRepository, $profileForm, $passwordForm, $addressForm, $request);
+        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request);
     }
 
     #[Route('/adresse/{id}/modifier', name: 'app_address_edit', methods: ['GET', 'POST'])]
@@ -98,9 +78,8 @@ class AccountController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
         $profileForm = $this->createForm(ProfileType::class, $user);
-        $passwordForm = $this->createForm(ChangePasswordType::class);
 
-        return $this->renderAccount($user, $orderRepository, $profileForm, $passwordForm, $addressForm, $request, $address);
+        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request, $address);
     }
 
     #[Route('/adresse/{id}/supprimer', name: 'app_address_delete', methods: ['POST'])]
@@ -194,7 +173,6 @@ class AccountController extends AbstractController
         User $user,
         OrderRepository $orderRepository,
         FormInterface $profileForm,
-        FormInterface $passwordForm,
         FormInterface $addressForm,
         Request $request,
         ?Address $editingAddress = null,
@@ -212,7 +190,6 @@ class AccountController extends AbstractController
             'user' => $user,
             'orders' => $orders,
             'profileForm' => $profileForm,
-            'passwordForm' => $passwordForm,
             'addressForm' => $addressForm,
             'editingAddress' => $editingAddress,
             'activeTab' => $activeTab,

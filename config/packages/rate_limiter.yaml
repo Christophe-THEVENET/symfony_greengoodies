@@ -29,9 +29,3 @@ framework:
             policy: fixed_window
             limit: 5
             interval: 1 hour
-
-        # Changement de mot de passe (anti brute-force du mot de passe actuel)
-        account_password:
-            policy: fixed_window
-            limit: 5
-            interval: 15 minutes
