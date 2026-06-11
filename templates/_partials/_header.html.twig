@@ -5,10 +5,10 @@
         </a>
 
         <nav class="nav" data-nav>
-            <a href="#" data-scroll="produits">{{ 'nav.products'|trans }}</a>
-            <a href="#" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
-            <a href="#" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
-            <a href="#" data-scroll="newsletter">{{ 'nav.newsletter'|trans }}</a>
+            <a href="{{ path('app_home') }}#produits" data-scroll="produits">{{ 'nav.products'|trans }}</a>
+            <a href="{{ path('app_home') }}#histoire" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
+            <a href="{{ path('app_home') }}#valeurs" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
+            <a href="{{ path('app_home') }}#newsletter" data-scroll="newsletter">{{ 'nav.newsletter'|trans }}</a>
         </nav>
 
         <div class="header__right">

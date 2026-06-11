@@ -20,23 +20,36 @@ function initReveal() {
     document.querySelectorAll("[data-reveal]:not(.is-in)").forEach(function (el) { observer.observe(el); });
 }
 
+// Au chargement : si l'URL contient un hash de section (arrivée depuis une
+// autre page, ex. /#histoire), on scrolle vers la cible puis on retire le #.
+function handleHashScroll() {
+    var hash = window.location.hash;
+    if (hash.length < 2) return;
+    var el = document.getElementById(hash.slice(1));
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth" });
+    history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
 // Exécuter au chargement initial
 initReveal();
+handleHashScroll();
 
 // Réexécuter après chaque visite Turbo
 document.addEventListener("turbo:render", function () {
     initReveal();
+    handleHashScroll();
 });
 
-// Scroll smooth sans hashtag dans l'URL
+// Scroll smooth si la cible est sur la page courante (accueil),
+// sinon on laisse le navigateur suivre le href (ex. depuis une autre page).
 document.addEventListener("click", function (e) {
     var link = e.target.closest("[data-scroll]");
     if (!link) return;
-    e.preventDefault();
     var id = link.getAttribute("data-scroll");
     var el = document.getElementById(id);
-    if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        history.replaceState(null, "", "/" + id);
-    }
+    if (!el) return; // cible absente -> navigation normale vers l'accueil
+    e.preventDefault();
+    el.scrollIntoView({ behavior: "smooth" });
+    // On ne modifie pas l'URL : pas de hashtag visible
 });

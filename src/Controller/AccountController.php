@@ -67,7 +67,7 @@ class AccountController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route('/access-api', name: 'api_account_toggle_api', methods: ['POST'])]
+    #[Route('/acces-api', name: 'api_account_toggle_api', methods: ['POST'])]
     public function toggleApiAccess(Request $request): Response
     {
         $submittedToken = $request->request->get('_token');

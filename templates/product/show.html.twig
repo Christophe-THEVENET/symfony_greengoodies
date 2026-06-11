@@ -4,23 +4,10 @@
 
 {% block body %}
 
-<section class="product-detail" data-controller="product-gallery scent-picker accordion">
-    {# ========== GALERIE ========== #}
-    <div class="gallery">
-        <div class="gallery__thumbs">
-            <button class="gallery__thumb is-active" data-product-gallery-target="thumb" data-action="click->product-gallery#select" data-index="0">
-                <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" />
-            </button>
-            <button class="gallery__thumb" data-product-gallery-target="thumb" data-action="click->product-gallery#select" data-index="1">
-                <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }} vue 2" />
-            </button>
-            <button class="gallery__thumb" data-product-gallery-target="thumb" data-action="click->product-gallery#select" data-index="2">
-                <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }} vue 3" />
-            </button>
-        </div>
-        <div class="gallery__main">
-            <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" data-product-gallery-target="main" />
-        </div>
+<section class="product-detail" data-controller="accordion">
+    {# ========== PHOTO ========== #}
+    <div class="product-media">
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" />
     </div>
 
     {# ========== INFOS ========== #}
@@ -29,13 +16,7 @@
 
         <span class="product-info__category">{{ 'product.category'|trans }}</span>
 
-        <div style="display:flex;align-items:flex-start;gap:1rem;">
-            <h1 class="product-info__title">{{ product.name }}</h1>
-            {# Bouton favori #}
-            <button class="btn--icon" data-controller="favorite" data-action="click->favorite#toggle" data-favorite-target="btn" aria-label="{{ 'product.favorite'|trans }}">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </button>
-        </div>
+        <h1 class="product-info__title">{{ product.name }}</h1>
 
         {# Note #}
         <div class="product-info__rating">
@@ -50,16 +31,6 @@
             {% set oldPrice = product.price * 1.19 %}
             <span class="product-info__price-old">{{ oldPrice|number_format(2, ',', ' ') }}€</span>
             <span class="product-info__price-badge">-16%</span>
-        </div>
-
-        {# Sélecteur de senteur #}
-        <div class="scent-picker">
-            <span class="scent-picker__label">{{ 'product.scent_label'|trans }}</span>
-            <div class="scent-picker__options">
-                <button class="scent-picker__btn is-active" data-scent-picker-target="btn" data-action="click->scent-picker#select" data-scent="original">Lavande & Patchouli</button>
-                <button class="scent-picker__btn" data-scent-picker-target="btn" data-action="click->scent-picker#select" data-scent="eucalyptus">Eucalyptus</button>
-                <button class="scent-picker__btn" data-scent-picker-target="btn" data-action="click->scent-picker#select" data-scent="orange">Orange & Girofle</button>
-            </div>
         </div>
 
         {# Quantité + CTA — conteneur Stimulus #}
@@ -78,7 +49,7 @@
             <div class="product-cta">
                 <button type="button" class="btn btn--solid"
                         {{ stimulus_action('cart', 'addToCart', 'click') }}>
-                    {{ 'product.add_to_cart'|trans }} — {{ product.price|number_format(2, ',', ' ') }}€
+                    {{ 'product.add_to_cart'|trans }}
                 </button>
             </div>
         </div>
@@ -169,19 +140,21 @@
 
 {# ========== PRODUITS LIÉS ========== #}
 {% if relatedProducts|length > 0 %}
-    <div class="sec-head">
-        <div>
-            <span class="sec-head__eyebrow">{{ 'product.related_eyebrow'|trans }}</span>
-            <h2 class="sec-head__title">{{ 'product.related_title'|trans }}</h2>
+    <section class="related">
+        <div class="wrap">
+            <div class="sec-head">
+                <div>
+                    <span class="eyebrow">{{ 'product.related_eyebrow'|trans }}</span>
+                    <h2>{{ 'product.related_title'|trans }}</h2>
+                </div>
+            </div>
+            <div class="grid">
+                {% for related in relatedProducts %}
+                    {% include './_partials/_card-product.html.twig' with { product: related } %}
+                {% endfor %}
+            </div>
         </div>
-    </div>
-    <div class="container" style="padding-bottom:5rem;">
-        <div class="product-grid">
-            {% for related in relatedProducts %}
-                {% include './_partials/_card-product.html.twig' with { product: related } %}
-            {% endfor %}
-        </div>
-    </div>
+    </section>
 {% endif %}
 
 {% endblock %}

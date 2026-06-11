@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/cart')]
+#[Route('/panier')]
 class CartController extends AbstractController
 {
     // Messages constants
@@ -25,7 +25,7 @@ class CartController extends AbstractController
     public function __construct(private CartService $cartService) {}
 
     // ************** cart page **************
-    #[Route('/', name: 'app_cart', methods: ['GET'])]
+    #[Route('', name: 'app_cart', methods: ['GET'])]
     public function show(): Response
     {
         $cart = $this->cartService->getCart();
@@ -36,7 +36,7 @@ class CartController extends AbstractController
     }
 
     // ************** add product to cart (ajax front-end) **************
-    #[Route('/add/{productId}', name: 'api_cart_add', methods: ['POST'])]
+    #[Route('/ajouter/{productId}', name: 'api_cart_add', methods: ['POST'])]
     public function add(int $productId, Request $request): JsonResponse
     {
         try {
@@ -56,7 +56,7 @@ class CartController extends AbstractController
     }
 
     // ************** update product quantity in cart (ajax page panier) **************
-    #[Route('/update/{productId}', name: 'api_cart_update', methods: ['PUT'])]
+    #[Route('/modifier/{productId}', name: 'api_cart_update', methods: ['PUT'])]
     public function update(int $productId, Request $request): JsonResponse
     {
         try {
@@ -87,7 +87,7 @@ class CartController extends AbstractController
     }
 
     // ************** remove product from cart (bouton supprimer sur chaque ligne page panier) **************
-    #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
+    #[Route('/retirer/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
     public function remove(int $productId): JsonResponse
     {
         try {
@@ -108,7 +108,7 @@ class CartController extends AbstractController
     }
 
     // ************** clear cart (bouton vider panier page panier) **************
-    #[Route('/clear', name: 'api_cart_clear', methods: ['POST'])]
+    #[Route('/vider', name: 'api_cart_clear', methods: ['POST'])]
     public function clear(): JsonResponse
     {
         $this->cartService->clearCart();
@@ -121,7 +121,7 @@ class CartController extends AbstractController
     }
 
     // ************** validate cart and create order (bouton valider panier page panier) **************
-    #[Route('/validate', name: 'api_cart_validate', methods: ['POST'])]
+    #[Route('/valider', name: 'api_cart_validate', methods: ['POST'])]
     public function validate(Request $request): JsonResponse
     {
         // 1. Vérification de l'authentification

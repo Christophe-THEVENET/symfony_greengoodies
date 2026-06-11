@@ -8,72 +8,36 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    padding-block: 3rem 5rem;
+    // Dégage le header fixe (~72px) avec de l'air au-dessus
+    padding-block: 130px 5rem;
 
     @media screen and (max-width: $breakpoint-tablette) {
         grid-template-columns: 1fr;
         gap: 2rem;
+        padding-block: 110px 4rem;
     }
 }
 
-// --- GALERIE ---
-.gallery {
-    display: flex;
-    gap: 1rem;
+// --- PHOTO PRODUIT (image unique) ---
+.product-media {
     position: sticky;
-    top: 120px;
+    top: 100px;
     align-self: start;
+    aspect-ratio: 4 / 5;
+    border-radius: $radius-xl;
+    overflow: hidden;
+    background: $card;
+    box-shadow: 0 40px 80px -50px rgba(50, 36, 27, .5);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
 
     @media screen and (max-width: $breakpoint-tablette) {
         position: static;
-        flex-direction: column-reverse;
-    }
-
-    &__thumbs {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-
-        @media screen and (max-width: $breakpoint-tablette) {
-            flex-direction: row;
-            justify-content: center;
-        }
-    }
-
-    &__thumb {
-        width: 84px;
-        height: 84px;
-        border-radius: $radius-md;
-        overflow: hidden;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: border-color 0.2s;
-        background: $card;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        &.is-active {
-            border-color: $terra;
-        }
-    }
-
-    &__main {
-        flex: 1;
-        aspect-ratio: 4 / 5;
-        border-radius: $radius-xl;
-        overflow: hidden;
-        background: $card;
-
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-        }
     }
 }
 
@@ -160,48 +124,6 @@
     }
 }
 
-// --- SÉLECTEUR DE SENTEUR ---
-.scent-picker {
-    margin-bottom: 1.5rem;
-
-    &__label {
-        font-size: $fs-body-sm;
-        font-weight: $fw-600;
-        color: $ink;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-
-    &__options {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-    }
-
-    &__btn {
-        padding: 0.55rem 1rem;
-        border: 1.5px solid $line;
-        border-radius: $radius-full;
-        background: transparent;
-        font-size: $fs-body-sm;
-        font-weight: $fw-500;
-        color: $ink-soft;
-        cursor: pointer;
-        transition: all 0.2s;
-
-        &:hover {
-            border-color: $terra;
-            color: $terra;
-        }
-
-        &.is-active {
-            background: $terra;
-            color: $white;
-            border-color: $terra;
-        }
-    }
-}
-
 // --- QUANTITÉ ---
 .qty-selector {
     display: flex;
@@ -213,29 +135,50 @@
         font-size: $fs-body-sm;
         font-weight: $fw-600;
         color: $ink;
+        margin-right: 0.25rem;
     }
 
     &__input {
-        width: 60px;
+        width: 52px;
         text-align: center;
-        border: 1.5px solid $line;
-        border-radius: $radius-md;
-        padding: 0.5rem;
+        border: none;
+        padding: 0.5rem 0;
+        font-family: $fontDisplay;
         font-size: $fs-body;
-        font-weight: $fw-600;
+        font-weight: $fw-700;
         color: $ink;
-        background: $paper;
+        background: transparent;
         outline: none;
 
-        &:focus {
-            border-color: $terra;
-        }
-
-        // Cacher les flèches sur Chrome
+        // Cacher les flèches natives
+        -moz-appearance: textfield;
         &::-webkit-inner-spin-button,
         &::-webkit-outer-spin-button {
             -webkit-appearance: none;
+            margin: 0;
         }
+    }
+}
+
+// Boutons + / - (ronds, cohérents avec le design)
+.qty-btn {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1.5px solid $line;
+    background: $paper;
+    color: $ink;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: border-color 0.25s, color 0.25s, background 0.25s;
+
+    &:hover {
+        border-color: $terra;
+        color: $terra;
     }
 }
 
@@ -252,6 +195,7 @@
     .btn--solid {
         @include btn-lg;
         flex: 1;
+        justify-content: center;
     }
 }
 
@@ -377,5 +321,14 @@
             font-size: $fs-caption;
             color: $ink-soft;
         }
+    }
+}
+
+// --- PRODUITS SIMILAIRES ---
+.related {
+    padding-block: 1rem 5rem;
+
+    .sec-head {
+        margin-bottom: 40px;
     }
 }

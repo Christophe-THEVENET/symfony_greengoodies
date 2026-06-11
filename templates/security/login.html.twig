@@ -33,18 +33,22 @@
     </div>
 
     {# ========== PANNEAU FORMULAIRE (droite) ========== #}
-    <div class="auth__form" data-controller="auth" data-auth-active-tab-value="{{ activeTab|default('login') }}">
+    {% set tab = activeTab|default('login') %}
+    <div class="auth__form" data-controller="auth"
+         data-auth-active-tab-value="{{ tab }}"
+         data-auth-login-url-value="{{ path('app_login') }}"
+         data-auth-register-url-value="{{ path('app_register') }}">
         <div class="auth__form-inner">
             <a href="{{ path('app_home') }}" class="auth__form-back">← {{ 'auth.back'|trans }}</a>
 
             {# Onglets #}
             <div class="auth__form-tabs">
-                <button class="is-active" data-auth-target="tab" data-action="click->auth#showLogin">{{ 'auth.tab_login'|trans }}</button>
-                <button data-auth-target="tab" data-action="click->auth#showRegister">{{ 'auth.tab_register'|trans }}</button>
+                <button class="{{ tab == 'login' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showLogin">{{ 'auth.tab_login'|trans }}</button>
+                <button class="{{ tab == 'register' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showRegister">{{ 'auth.tab_register'|trans }}</button>
             </div>
 
             {# ===== FORMULAIRE CONNEXION ===== #}
-            <div class="auth__panel" data-auth-target="loginPanel">
+            <div class="auth__panel" data-auth-target="loginPanel"{% if tab == 'register' %} hidden{% endif %}>
                 {% if error %}
                     <div class="form-error" role="alert" style="color:#e74c3c;font-size:0.875rem;margin-bottom:1rem;background:#fdf2f2;padding:0.75rem 1rem;border-radius:8px;">
                         {{ error.messageKey|trans(error.messageData, 'security') }}
@@ -75,7 +79,7 @@
             </div>
 
             {# ===== FORMULAIRE INSCRIPTION ===== #}
-            <div class="auth__panel" data-auth-target="registerPanel" hidden>
+            <div class="auth__panel" data-auth-target="registerPanel"{% if tab != 'register' %} hidden{% endif %}>
                 {{ form_start(registrationForm, { attr: { novalidate: 'novalidate' } }) }}
 
                 <div class="auth__field">

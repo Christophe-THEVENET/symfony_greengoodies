@@ -509,6 +509,7 @@
     padding: 38px 32px;
     position: relative;
     overflow: hidden;
+    isolation: isolate;
     min-height: 300px;
     display: flex;
     flex-direction: column;
@@ -517,10 +518,28 @@
     &:nth-child(2) { background: $terra; }
     &:nth-child(3) { background: $olive; }
 
+    // Image de fond très discrète (définie en inline via --value-bg)
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--value-bg);
+        background-size: cover;
+        background-position: center;
+        opacity: .1;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+    // Ajustement fin par card (les images n'ont pas le même contraste)
+    &:nth-child(2)::before { opacity: .06; }
+    &:nth-child(3)::before { opacity: .17; }
+
     &__num {
         position: absolute;
         top: 24px;
         right: 30px;
+        z-index: 1;
         font-family: $fontDisplay;
         font-size: 60px;
         font-weight: 800;
@@ -529,13 +548,15 @@
     }
 
     h4 {
+        position: relative;
+        z-index: 1;
         font-family: $fontDisplay;
         font-size: 30px;
         font-weight: 700;
         margin-bottom: 12px;
     }
 
-    p { font-size: 15px; opacity: .86; }
+    p { position: relative; z-index: 1; font-size: 15px; opacity: .86; }
 }
 
 // ============================================================
