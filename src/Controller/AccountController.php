@@ -15,7 +15,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
@@ -37,7 +39,7 @@ class AccountController extends AbstractController
     ) {}
 
     #[Route('/', name: 'app_account')]
-    public function index(Request $request, OrderRepository $orderRepository): Response
+    public function index(Request $request, OrderRepository $orderRepository, RateLimiterFactory $accountPasswordLimiter): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -53,10 +55,16 @@ class AccountController extends AbstractController
         // --- Formulaire mot de passe ---
         $passwordForm = $this->createForm(ChangePasswordType::class);
         $passwordForm->handleRequest($request);
-        if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
-            $user->setPassword($this->passwordHasher->hashPassword($user, $passwordForm->get('plainPassword')->getData()));
-            $this->em->flush();
-            return $this->toastRedirect('toast.password_updated', 'profil');
+        if ($passwordForm->isSubmitted()) {
+            // Anti brute-force du mot de passe actuel
+            if (!$accountPasswordLimiter->create((string) $user->getId())->consume()->isAccepted()) {
+                throw new TooManyRequestsHttpException(null, $this->translator->trans('toast.rate_limited'));
+            }
+            if ($passwordForm->isValid()) {
+                $user->setPassword($this->passwordHasher->hashPassword($user, $passwordForm->get('plainPassword')->getData()));
+                $this->em->flush();
+                return $this->toastRedirect('toast.password_updated', 'profil');
+            }
         }
 
         // --- Formulaire ajout d'adresse ---
@@ -229,7 +237,8 @@ class AccountController extends AbstractController
 
     private function denyUnlessOwner(Address $address): void
     {
-        if ($address->getUser() !== $this->getUser()) {
+        $user = $this->getUser();
+        if (!$user instanceof User || $address->getUser()?->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException();
         }
     }

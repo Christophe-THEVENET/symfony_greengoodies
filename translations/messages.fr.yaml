@@ -249,6 +249,7 @@ toast:
     address_updated: Adresse mise à jour
     address_deleted: Adresse supprimée
     address_default_set: Adresse par défaut définie
+    rate_limited: Trop de tentatives. Réessayez plus tard.
 
 # Newsletter
 newsletter:
