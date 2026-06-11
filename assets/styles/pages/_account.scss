@@ -9,7 +9,7 @@
     grid-template-columns: 240px 1fr;
     gap: 3rem;
     align-items: start;
-    padding-block: 3rem 5rem;
+    padding-block: 130px 5rem;
 
     @media screen and (max-width: $breakpoint-tablette) {
         grid-template-columns: 1fr;
@@ -27,14 +27,14 @@
         width: 64px;
         height: 64px;
         border-radius: 50%;
-        background: $card;
+        background: $ink;
         display: flex;
         align-items: center;
         justify-content: center;
         font-family: $fontDisplay;
         font-size: $fs-h3;
         font-weight: $fw-700;
-        color: $ink-soft;
+        color: $paper;
         flex-shrink: 0;
     }
 

@@ -91,7 +91,7 @@ export default class extends Controller {
 
     validatePassword(password) {
         const passwordRegex =
-            /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{6,32}$/;
+            /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*\s).{8,32}$/;
 
         // ✅ Ajout de la validation des requirements en temps réel
         if (this.hasPasswordRequirementsTarget) {
@@ -133,7 +133,7 @@ export default class extends Controller {
     // ✅ Nouvelle méthode pour mettre à jour les requirements
     updatePasswordRequirements(password) {
         const requirements = {
-            length: password.length >= 6,
+            length: password.length >= 8,
             uppercase: /[A-Z]/.test(password),
             lowercase: /[a-z]/.test(password),
             number: /\d/.test(password),
@@ -151,10 +151,12 @@ export default class extends Controller {
 
                 if (isValid) {
                     liElement.dataset.valid = "true";
-                    icon.textContent = "✅";
+                    icon.textContent = "✓";
+                    icon.style.cssText = "color:#5E7344;font-weight:700;font-size:12px;background:rgba(94,115,68,0.12);display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;";
                 } else {
                     liElement.dataset.valid = "false";
-                    icon.textContent = "❌";
+                    icon.textContent = "✗";
+                    icon.style.cssText = "color:#A2594F;font-weight:700;font-size:12px;background:rgba(162,89,79,0.12);display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;";
                 }
             }
         });

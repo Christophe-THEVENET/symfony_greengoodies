@@ -201,6 +201,13 @@ toast:
     account_deleted: Votre compte a bien été supprimé.
     api_enabled: Accès API activé avec succès.
     api_disabled: Accès API désactivé avec succès.
+    product_added: Produit ajouté au panier
+    quantity_updated: Quantité mise à jour
+    product_removed: Produit retiré du panier
+    cart_cleared: Panier vidé
+    order_validated: Commande validée avec succès !
+    login_required: Vous devez être connecté pour valider la commande.
+    invalid_data: Données invalides
 
 # ===== Products (from DB fixtures, used as translation keys) =====
 "Kit d'hygiène recyclable": Kit d'hygiène recyclable
@@ -221,6 +228,14 @@ toast:
 "50ml déodorant à l’eucalyptus": "50ml déodorant à l'eucalyptus"
 "Savon Bio": Savon Bio
 "Thé, Orange & Girofle": "Thé, Orange & Girofle"
+
+form:
+    firstname: Prénom
+    lastname: Nom
+    email: Email
+    password: Mot de passe
+    password_confirm: Confirmer le mot de passe
+    agree_terms: J'accepte les CGU de GreenGoodies
 
 # ===== Long descriptions =====
 "Ce kit d’hygiène recyclable est conçu pour celles et ceux qui souhaitent allier bien-être et respect de l’environnement. Il contient l’essentiel pour une routine quotidienne complète, sans compromis sur la qualité ni sur la planète. Chaque élément du kit est fabriqué à partir de matériaux durables, recyclables ou biodégradables, afin de limiter au maximum l'empreinte écologique. Que ce soit pour une utilisation personnelle, en voyage ou en cadeau responsable, ce kit est idéal pour amorcer une transition vers une consommation plus consciente. Il s'inscrit parfaitement dans une démarche zéro déchet, en remplaçant les produits jetables par des alternatives durables et réutilisables.": "Ce kit d'hygiène recyclable est conçu pour celles et ceux qui souhaitent allier bien-être et respect de l'environnement. Il contient l'essentiel pour une routine quotidienne complète, sans compromis sur la qualité ni sur la planète. Chaque élément du kit est fabriqué à partir de matériaux durables, recyclables ou biodégradables, afin de limiter au maximum l'empreinte écologique. Que ce soit pour une utilisation personnelle, en voyage ou en cadeau responsable, ce kit est idéal pour amorcer une transition vers une consommation plus consciente. Il s'inscrit parfaitement dans une démarche zéro déchet, en remplaçant les produits jetables par des alternatives durables et réutilisables."

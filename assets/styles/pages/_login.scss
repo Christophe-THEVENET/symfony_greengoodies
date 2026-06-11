@@ -3,10 +3,12 @@
 // ============================================================
 // AUTH — Split-screen
 // ============================================================
+html.page-auth, body.page-auth { height: 100%; margin: 0; overflow: hidden; }
+
 .auth {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    min-height: calc(100vh - 80px);
+    height: 100vh;
 
     @media screen and (max-width: 860px) {
         grid-template-columns: 1fr;
@@ -14,13 +16,26 @@
 
     // Panneau marque (gauche)
     &__brand {
-        position: relative;
+        position: sticky;
+        top: 0;
+        height: 100vh;
         background: $ink;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 4rem 3rem;
         overflow: hidden;
+
+        &-logo {
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            z-index: 2;
+
+            .logo__mark { background: $olive; color: $paper; }
+        }
+
+        .logo { color: $paper; }
 
         @media screen and (max-width: 860px) {
             display: none;
@@ -54,13 +69,6 @@
             text-align: center;
             color: $white;
             max-width: 340px;
-        }
-
-        &-logo {
-            height: 32px;
-            width: auto;
-            filter: brightness(0) invert(1);
-            margin-bottom: 2rem;
         }
 
         &-pitch {
@@ -106,14 +114,17 @@
     // Panneau formulaire (droite)
     &__form {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
-        padding: 3rem 2rem;
+        padding: 6rem 2rem 3rem;
         background: $cream;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
 
         &-inner {
             width: 100%;
             max-width: 420px;
+            min-height: 480px;
         }
 
         &-back {
@@ -188,13 +199,20 @@
             }
 
             &:focus {
-                border-color: $terra;
-                box-shadow: 0 0 0 3px rgba($terra, 0.12);
+                border-color: $olive;
+                box-shadow: 0 0 0 3px rgba($olive, 0.15);
             }
 
-            &.is-invalid {
-                border-color: #e74c3c;
-                box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            &.valid {
+                border-color: $ok;
+                background: rgba($ok, 0.04);
+                box-shadow: 0 0 0 2px rgba($ok, 0.15);
+            }
+
+            &.invalid {
+                border-color: $terra;
+                background: rgba($terra, 0.04);
+                box-shadow: 0 0 0 2px rgba($terra, 0.15);
             }
         }
     }

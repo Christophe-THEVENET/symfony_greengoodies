@@ -201,6 +201,13 @@ toast:
     account_deleted: Your account has been deleted.
     api_enabled: API access successfully enabled.
     api_disabled: API access successfully disabled.
+    product_added: Product added to cart
+    quantity_updated: Quantity updated
+    product_removed: Product removed from cart
+    cart_cleared: Cart cleared
+    order_validated: Order successfully placed!
+    login_required: You must be logged in to place the order.
+    invalid_data: Invalid data
 
 # ===== Products (from DB fixtures, used as translation keys) =====
 "Kit d'hygiène recyclable": Recyclable hygiene kit
@@ -221,6 +228,14 @@ toast:
 "50ml déodorant à l’eucalyptus": "50 ml, eucalyptus deodorant"
 "Savon Bio": Organic soap
 "Thé, Orange & Girofle": Tea, orange & clove
+
+form:
+    firstname: First name
+    lastname: Last name
+    email: Email
+    password: Password
+    password_confirm: Confirm password
+    agree_terms: I accept the GreenGoodies terms of use
 
 # ===== Long descriptions =====
 "Ce kit d’hygiène recyclable est conçu pour celles et ceux qui souhaitent allier bien-être et respect de l’environnement. Il contient l’essentiel pour une routine quotidienne complète, sans compromis sur la qualité ni sur la planète. Chaque élément du kit est fabriqué à partir de matériaux durables, recyclables ou biodégradables, afin de limiter au maximum l'empreinte écologique. Que ce soit pour une utilisation personnelle, en voyage ou en cadeau responsable, ce kit est idéal pour amorcer une transition vers une consommation plus consciente. Il s'inscrit parfaitement dans une démarche zéro déchet, en remplaçant les produits jetables par des alternatives durables et réutilisables.": "This recyclable hygiene kit is designed for those who want to combine well-being with environmental respect. It contains everything you need for a complete daily routine, without compromising on quality or the planet. Each item in the kit is made from durable, recyclable or biodegradable materials, to minimize the ecological footprint. Whether for personal use, travel or as a responsible gift, this kit is ideal for starting a transition to more conscious consumption. It fits perfectly into a zero-waste approach, replacing disposable products with sustainable, reusable alternatives."
