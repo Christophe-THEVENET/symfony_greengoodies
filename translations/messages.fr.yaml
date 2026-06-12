@@ -205,6 +205,7 @@ account:
     status_delivered: Livrée
     status_transit: En transit
     track: Suivre
+    invoice: Facture PDF
     no_orders: Aucune commande pour le moment.
     recharge_title: Programme de recharge
     recharge_desc: Rapportez vos contenants vides et cumulez des récompenses. Chaque recharge vous rapproche d'une réduction.

@@ -205,6 +205,7 @@ account:
     status_delivered: Delivered
     status_transit: In transit
     track: Track
+    invoice: PDF invoice
     no_orders: No orders yet.
     recharge_title: Refill programme
     recharge_desc: Bring back your empty containers and earn rewards. Every refill brings you closer to a discount.
