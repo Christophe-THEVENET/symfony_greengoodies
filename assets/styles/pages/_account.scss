@@ -59,11 +59,7 @@
 
     @media screen and (max-width: $breakpoint-tablette) {
         position: static;
-        display: flex;
-        overflow-x: auto;
-        gap: 0.5rem;
-        padding-bottom: 0.5rem;
-        white-space: nowrap;
+        margin-bottom: 1.5rem;
     }
 
     &__link {
@@ -82,12 +78,6 @@
         font-weight: $fw-500;
         color: $ink-soft;
         transition: all 0.2s;
-
-        @media screen and (max-width: $breakpoint-tablette) {
-            flex-shrink: 0;
-            font-size: $fs-caption;
-            padding: 0.5rem 0.75rem;
-        }
 
         &:hover {
             background: rgba($ink, 0.04);
@@ -109,10 +99,6 @@
 
     &__logout {
         margin-top: 1.5rem;
-
-        @media screen and (max-width: $breakpoint-tablette) {
-            display: none;
-        }
     }
 }
 

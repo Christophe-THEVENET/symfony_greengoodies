@@ -54,17 +54,20 @@
     </div>
 
     {# Menu mobile #}
-    <nav class="nav" data-header-target="mobileMenu" data-nav style="display:none">
-        <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
-        <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
-        <a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a>
-        <a href="{{ path('app_cart') }}" data-action="click->header#closeOnLink">{{ 'nav.cart'|trans }}</a>
+    <nav class="nav nav--mobile" data-header-target="mobileMenu" data-nav>
         {% if app.user %}
-            <a href="{{ path('app_account') }}" data-action="click->header#closeOnLink">{{ 'nav.account'|trans }}</a>
-            <a href="{{ path('app_logout') }}">{{ 'nav.logout'|trans }}</a>
-        {% else %}
-            <a href="{{ path('app_login') }}" data-action="click->header#closeOnLink">{{ 'nav.login'|trans }}</a>
+            <div class="nav--mobile__account">
+                <span class="nav--mobile__user">{{ app.user.firstname }}</span>
+                <a href="{{ path('app_account') }}" class="nav--mobile__sublink" data-action="click->header#closeOnLink">{{ 'nav.account'|trans }}</a>
+                <a href="{{ path('app_logout') }}" class="nav--mobile__sublink">{{ 'nav.logout'|trans }}</a>
+            </div>
         {% endif %}
+        <div class="nav--mobile__links">
+            <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
+            <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
+            <a href="{{ path('app_home') }}#valeurs" data-action="click->header#closeOnLink">{{ 'nav.values'|trans }}</a>
+            <a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a>
+        </div>
     </nav>
 
     <div class="header__overlay" data-header-target="overlay" data-action="click->header#closeOnOverlay"></div>
