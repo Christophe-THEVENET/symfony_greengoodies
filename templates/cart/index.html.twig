@@ -96,13 +96,7 @@
                 <span data-cart-total>{{ s.total|number_format(2, ',', ' ') }}€</span>
             </div>
 
-            <form {{ stimulus_controller('cart', {
-                    url: path('api_cart_validate')
-                }) }}
-                {{ stimulus_action('cart', 'validateCart', 'submit') }}>
-                <input type="hidden" name="_token" value="{{ csrf_token('app_order_validate') }}" />
-                <button type="submit" class="cart-summary__cta">{{ 'cart.checkout'|trans }}</button>
-            </form>
+            <a href="{{ path('app_checkout') }}" class="cart-summary__cta">{{ 'cart.checkout'|trans }}</a>
 
             <p class="cart-summary__reassurance">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>

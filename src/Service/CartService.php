@@ -4,6 +4,7 @@
 namespace App\Service;
 
 use App\Dto\CartDto;
+use App\Entity\Address;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\User;
@@ -118,6 +119,33 @@ class CartService
         $this->clearCart();
 
         return $order;
+    }
+
+    /**
+     * Finalise une commande après confirmation du paiement Stripe.
+     * Idempotent : ne fait rien si la commande est déjà payée.
+     */
+    public function markOrderPaid(Order $order, string $paymentIntentId, float $paidAmount, ?Address $address = null): void
+    {
+        if ($order->isPaid()) {
+            return;
+        }
+
+        $order->setIsValid(true);
+        $order->setOrderNumber($this->generateOrderNumber());
+        $order->setStripePaymentIntentId($paymentIntentId);
+        $order->setPaidAt(new \DateTimeImmutable());
+        $order->setTotalAmount($paidAmount);
+
+        if ($address) {
+            $order->setShippingFromAddress($address);
+        }
+
+        $this->entityManager->flush();
+
+        // Vide le panier : la commande étant désormais validée (isValid=true),
+        // cleanupEmptyOrder ne la supprimera pas (il ne cible que les non-validées).
+        $this->clearCart();
     }
 
     public function persistCart(): void
