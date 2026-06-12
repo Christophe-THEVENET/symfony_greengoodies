@@ -21,6 +21,9 @@
 ###< symfony/asset-mapper ###
 /memo.md
 
+# Maquettes / handoff design (référence locale, hors dépôt)
+/refonte_design/
+
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
