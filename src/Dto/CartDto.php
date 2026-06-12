@@ -7,7 +7,11 @@ use App\Entity\Product;
 
 class CartDto
 {
-    
+    // Règles commerciales du panier (source unique de vérité)
+    public const SHIPPING_THRESHOLD = 49.0;   // livraison offerte à partir de ce montant
+    public const SHIPPING_COST = 4.90;        // frais de port sinon
+    public const ECO_DISCOUNT_RATE = 0.10;    // réduction éco (-10%)
+
     private array $items = [];
     private ?int $orderId = null;
     private float $totalAmount = 0.0;
@@ -99,9 +103,55 @@ class CartDto
     {
         foreach ($this->items as $item) {
             if ($item['product']->getId() === $productId) {
-                return $item['total_price']; 
+                return $item['total_price'];
             }
         }
         return 0.0;
+    }
+
+    // ****** Récapitulatif (livraison, remise, total) ******
+
+    public function getShippingCost(): float
+    {
+        if ($this->isEmpty() || $this->totalAmount >= self::SHIPPING_THRESHOLD) {
+            return 0.0;
+        }
+
+        return self::SHIPPING_COST;
+    }
+
+    public function getEcoDiscount(): float
+    {
+        return round($this->totalAmount * self::ECO_DISCOUNT_RATE, 2);
+    }
+
+    public function getFinalTotal(): float
+    {
+        return round($this->totalAmount + $this->getShippingCost() - $this->getEcoDiscount(), 2);
+    }
+
+    /**
+     * Montant restant pour bénéficier de la livraison offerte (0 si déjà atteint).
+     */
+    public function getFreeShippingRemaining(): float
+    {
+        return max(0.0, round(self::SHIPPING_THRESHOLD - $this->totalAmount, 2));
+    }
+
+    /**
+     * Récapitulatif complet, utilisé par le template et par l'API (mise à jour temps réel).
+     *
+     * @return array{subtotal: float, shipping: float, ecoDiscount: float, total: float, count: int, freeShippingRemaining: float}
+     */
+    public function getSummary(): array
+    {
+        return [
+            'subtotal' => $this->totalAmount,
+            'shipping' => $this->getShippingCost(),
+            'ecoDiscount' => $this->getEcoDiscount(),
+            'total' => $this->getFinalTotal(),
+            'count' => $this->getItemCount(),
+            'freeShippingRemaining' => $this->getFreeShippingRemaining(),
+        ];
     }
 }

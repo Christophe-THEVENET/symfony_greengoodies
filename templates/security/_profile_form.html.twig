@@ -1,0 +1,13 @@
+<h3 class="account-section__title">{{ 'account.profile_title'|trans }}</h3>
+{{ form_start(profileForm, { attr: { novalidate: 'novalidate' } }) }}
+    <div class="address-form__row">
+        <div class="field">{{ form_label(profileForm.firstname) }}{{ form_widget(profileForm.firstname) }}{{ form_errors(profileForm.firstname) }}</div>
+        <div class="field">{{ form_label(profileForm.lastname) }}{{ form_widget(profileForm.lastname) }}{{ form_errors(profileForm.lastname) }}</div>
+    </div>
+    <div class="field">
+        <label>{{ 'form.email'|trans }}</label>
+        <input type="email" value="{{ app.user.email }}" disabled>
+        <small class="field__hint">{{ 'account.email_locked'|trans }}</small>
+    </div>
+    <button type="submit" class="btn btn--solid">{{ 'account.save_profile'|trans }}</button>
+{{ form_end(profileForm) }}

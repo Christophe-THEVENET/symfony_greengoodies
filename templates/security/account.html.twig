@@ -1,95 +1,181 @@
 {% extends 'base.html.twig' %}
 
-{% set bodyClass = 'page-pink' %}
-
-
-{% block title %}
-	{{ parent() }}
-	- Mon compte
-{% endblock %}
+{% block title %}{{ parent() }} — {{ 'nav.account'|trans }}{% endblock %}
 
 {% block body %}
 
-	<section class="cart account container container--height">
-		<div class="cart__wrapper">
-			<h1 class=" cart__title f-title-page-section">
-				Mon compte
-			</h1>
-			<div class="cart__item-wrapper">
-				{% include "./_partials/_account/_user-info.html.twig" %}
+{% import _self as m %}
 
+<section class="account-page" data-controller="account-tabs" data-account-tabs-active-value="{{ activeTab }}">
 
-				<div class="cart__item orders">
-					<h5 class="orders__title f-title-item">Mes commandes</h5>
+    {# ========== SIDEBAR ========== #}
+    <aside class="account-sidebar">
+        <button type="button" class="account-sidebar__link" data-account-tabs-target="tab" data-tab="overview" data-action="account-tabs#select">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {{ 'account.nav_overview'|trans }}
+        </button>
+        <button type="button" class="account-sidebar__link" data-account-tabs-target="tab" data-tab="commandes" data-action="account-tabs#select">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
+            {{ 'account.nav_orders'|trans }}
+        </button>
+        <button type="button" class="account-sidebar__link" data-account-tabs-target="tab" data-tab="adresses" data-action="account-tabs#select">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            {{ 'account.nav_addresses'|trans }}
+        </button>
+        <button type="button" class="account-sidebar__link" data-account-tabs-target="tab" data-tab="profil" data-action="account-tabs#select">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            {{ 'account.nav_profile'|trans }}
+        </button>
+        <div class="account-sidebar__logout">
+            <a href="{{ path('app_logout') }}" class="account-sidebar__link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                {{ 'account.nav_logout'|trans }}
+            </a>
+        </div>
+    </aside>
 
-						<table class="orders__table">
-							<thead class="orders__table-head">
-								<tr>
-									<th class="f-text">N°</th>
-									<th class="f-text">Date</th>
-									<th class="f-text">Prix</th>
-								</tr>
-							</thead>
-							<tbody class="orders__table-body">
-								{% for order in orders %}
-									<tr class="orders__table-row">
-										<td class="f-title-page-section  orders__table-cell orders__table-cell--number">
-											{{ order.orderNumber }}
-										</td>
-										<td class="f-title-page-section orders__table-cell orders__table-cell--date">
-											{{ order.createdAt|date('d/m/Y') }}
-										</td>
-										<td class="f-title-page-section orders__table-cell orders__table-cell--price">
-											{{ order.totalAmount|number_format(2, ',', ' ') }}€
-										</td>
-									</tr>
-								{% else %}
-									<tr class="orders__table-row orders__table-row--empty">
-										<td colspan="3" class="orders__table-cell orders__table-cell--empty">
-											Aucune commande pour le moment
-										</td>
-									</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-				</div>
+    {# ========== CONTENU ========== #}
+    <div class="account-content">
+        <div class="account-header">
+            <div class="account-header__avatar">{{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}</div>
+            <div>
+                <div class="account-header__greeting">{{ 'account.greeting'|trans }}, {{ app.user.firstname }}</div>
+                <div class="account-header__since">{{ 'account.member_since'|trans }} {{ app.user.createdAt ? app.user.createdAt|date('m/Y') : '—' }}</div>
+            </div>
+        </div>
 
-                <div class="cart__item orders">
-                    <h5 class="orders__title f-title-item">Mon accès API</h5>
-                    {# <form class="form-cart-valid" method="post" action="{{ path('app_account_toggle_api_access') }}">
-                        <input type="hidden" name="_token" value="{{ csrf_token('toggle_api_access') }}">
-                        {% if user.apiAccessEnabled %}
-                            <button type="submit" class="btn-secondary order-validate">
-                                <span class="link">Désactiver mon accès API</span>
-                            </button>
-                        {% else %}
-                            <button type="submit" class="btn-secondary order-validate">
-                                <span class="link">Activer mon accès API</span>
-                            </button>
-                        {% endif %}
-                    </form> #}
-
-                    <form class="form-cart-valid" method="post" action="{{ path('api_account_toggle_api') }}" 
-                        data-controller="account"
-                        data-action="submit->account#toggleApiAccess">
-                        <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}">
-                        <button type="submit" data-account-target="button" class="btn-secondary order-validate">
-                            <span class="link">{{ app.user.apiAccessEnabled ? 'Désactiver mon accès API' : 'Activer mon accès API' }}</span>
-                        </button>
-                    </form>
-
+        {# ===== PANEL : VUE D'ENSEMBLE ===== #}
+        <div class="account-panel" data-account-tabs-target="panel" data-tab="overview">
+            <div class="account-stats">
+                <div class="stat-card">
+                    <div class="stat-card__icon stat-card__icon--terra">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
+                    </div>
+                    <div class="stat-card__value">{{ orders|length }}</div>
+                    <div class="stat-card__label">{{ 'account.stat_orders'|trans }}</div>
                 </div>
-                
-                <div class="cart__item orders">
-                    <form class="form-cart-valid" method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer votre compte ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}">
-                        <button type="submit" class="btn-secondary order-validate">
-                            <span class="link">Supprimer mon compte</span>
-                        </button>
-                    </form>
+                <div class="stat-card">
+                    <div class="stat-card__icon stat-card__icon--olive">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div class="stat-card__value">{{ app.user.addresses|length }}</div>
+                    <div class="stat-card__label">{{ 'account.stat_addresses'|trans }}</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-card__icon stat-card__icon--clay">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="stat-card__value">{{ app.user.createdAt ? app.user.createdAt|date('Y') : '—' }}</div>
+                    <div class="stat-card__label">{{ 'account.stat_member_year'|trans }}</div>
+                </div>
+            </div>
 
-			</div>
-		</div>
-	</section>
+            <div class="orders-section">
+                <h3 class="orders-section__title">{{ 'account.orders_title'|trans }}</h3>
+                {% for order in orders|slice(0, 3) %}
+                    {{ m.orderRow(order) }}
+                {% else %}
+                    <p class="account-empty">{{ 'account.no_orders'|trans }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# ===== PANEL : COMMANDES ===== #}
+        <div class="account-panel" data-account-tabs-target="panel" data-tab="commandes">
+            <div class="orders-section">
+                <h3 class="orders-section__title">{{ 'account.nav_orders'|trans }}</h3>
+                {% for order in orders %}
+                    {{ m.orderRow(order) }}
+                {% else %}
+                    <p class="account-empty">{{ 'account.no_orders'|trans }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {# ===== PANEL : ADRESSES ===== #}
+        <div class="account-panel" data-account-tabs-target="panel" data-tab="adresses">
+            <h3 class="orders-section__title">{{ 'account.nav_addresses'|trans }}</h3>
+
+            {% if app.user.addresses|length > 0 %}
+                <div class="address-grid">
+                    {% for address in app.user.addresses %}
+                        <div class="address-card {{ address.isDefault ? 'address-card--default' }}">
+                            {% if address.isDefault %}<span class="address-card__badge">{{ 'address.default_badge'|trans }}</span>{% endif %}
+                            <div class="address-card__label">{{ address.label }}</div>
+                            <p class="address-card__body">
+                                {{ app.user.firstname }} {{ app.user.lastname }}<br>
+                                {{ address.line1 }}{% if address.line2 %}<br>{{ address.line2 }}{% endif %}<br>
+                                {{ address.postalCode }} {{ address.city }}<br>
+                                {{ address.country }}
+                            </p>
+                            <div class="address-card__actions">
+                                {% if not address.isDefault %}
+                                    <form method="post" action="{{ path('app_address_default', {id: address.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('default_address_' ~ address.id) }}">
+                                        <button type="submit" class="link-btn">{{ 'address.set_default'|trans }}</button>
+                                    </form>
+                                {% endif %}
+                                <a href="{{ path('app_address_edit', {id: address.id}) }}" class="link-btn">{{ 'address.edit'|trans }}</a>
+                                <form method="post" action="{{ path('app_address_delete', {id: address.id}) }}" onsubmit="return confirm('{{ 'address.delete_confirm'|trans|e('js') }}');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_address_' ~ address.id) }}">
+                                    <button type="submit" class="link-btn link-btn--danger">{{ 'address.delete'|trans }}</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="account-empty">{{ 'address.empty'|trans }}</p>
+            {% endif %}
+
+            <div class="account-section" data-controller="ajax-form">
+                {{ include('security/_address_form.html.twig') }}
+            </div>
+        </div>
+
+        {# ===== PANEL : PROFIL & SÉCURITÉ ===== #}
+        <div class="account-panel" data-account-tabs-target="panel" data-tab="profil">
+            <div class="account-section" data-controller="ajax-form">
+                {{ include('security/_profile_form.html.twig') }}
+            </div>
+
+            <div class="account-section">
+                <h3 class="account-section__title">{{ 'account.api_title'|trans }}</h3>
+                <form method="post" action="{{ path('api_account_toggle_api') }}" data-controller="account" data-action="submit->account#toggleApiAccess">
+                    <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}" />
+                    <button type="submit" class="btn btn--ghost" data-account-target="button">
+                        {{ app.user.apiAccessEnabled ? 'account.api_disable'|trans : 'account.api_enable'|trans }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="account-section account-section--danger">
+                <h3 class="account-section__title">{{ 'account.danger_title'|trans }}</h3>
+                <form method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('{{ 'account.delete_confirm'|trans|e('js') }}');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}" />
+                    <button type="submit" class="btn--danger">{{ 'account.delete_account'|trans }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# Ligne de commande réutilisable #}
+{% macro orderRow(order) %}
+    {% set delivered = order.createdAt < date('-5 days') %}
+    <div class="order-row">
+        <div class="order-row__images">
+            {% for item in order.orderItems %}
+                <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" />
+            {% endfor %}
+        </div>
+        <div class="order-row__id">#{{ order.orderNumber }}</div>
+        <span class="order-row__status {{ delivered ? 'order-row__status--done' : 'order-row__status--transit' }}">
+            {{ (delivered ? 'account.status_delivered' : 'account.status_transit')|trans }}
+        </span>
+        <div class="order-row__total">{{ order.totalAmount|number_format(2, ',', ' ') }}€</div>
+        <div class="order-row__date">{{ order.createdAt|date('d/m/Y') }}</div>
+    </div>
+{% endmacro %}
+
 {% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} — {{ 'contact.title'|trans }}{% endblock %}
+
+{% block body %}
+
+<section class="contact">
+    <div class="wrap contact__grid">
+
+        {# ===== Colonne infos ===== #}
+        <aside class="contact__info">
+            <span class="eyebrow">{{ 'contact.eyebrow'|trans }}</span>
+            <h1 class="contact__title">{{ 'contact.title'|trans }}</h1>
+            <p class="contact__lead">{{ 'contact.lead'|trans }}</p>
+
+            <ul class="contact__details">
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>12 rue de la Croix-Rousse<br>69004 Lyon, France</span>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="m22 6-10 7L2 6"/></svg>
+                    <span>contact@greengoodies.space</span>
+                </li>
+                <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>{{ 'contact.hours'|trans }}</span>
+                </li>
+            </ul>
+        </aside>
+
+        {# ===== Colonne formulaire ===== #}
+        <div class="contact__form-wrap">
+            {{ form_start(contactForm, { attr: { class: 'contact-form', novalidate: 'novalidate', 'data-controller': 'contact-form' } }) }}
+                <div class="contact-form__row">
+                    <div class="field">{{ form_label(contactForm.name) }}{{ form_widget(contactForm.name, { attr: { 'data-contact-form-target': 'name', 'data-action': 'input->contact-form#checkForm' } }) }}{{ form_errors(contactForm.name) }}</div>
+                    <div class="field">{{ form_label(contactForm.email) }}{{ form_widget(contactForm.email, { attr: { 'data-contact-form-target': 'email', 'data-action': 'input->contact-form#checkForm' } }) }}{{ form_errors(contactForm.email) }}</div>
+                </div>
+                <div class="field">{{ form_label(contactForm.subject) }}{{ form_widget(contactForm.subject, { attr: { 'data-contact-form-target': 'subject', 'data-action': 'input->contact-form#checkForm' } }) }}{{ form_errors(contactForm.subject) }}</div>
+                <div class="field">{{ form_label(contactForm.message) }}{{ form_widget(contactForm.message, { attr: { 'data-contact-form-target': 'message', 'data-action': 'input->contact-form#checkForm' } }) }}{{ form_errors(contactForm.message) }}</div>
+
+                {# Honeypot anti-bot (masqué) #}
+                {{ form_row(contactForm.website) }}
+
+                <button type="submit" class="btn btn--solid btn--block" data-contact-form-target="submitButton">{{ 'contact.send'|trans }}</button>
+            {{ form_end(contactForm) }}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -9,23 +9,18 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/cart')]
+#[Route('/panier')]
 class CartController extends AbstractController
 {
-    // Messages constants
-    private const MSG_PRODUCT_ADDED = 'Produit ajouté au panier';
-    private const MSG_QUANTITY_UPDATED = 'Quantité mise à jour';
-    private const MSG_PRODUCT_REMOVED = 'Produit retiré du panier';
-    private const MSG_CART_CLEARED = 'Panier vidé';
-    private const MSG_ORDER_VALIDATED = 'Commande validée avec succès !';
-    private const MSG_LOGIN_REQUIRED = 'Vous devez être connecté pour valider la commande.';
-    private const MSG_INVALID_DATA = 'Données invalides';
-
-    public function __construct(private CartService $cartService) {}
+    public function __construct(
+        private CartService $cartService,
+        private TranslatorInterface $translator,
+    ) {}
 
     // ************** cart page **************
-    #[Route('/', name: 'app_cart', methods: ['GET'])]
+    #[Route('', name: 'app_cart', methods: ['GET'])]
     public function show(): Response
     {
         $cart = $this->cartService->getCart();
@@ -36,7 +31,7 @@ class CartController extends AbstractController
     }
 
     // ************** add product to cart (ajax front-end) **************
-    #[Route('/add/{productId}', name: 'api_cart_add', methods: ['POST'])]
+    #[Route('/ajouter/{productId}', name: 'api_cart_add', methods: ['POST'])]
     public function add(int $productId, Request $request): JsonResponse
     {
         try {
@@ -47,7 +42,7 @@ class CartController extends AbstractController
 
             return $this->json([
                 'success'    => true,
-                'message'    => self::MSG_PRODUCT_ADDED,
+                'message'    => $this->translator->trans('toast.product_added'),
                 'cart_count' => $this->cartService->getCart()->getItemCount(),
             ]);
         } catch (\Exception $e) {
@@ -56,7 +51,7 @@ class CartController extends AbstractController
     }
 
     // ************** update product quantity in cart (ajax page panier) **************
-    #[Route('/update/{productId}', name: 'api_cart_update', methods: ['PUT'])]
+    #[Route('/modifier/{productId}', name: 'api_cart_update', methods: ['PUT'])]
     public function update(int $productId, Request $request): JsonResponse
     {
         try {
@@ -68,10 +63,11 @@ class CartController extends AbstractController
 
             return $this->json([
                 'success' => true,
-                'message' => self::MSG_QUANTITY_UPDATED,
+                'message' => $this->translator->trans('toast.quantity_updated'),
                 'cart'    => [
                     'total' => $cart->getTotalAmount(),
                     'count' => $cart->getItemCount(),
+                    'summary' => $cart->getSummary(),
                     'updatedItem' => [
                         'product' => [
                             'id' => $productId,
@@ -87,7 +83,7 @@ class CartController extends AbstractController
     }
 
     // ************** remove product from cart (bouton supprimer sur chaque ligne page panier) **************
-    #[Route('/remove/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
+    #[Route('/retirer/{productId}', name: 'api_cart_remove', methods: ['DELETE'])]
     public function remove(int $productId): JsonResponse
     {
         try {
@@ -96,10 +92,11 @@ class CartController extends AbstractController
 
             return $this->json([
                 'success' => true,
-                'message' => self::MSG_PRODUCT_REMOVED,
+                'message' => $this->translator->trans('toast.product_removed'),
                 'cart' => [
                     'total' => $cart->getTotalAmount(),
                     'count' => $cart->getItemCount(),
+                    'summary' => $cart->getSummary(),
                 ],
             ]);
         } catch (\Exception $e) {
@@ -108,27 +105,27 @@ class CartController extends AbstractController
     }
 
     // ************** clear cart (bouton vider panier page panier) **************
-    #[Route('/clear', name: 'api_cart_clear', methods: ['POST'])]
+    #[Route('/vider', name: 'api_cart_clear', methods: ['POST'])]
     public function clear(): JsonResponse
     {
         $this->cartService->clearCart();
 
         return $this->json([
             'success' => true,
-            'message' => self::MSG_CART_CLEARED,
+            'message' => $this->translator->trans('toast.cart_cleared'),
             'redirectUrl' => $this->generateUrl('app_cart'),
         ]);
     }
 
     // ************** validate cart and create order (bouton valider panier page panier) **************
-    #[Route('/validate', name: 'api_cart_validate', methods: ['POST'])]
+    #[Route('/valider', name: 'api_cart_validate', methods: ['POST'])]
     public function validate(Request $request): JsonResponse
     {
         // 1. Vérification de l'authentification
         if (!$this->getUser()) {
             return $this->json([
                 'success' => false,
-                'message' => self::MSG_LOGIN_REQUIRED,
+                'message' => $this->translator->trans('toast.login_required'),
                 'redirectUrl' => $this->generateUrl('app_login'),
             ], 401);
         }
@@ -147,7 +144,7 @@ class CartController extends AbstractController
 
             return $this->json([
                 'success' => true,
-                'message' => self::MSG_ORDER_VALIDATED,
+                'message' => $this->translator->trans('toast.order_validated'),
                 'redirectUrl' => $this->generateUrl('app_home'),
             ]);
         } catch (\Exception $e) {
@@ -168,7 +165,7 @@ class CartController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         if (!is_array($data)) {
-            throw new \InvalidArgumentException(self::MSG_INVALID_DATA);
+            throw new \InvalidArgumentException($this->translator->trans('toast.invalid_data'));
         }
         return $data;
     }

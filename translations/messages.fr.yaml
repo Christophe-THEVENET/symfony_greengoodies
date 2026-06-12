@@ -1,0 +1,316 @@
+# Navigation / header
+nav:
+    products: Produits
+    story: Notre histoire
+    values: Valeurs
+    newsletter: Newsletter
+    cart: Panier
+    account: Mon compte
+    login: Se connecter
+    logout: Se déconnecter
+    contact: Contact
+
+# Footer
+footer:
+    tagline: Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement, vraiment.
+    shop: Boutique
+    shop_hygiene: Hygiène & beauté
+    shop_accessories: Accessoires
+    shop_drinks: Boissons
+    shop_giftcards: Cartes cadeaux
+    house: Maison
+    our_story: Notre histoire
+    our_values: Nos valeurs
+    contact: Nous contacter
+    help: Aide
+    shipping_returns: Livraison & retours
+    cgv: CGV
+    privacy: Confidentialité
+    copyright: '%year% GreenGoodies — Lyon, France'
+    developed_by: Développé par
+    crafted: Conçu avec soin pour la planète 🌿
+
+# Accueil
+home:
+    hero:
+        eyebrow: Boutique éco-responsable · Lyon
+        title_1: Consommer
+        title_2: autrement,
+        title_3: vraiment.
+        lead: Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.
+        cta: Voir la boutique
+        rating: '+1 200 avis · 4,9/5'
+        chip_waste: -30% déchet
+        chip_waste_sub: vs grande surface
+        chip_refill: 100% rechargeable
+        chip_refill_sub: emballages consignés
+    ticker:
+        carbon: Livraison neutre en carbone
+        zero_waste: Zéro déchet
+        made_in_france: Made in France
+        no_plastic: Sans plastique
+        secure_payment: Paiement sécurisé
+    products:
+        eyebrow: La sélection
+        title: Nos produits
+        intro: Neuf essentiels choisis pour leur qualité, leur durabilité et leur juste fabrication.
+    story:
+        eyebrow: Notre histoire
+        title: Une boutique, une conviction.
+        text: "Tout commence en 2019, à la Croix-Rousse. Aurélie ouvre une petite boutique avec une idée simple : prouver qu'on peut consommer mieux sans renoncer au beau ni au plaisir."
+        quote: "« Chaque produit doit pouvoir être regardé en face : son origine, sa matière, sa fin de vie. »"
+        founder: Fondatrice
+        badge: Lyon depuis 2019
+    values:
+        durability_title: Durabilité
+        durability_text: Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.
+        ethics_title: Éthique
+        ethics_text: Nous travaillons avec des partenaires qui partagent nos valeurs et rémunèrent justement. Circuit court, traçabilité totale.
+        ecology_title: Écologie
+        ecology_text: Des pratiques respectueuses de l'écosystème, des matériaux écologiques et une logistique neutre en carbone.
+    testi:
+        eyebrow: Elles & ils nous font confiance
+        title: Ce qu'on en dit
+        q1: « La bougie lavande & patchouli embaume toute la maison sans odeur chimique. »
+        q2: « Enfin une boutique où je peux acheter les yeux fermés. Tout est beau et bien pensé. »
+        q3: « Les disques démaquillants ont remplacé des centaines de cotons. Vrai impact. »
+        q4: « Le savon à l'eucalyptus dure 3 fois plus longtemps que mes anciens gels douche. »
+        q5: « Livraison rapide et emballage 100% compostable. Mention spéciale pour le petit mot manuscrit. »
+        q6: « Je recharge mes contenants depuis 2 ans. Zéro plastique, zéro regret. »
+    news:
+        eyebrow: Newsletter
+        title: Rejoignez le mouvement.
+        text: Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.
+        placeholder: vous@exemple.fr
+        cta: S'inscrire
+
+# Fiche produit
+product:
+    back: Retour aux produits
+    category: Hygiène & Beauté
+    reviews: '(128 avis)'
+    scent_label: Senteur
+    qty_label: Quantité
+    add_to_cart: Ajouter au panier
+    favorite: Ajouter aux favoris
+    guarantee_free_shipping: Livraison offerte dès 49€
+    guarantee_returns: Retour gratuit sous 30 jours
+    guarantee_secure: Paiement 100% sécurisé
+    guarantee_packaging: Emballage compostable
+    acc_description: Description
+    acc_composition: Composition & caractéristiques
+    acc_composition_extra: Fabriqué en France · Ingrédients 100% naturels · Sans parabène · Non testé sur les animaux.
+    acc_shipping: Livraison & retours
+    acc_shipping_text: "Livraison standard : 3-5 jours ouvrés (4,90€). Offerte dès 49€ d'achat. Retours acceptés sous 30 jours, produit non ouvert."
+    trust_delivery_title: Livraison rapide
+    trust_delivery_text: Expédition sous 24h, livraison en 3-5 jours
+    trust_secure_title: Paiement sécurisé
+    trust_secure_text: Transactions cryptées SSL 256-bit
+    trust_satisfied_title: Satisfait ou remboursé
+    trust_satisfied_text: Retour gratuit sous 30 jours
+    trust_zerowaste_title: Zéro déchet
+    trust_zerowaste_text: Emballages recyclables ou compostables
+    related_eyebrow: Vous aimerez aussi
+    related_title: Produits similaires
+
+# Panier
+cart:
+    ship_remaining_pre: Plus que
+    ship_remaining_post: pour la livraison offerte
+    ship_unlocked: 🎉 Livraison offerte !
+    empty: Votre panier est vide.
+    discover: Découvrir nos produits →
+    summary_title: Récapitulatif
+    subtotal: Sous-total
+    shipping: Livraison
+    shipping_free: Offerte
+    eco_discount: Réduction éco (-10%)
+    promo_placeholder: Code promo
+    promo_apply: Appliquer
+    total: Total
+    checkout: Passer la commande
+    reassurance: Paiement 100% sécurisé · Retour gratuit 30 jours
+    clear: Vider le panier
+    summary_empty: Ajoutez des produits pour voir le récapitulatif.
+
+# Connexion / Inscription
+auth:
+    brand_pitch: Rejoignez l'épicerie qui fait du bien
+    brand_feature_shipping: Livraison offerte dès 49 €
+    brand_feature_products: Produits bio, locaux et de saison
+    brand_feature_loyalty: Programme de fidélité recharge
+    brand_quote: "« GreenGoodies a transformé ma façon de consommer. Je ne reviendrais en arrière pour rien au monde. » — Claire, Lyon 2ᵉ"
+    back: Retour à l'accueil
+    tab_login: Connexion
+    tab_register: Inscription
+    email: Email
+    password: Mot de passe
+    remember: Se souvenir de moi
+    forgot: Mot de passe oublié ?
+    submit_login: Se connecter
+    ph_firstname: Votre prénom
+    ph_lastname: Votre nom
+    ph_email: votre@email.fr
+    ph_password_min: Min. 8 caractères
+    ph_password_confirm: Confirmez le mot de passe
+    pwd_req_title: "Le mot de passe doit contenir :"
+    pwd_req_length: 8-32 caractères
+    pwd_req_upper: 1 majuscule
+    pwd_req_lower: 1 minuscule
+    pwd_req_number: 1 chiffre
+    pwd_req_special: 1 caractère spécial
+    terms_pre: J'accepte les
+    terms_cgv: CGV
+    terms_and: et la
+    terms_privacy: politique de confidentialité
+    submit_register: Créer mon compte
+    divider: ou continuer avec
+
+# Mon compte
+account:
+    nav_overview: Vue d'ensemble
+    nav_orders: Commandes
+    nav_favorites: Favoris
+    nav_addresses: Adresses
+    nav_profile: Profil & sécurité
+    nav_logout: Déconnexion
+    greeting: Bonjour
+    member_since: Membre depuis
+    stat_orders: Commandes
+    stat_refills: Recharges rapportées
+    stat_plastic: Plastique évité
+    orders_title: Commandes récentes
+    status_delivered: Livrée
+    status_transit: En transit
+    track: Suivre
+    no_orders: Aucune commande pour le moment.
+    recharge_title: Programme de recharge
+    recharge_desc: Rapportez vos contenants vides et cumulez des récompenses. Chaque recharge vous rapproche d'une réduction.
+    recharge_info_pre: 3 recharges sur 5
+    recharge_info_post: Plus que 2 pour votre prochaine récompense !
+    address_title: Adresse de livraison
+    api_title: Accès API
+    api_disable: Désactiver mon accès API
+    api_enable: Activer mon accès API
+    danger_title: Zone dangereuse
+    delete_account: Supprimer mon compte
+    delete_confirm: Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+    stat_addresses: Adresses
+    stat_member_year: Membre depuis
+    profile_title: Informations personnelles
+    email_locked: L'adresse email ne peut pas être modifiée (identifiant de connexion).
+    save_profile: Enregistrer
+    password_title: Changer le mot de passe
+    save_password: Mettre à jour le mot de passe
+    current_password: Mot de passe actuel
+    new_password: Nouveau mot de passe
+    new_password_confirm: Confirmer le nouveau mot de passe
+
+# Adresses
+address:
+    label: Libellé
+    label_placeholder: Maison, Bureau…
+    line1: Adresse
+    line1_placeholder: N° et nom de rue
+    line2: Complément
+    line2_placeholder: Appartement, étage… (optionnel)
+    postal_code: Code postal
+    city: Ville
+    country: Pays
+    is_default: Définir comme adresse par défaut
+    default_badge: Par défaut
+    set_default: Définir par défaut
+    edit: Modifier
+    delete: Supprimer
+    delete_confirm: Supprimer cette adresse ?
+    empty: Vous n'avez pas encore d'adresse enregistrée.
+    add_title: Ajouter une adresse
+    edit_title: Modifier l'adresse
+    add: Ajouter l'adresse
+    save: Enregistrer
+    cancel: Annuler
+
+# Notifications (toasts)
+toast:
+    welcome: Bienvenue %name% !
+    account_deleted: Votre compte a bien été supprimé.
+    api_enabled: Accès API activé avec succès.
+    api_disabled: Accès API désactivé avec succès.
+    product_added: Produit ajouté au panier
+    quantity_updated: Quantité mise à jour
+    product_removed: Produit retiré du panier
+    cart_cleared: Panier vidé
+    order_validated: Commande validée avec succès !
+    login_required: Vous devez être connecté pour valider la commande.
+    invalid_data: Données invalides
+    profile_updated: Profil mis à jour
+    password_updated: Mot de passe mis à jour
+    address_added: Adresse ajoutée
+    address_updated: Adresse mise à jour
+    address_deleted: Adresse supprimée
+    address_default_set: Adresse par défaut définie
+    rate_limited: Trop de tentatives. Réessayez plus tard.
+
+# Newsletter
+newsletter:
+    subscribed: Merci ! Vous êtes bien inscrit·e à la newsletter.
+    already: Cet email est déjà inscrit.
+    invalid: Veuillez entrer un email valide.
+    rate_limited: Trop de tentatives. Réessayez plus tard.
+
+# Contact
+contact:
+    eyebrow: Parlons-en
+    title: Nous contacter
+    lead: Une question, une suggestion, un partenariat ? Écrivez-nous, nous répondons sous 48 h ouvrées.
+    hours: Du lundi au samedi, 9h–19h
+    name: Nom
+    name_placeholder: Votre nom
+    email: Email
+    email_placeholder: vous@exemple.fr
+    subject: Sujet
+    subject_placeholder: L'objet de votre message
+    message: Message
+    message_placeholder: Votre message…
+    send: Envoyer le message
+    success: Merci ! Votre message a bien été envoyé.
+    rate_limited: Trop de messages envoyés. Réessayez plus tard.
+
+# ===== Products (from DB fixtures, used as translation keys) =====
+"Kit d'hygiène recyclable": Kit d'hygiène recyclable
+"Pour une salle de bain éco-friendly": Pour une salle de bain éco-friendly
+"Shot Tropical": Shot Tropical
+"Fruits frais, pressés à froid": Fruits frais, pressés à froid
+"Gourde en bois": Gourde en bois
+"50cl, bois d'olivier": "50cl, bois d'olivier"
+"Disques Démaquillants x3": Disques Démaquillants x3
+"Solution efficace pour vous démaquiller en douceur ": Solution efficace pour vous démaquiller en douceur
+"Bougie Lavande & Patchouli": Bougie Lavande & Patchouli
+"Cire naturelle": Cire naturelle
+"Brosse à dent": Brosse à dent
+"Bois de hêtre rouge issu de forêts gérées durablement": Bois de hêtre rouge issu de forêts gérées durablement
+"Kit couvert en bois": Kit couvert en bois
+"Revêtement Bio en olivier & sac de transport": Revêtement Bio en olivier & sac de transport
+"Nécessaire, déodorant Bio": Nécessaire, déodorant Bio
+"50ml déodorant à l’eucalyptus": "50ml déodorant à l'eucalyptus"
+"Savon Bio": Savon Bio
+"Thé, Orange & Girofle": "Thé, Orange & Girofle"
+
+form:
+    firstname: Prénom
+    lastname: Nom
+    email: Email
+    password: Mot de passe
+    password_confirm: Confirmer le mot de passe
+    agree_terms: J'accepte les CGU de GreenGoodies
+
+# ===== Long descriptions =====
+"Ce kit d’hygiène recyclable est conçu pour celles et ceux qui souhaitent allier bien-être et respect de l’environnement. Il contient l’essentiel pour une routine quotidienne complète, sans compromis sur la qualité ni sur la planète. Chaque élément du kit est fabriqué à partir de matériaux durables, recyclables ou biodégradables, afin de limiter au maximum l'empreinte écologique. Que ce soit pour une utilisation personnelle, en voyage ou en cadeau responsable, ce kit est idéal pour amorcer une transition vers une consommation plus consciente. Il s'inscrit parfaitement dans une démarche zéro déchet, en remplaçant les produits jetables par des alternatives durables et réutilisables.": "Ce kit d'hygiène recyclable est conçu pour celles et ceux qui souhaitent allier bien-être et respect de l'environnement. Il contient l'essentiel pour une routine quotidienne complète, sans compromis sur la qualité ni sur la planète. Chaque élément du kit est fabriqué à partir de matériaux durables, recyclables ou biodégradables, afin de limiter au maximum l'empreinte écologique. Que ce soit pour une utilisation personnelle, en voyage ou en cadeau responsable, ce kit est idéal pour amorcer une transition vers une consommation plus consciente. Il s'inscrit parfaitement dans une démarche zéro déchet, en remplaçant les produits jetables par des alternatives durables et réutilisables."
+"Offrez-vous un concentré d’énergie naturelle avec notre shot tropical pressé à froid, élaboré à partir de fruits frais issus de l’agriculture responsable. Mangue, ananas, passion et citron vert sont pressés à froid pour préserver un maximum de nutriments sans recourir à la chaleur ni à aucun additif. Conditionné dans un flacon en verre recyclable, ce shot s’inscrit dans une démarche durable et zéro plastique. Idéal pour soutenir votre système immunitaire tout en réduisant votre impact environnemental, il allie plaisir gustatif et conscience écologique.": "Offrez-vous un concentré d'énergie naturelle avec notre shot tropical pressé à froid, élaboré à partir de fruits frais issus de l'agriculture responsable. Mangue, ananas, passion et citron vert sont pressés à froid pour préserver un maximum de nutriments sans recourir à la chaleur ni à aucun additif. Conditionné dans un flacon en verre recyclable, ce shot s'inscrit dans une démarche durable et zéro plastique. Idéal pour soutenir votre système immunitaire tout en réduisant votre impact environnemental, il allie plaisir gustatif et conscience écologique."
+"Alliez élégance et conscience écologique avec cette gourde en bois durable. Fabriquée à partir de bois issu de forêts gérées durablement, elle est doublée d’un contenant inox pour garantir une parfaite étanchéité et une conservation optimale des boissons chaudes ou froides. Sa conception sans plastique, réutilisable à l’infini, en fait une alternative idéale aux bouteilles jetables. Solide, stylée et responsable, cette gourde s’adresse à celles et ceux qui veulent consommer autrement, avec respect pour la nature à chaque gorgée.": "Alliez élégance et conscience écologique avec cette gourde en bois durable. Fabriquée à partir de bois issu de forêts gérées durablement, elle est doublée d'un contenant inox pour garantir une parfaite étanchéité et une conservation optimale des boissons chaudes ou froides. Sa conception sans plastique, réutilisable à l'infini, en fait une alternative idéale aux bouteilles jetables. Solide, stylée et responsable, cette gourde s'adresse à celles et ceux qui veulent consommer autrement, avec respect pour la nature à chaque gorgée."
+"Fini les cotons jetables ! Optez pour une routine beauté plus responsable avec ces disques démaquillants lavables et réutilisables. Fabriqués en coton bio ou en bambou certifié, ils sont ultra-doux pour la peau, même la plus sensible, tout en respectant l’environnement. Lavables en machine, ils remplacent des centaines de cotons à usage unique et s’inscrivent parfaitement dans une démarche zéro déchet. Un petit geste au quotidien, pour un grand impact sur la planète.": "Fini les cotons jetables ! Optez pour une routine beauté plus responsable avec ces disques démaquillants lavables et réutilisables. Fabriqués en coton bio ou en bambou certifié, ils sont ultra-doux pour la peau, même la plus sensible, tout en respectant l'environnement. Lavables en machine, ils remplacent des centaines de cotons à usage unique et s'inscrivent parfaitement dans une démarche zéro déchet. Un petit geste au quotidien, pour un grand impact sur la planète."
+"Laissez-vous envelopper par l’harmonie apaisante de la lavande et la profondeur boisée du patchouli avec cette bougie naturelle, coulée à la main. Composée de cire végétale 100 % naturelle (soja ou colza), d'une mèche en coton non traité et d’huiles essentielles biologiques, elle ne dégage aucune substance toxique. Son contenant en verre recyclable ou réutilisable renforce sa dimension écoresponsable. Idéale pour créer une ambiance relaxante, cette bougie s’inscrit dans une consommation douce, durable et respectueuse de l’environnement.": "Laissez-vous envelopper par l'harmonie apaisante de la lavande et la profondeur boisée du patchouli avec cette bougie naturelle, coulée à la main. Composée de cire végétale 100 % naturelle (soja ou colza), d'une mèche en coton non traité et d'huiles essentielles biologiques, elle ne dégage aucune substance toxique. Son contenant en verre recyclable ou réutilisable renforce sa dimension écoresponsable. Idéale pour créer une ambiance relaxante, cette bougie s'inscrit dans une consommation douce, durable et respectueuse de l'environnement."
+"Remplacez le plastique de votre salle de bain avec cette brosse à dents en bois naturelle, conçue pour limiter votre impact environnemental sans compromettre votre hygiène bucco-dentaire. Son manche est fabriqué en bois de bambou 100 % biodégradable, issu de forêts gérées durablement, et ses poils doux sans BPA assurent un brossage efficace tout en respectant vos gencives. Une alternative simple et responsable pour réduire vos déchets au quotidien.": "Remplacez le plastique de votre salle de bain avec cette brosse à dents en bois naturelle, conçue pour limiter votre impact environnemental sans compromettre votre hygiène bucco-dentaire. Son manche est fabriqué en bois de bambou 100 % biodégradable, issu de forêts gérées durablement, et ses poils doux sans BPA assurent un brossage efficace tout en respectant vos gencives. Une alternative simple et responsable pour réduire vos déchets au quotidien."
+"Emportez vos couverts partout avec ce kit en bois d’olivier, comprenant une fourchette, un couteau et une cuillère, le tout présenté dans un élégant sac de transport. Idéal pour les pique-niques, les repas en extérieur ou au bureau, ce kit est une alternative durable aux couverts jetables. Chaque pièce est soigneusement fabriquée à partir de bois d’olivier, connu pour sa durabilité et sa résistance à l’eau. Un choix écoresponsable pour réduire vos déchets au quotidien.": "Emportez vos couverts partout avec ce kit en bois d'olivier, comprenant une fourchette, un couteau et une cuillère, le tout présenté dans un élégant sac de transport. Idéal pour les pique-niques, les repas en extérieur ou au bureau, ce kit est une alternative durable aux couverts jetables. Chaque pièce est soigneusement fabriquée à partir de bois d'olivier, connu pour sa durabilité et sa résistance à l'eau. Un choix écoresponsable pour réduire vos déchets au quotidien."
+"Ce déodorant bio à l’eucalyptus offre une protection efficace tout en respectant votre peau. Sa formule naturelle, sans sels d’aluminium ni parabènes, garantit une sensation de fraîcheur durable. Enrichi en huiles essentielles, il laisse un parfum agréable et subtil. Son format de 50ml est idéal pour une utilisation quotidienne et se glisse facilement dans votre trousse de toilette. Optez pour une hygiène responsable avec ce déodorant respectueux de l’environnement.": "Ce déodorant bio à l'eucalyptus offre une protection efficace tout en respectant votre peau. Sa formule naturelle, sans sels d'aluminium ni parabènes, garantit une sensation de fraîcheur durable. Enrichi en huiles essentielles, il laisse un parfum agréable et subtil. Son format de 50ml est idéal pour une utilisation quotidienne et se glisse facilement dans votre trousse de toilette. Optez pour une hygiène responsable avec ce déodorant respectueux de l'environnement."
+"Savon bio artisanal, fabriqué à partir d'ingrédients naturels et d'huiles essentielles. Ce savon doux et parfumé nettoie la peau en profondeur tout en respectant son équilibre naturel. Idéal pour tous les types de peau, il laisse une sensation de fraîcheur et de bien-être. Un choix écoresponsable pour votre routine de soins.": "Savon bio artisanal, fabriqué à partir d'ingrédients naturels et d'huiles essentielles. Ce savon doux et parfumé nettoie la peau en profondeur tout en respectant son équilibre naturel. Idéal pour tous les types de peau, il laisse une sensation de fraîcheur et de bien-être. Un choix écoresponsable pour votre routine de soins."

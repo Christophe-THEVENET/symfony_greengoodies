@@ -3,77 +3,168 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
+use App\Entity\User;
+use App\Form\AddressType;
+use App\Form\ProfileType;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/mon-compte')]
+#[IsGranted('ROLE_USER')]
 class AccountController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $em,
         private TokenStorageInterface $tokenStorage,
-        private CsrfTokenManagerInterface $csrfTokenManager
+        private CsrfTokenManagerInterface $csrfTokenManager,
+        private TranslatorInterface $translator,
+        private RequestStack $requestStack,
     ) {}
 
     #[Route('/', name: 'app_account')]
-    #[IsGranted('ROLE_USER')]
-    public function index(OrderRepository $orderRepository): Response
+    public function index(Request $request, OrderRepository $orderRepository): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
-        $orders = $orderRepository->findLastFiveValidOrdersByUser($user);
 
-        return $this->render('security/account.html.twig', [
-            'user' => $user,
-            'orders' => $orders
-        ]);
+        // Onglet à réafficher si une soumission échoue (rendu sans redirection)
+        $forcedTab = null;
+
+        // --- Formulaire profil (nom / email) ---
+        $profileForm = $this->createForm(ProfileType::class, $user);
+        $profileForm->handleRequest($request);
+        if ($profileForm->isSubmitted()) {
+            if ($profileForm->isValid()) {
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.profile_updated', 'profil');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderProfileForm($profileForm);
+            }
+            $forcedTab = 'profil';
+        }
+
+        // --- Formulaire ajout d'adresse ---
+        $address = new Address();
+        $addressForm = $this->createForm(AddressType::class, $address);
+        $addressForm->handleRequest($request);
+        if ($addressForm->isSubmitted()) {
+            if ($addressForm->isValid()) {
+                $address->setUser($user);
+                $this->applyDefault($user, $address);
+                $this->em->persist($address);
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.address_added', 'adresses');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderAddressForm($addressForm);
+            }
+            $forcedTab = 'adresses';
+        }
+
+        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request, null, $forcedTab);
+    }
+
+    #[Route('/adresse/{id}/modifier', name: 'app_address_edit', methods: ['GET', 'POST'])]
+    public function editAddress(Request $request, Address $address, OrderRepository $orderRepository): Response
+    {
+        $this->denyUnlessOwner($address);
+
+        $addressForm = $this->createForm(AddressType::class, $address);
+        $addressForm->handleRequest($request);
+        if ($addressForm->isSubmitted()) {
+            if ($addressForm->isValid()) {
+                $this->applyDefault($this->getUser(), $address);
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.address_updated', 'adresses');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderAddressForm($addressForm, $address);
+            }
+        }
+
+        /** @var User $user */
+        $user = $this->getUser();
+        $profileForm = $this->createForm(ProfileType::class, $user);
+
+        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request, $address);
+    }
+
+    #[Route('/adresse/{id}/supprimer', name: 'app_address_delete', methods: ['POST'])]
+    public function deleteAddress(Request $request, Address $address): Response
+    {
+        $this->denyUnlessOwner($address);
+
+        if (!$this->isCsrfTokenValid('delete_address_' . $address->getId(), (string) $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $this->em->remove($address);
+        $this->em->flush();
+
+        return $this->toastRedirect('toast.address_deleted', 'adresses');
+    }
+
+    #[Route('/adresse/{id}/defaut', name: 'app_address_default', methods: ['POST'])]
+    public function setDefaultAddress(Request $request, Address $address): Response
+    {
+        $this->denyUnlessOwner($address);
+
+        if (!$this->isCsrfTokenValid('default_address_' . $address->getId(), (string) $request->request->get('_token'))) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $address->setIsDefault(true);
+        $this->applyDefault($this->getUser(), $address);
+        $this->em->flush();
+
+        return $this->toastRedirect('toast.address_default_set', 'adresses');
     }
 
     #[Route('/supprimer', name: 'app_account_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_USER')]
-    public function delete(
-        TokenStorageInterface $tokenStorage,
-        Request $request
-    ): Response
+    public function delete(Request $request): Response
     {
-        $submittedToken = $request->request->get('_token');
-        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('delete_account', $submittedToken))) {
+        if (!$this->isCsrfTokenValid('delete_account', (string) $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Token CSRF invalide.');
         }
 
         $user = $this->getUser();
 
-        //logout l'utilisateur avant de supprimer son compte
-        $tokenStorage->setToken(null);
-
-        // SOLUTION : Invalider la session utilisateur après suppression
+        // Déconnexion avant suppression, puis invalidation de la session
+        $this->tokenStorage->setToken(null);
         $request->getSession()->invalidate();
 
         $this->em->remove($user);
         $this->em->flush();
 
-        // add message on session (pour Stimulus)
-        $request->getSession()->set('toast', 'Votre compte a bien été supprimé.');
+        $request->getSession()->set('toast', $this->translator->trans('toast.account_deleted'));
 
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route('/access-api', name: 'api_account_toggle_api', methods: ['POST'])]
+    #[Route('/acces-api', name: 'api_account_toggle_api', methods: ['POST'])]
     public function toggleApiAccess(Request $request): Response
     {
-        $submittedToken = $request->request->get('_token');
-        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('access_api', $submittedToken))) {
+        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('access_api', (string) $request->request->get('_token')))) {
             if ($request->isXmlHttpRequest()) {
-                return $this->json(['message' => 'Token CSRF invalide.'], 403);
+                return $this->json(['message' => $this->translator->trans('toast.invalid_data')], 403);
             }
-            throw $this->createAccessDeniedException('Token CSRF invalide.');
+            throw $this->createAccessDeniedException();
         }
 
         /** @var User $user */
@@ -83,15 +174,125 @@ class AccountController extends AbstractController
         $user->setApiAccessEnabled($enabled);
         $this->em->flush();
 
-        $message = $enabled ? 'Accès API activé avec succès.' : 'Accès API désactivé avec succès.';
+        $message = $enabled
+            ? $this->translator->trans('toast.api_enabled')
+            : $this->translator->trans('toast.api_disabled');
 
         if ($request->isXmlHttpRequest()) {
             return $this->json([
                 'enabled' => $enabled,
-                'message' => $message
+                'message' => $message,
+                // Libellé du bouton pour le nouvel état (traduit)
+                'label' => $this->translator->trans($enabled ? 'account.api_disable' : 'account.api_enable'),
             ]);
         }
-        $request->getSession()->set('toast', $message);
+
+        return $this->toastRedirect($enabled ? 'toast.api_enabled' : 'toast.api_disabled', 'profil');
+    }
+
+    // ************** Helpers **************
+
+    private function renderAccount(
+        User $user,
+        OrderRepository $orderRepository,
+        FormInterface $profileForm,
+        FormInterface $addressForm,
+        Request $request,
+        ?Address $editingAddress = null,
+        ?string $forcedTab = null,
+    ): Response {
+        $orders = $orderRepository->findBy(['user' => $user, 'isValid' => true], ['createdAt' => 'DESC']);
+
+        // Onglet à afficher : forcé après une soumission invalide ou en édition,
+        // sinon valeur déposée en session par une redirection de formulaire
+        // (lue une fois), par défaut "overview". L'URL reste propre (/mon-compte/).
+        $session = $this->requestStack->getSession();
+        $activeTab = $forcedTab
+            ?? ($editingAddress ? 'adresses' : ($session->get('account_tab') ?? 'overview'));
+        $session->remove('account_tab');
+
+        return $this->render('security/account.html.twig', [
+            'user' => $user,
+            'orders' => $orders,
+            'profileForm' => $profileForm,
+            'addressForm' => $addressForm,
+            'editingAddress' => $editingAddress,
+            'activeTab' => $activeTab,
+        ]);
+    }
+
+    /**
+     * Si l'adresse est marquée par défaut, retire le défaut des autres adresses
+     * de l'utilisateur (une seule adresse par défaut).
+     */
+    private function applyDefault(User $user, Address $address): void
+    {
+        if (!$address->isDefault()) {
+            return;
+        }
+        foreach ($user->getAddresses() as $other) {
+            if ($other !== $address) {
+                $other->setIsDefault(false);
+            }
+        }
+    }
+
+    private function denyUnlessOwner(Address $address): void
+    {
+        $user = $this->getUser();
+        if (!$user instanceof User || $address->getUser()?->getId() !== $user->getId()) {
+            throw $this->createAccessDeniedException();
+        }
+    }
+
+    /**
+     * Succès d'un formulaire de la page compte. En AJAX, renvoie l'URL de
+     * redirection (suivie côté JS) ; sinon, effectue directement la redirection
+     * (PRG). $tab indique l'onglet à réafficher après la redirection.
+     */
+    private function formSuccess(Request $request, string $messageKey, string $tab): Response
+    {
+        $session = $this->requestStack->getSession();
+        $session->set('toast', $this->translator->trans($messageKey));
+        $session->set('account_tab', $tab);
+        $url = $this->generateUrl('app_account');
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(['redirect' => $url]);
+        }
+
+        return $this->redirect($url);
+    }
+
+    /**
+     * Rendu du seul formulaire d'adresse (avec ses erreurs) pour réinjection
+     * AJAX, avec un statut 422 (Unprocessable Entity).
+     */
+    private function renderAddressForm(FormInterface $addressForm, ?Address $editingAddress = null): Response
+    {
+        return $this->render('security/_address_form.html.twig', [
+            'addressForm' => $addressForm,
+            'editingAddress' => $editingAddress,
+        ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
+    /**
+     * Rendu du seul formulaire profil (avec ses erreurs) pour réinjection AJAX,
+     * avec un statut 422 (Unprocessable Entity).
+     */
+    private function renderProfileForm(FormInterface $profileForm): Response
+    {
+        return $this->render('security/_profile_form.html.twig', [
+            'profileForm' => $profileForm,
+        ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
+    private function toastRedirect(string $messageKey, string $tab): Response
+    {
+        $session = $this->requestStack->getSession();
+        $session->set('toast', $this->translator->trans($messageKey));
+        // Onglet à réafficher après la redirection (URL propre, sans ?tab=)
+        $session->set('account_tab', $tab);
 
         return $this->redirectToRoute('app_account');
     }

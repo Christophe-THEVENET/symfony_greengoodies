@@ -1,44 +1,160 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} - Produit{% endblock %}
+{% block title %}{{ parent() }} — {{ product.name|trans }}{% endblock %}
 
 {% block body %}
-<section class="product container container--height">
-    <div class="product__content">
-        <div class="product__image">
-            <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.shortDescription }}" />
+
+<section class="product-detail" data-controller="accordion">
+    {# ========== PHOTO ========== #}
+    <div class="product-media">
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name|trans }}" />
+    </div>
+
+    {# ========== INFOS ========== #}
+    <div class="product-info">
+        <a href="{{ path('app_home') }}" class="product-info__back">← {{ 'product.back'|trans }}</a>
+
+        <span class="product-info__category">{{ 'product.category'|trans }}</span>
+
+        <h1 class="product-info__title">{{ product.name|trans }}</h1>
+
+        {# Note #}
+        <div class="product-info__rating">
+            <span class="product-info__rating-stars">★★★★★</span>
+            <span>4.8</span>
+            <a href="#reviews" onclick="event.preventDefault()">{{ 'product.reviews'|trans }}</a>
         </div>
-        
-        <div class="product__details">
-            <div class="product__details-wrapper">
-                <h2 class="product__details-title f-title-page-section">{{ product.name }}</h2>
-                <p class="product__details-price f-product-show-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
-                <p class="product__details-description-title f-product-show-title-description">Description</p>
-                <p class="product__details-description f-product-show-description">
-                    {{ product.longDescription|replace({'.': '.<br><br>'})|raw }}
-                </p>
-                
-                <div class="add-to-cart-form f-text"
-                    {{ stimulus_controller('cart', {
-                        url: path('api_cart_add', {productId: product.id}),
-                        productId: product.id
-                    }) }}>
-                    Quantité:
-                    <input type="number" 
-                           value="1" 
-                           min="1" 
-                           max="10" 
-                           {{ stimulus_target('cart', 'quantity') }}
-                           class="quantity-input cart__item-qty">
-                    
-                    <button type="button" 
-                            class="btn-secondary"
-                            {{ stimulus_action('cart', 'addToCart', 'click') }}>
-                        <span class="link">Ajouter au panier</span>
-                    </button>
+
+        {# Prix #}
+        <div class="product-info__price">
+            <span class="product-info__price-current">{{ product.price|number_format(2, ',', ' ') }}€</span>
+            {% set oldPrice = product.price * 1.19 %}
+            <span class="product-info__price-old">{{ oldPrice|number_format(2, ',', ' ') }}€</span>
+            <span class="product-info__price-badge">-16%</span>
+        </div>
+
+        {# Quantité + CTA — conteneur Stimulus #}
+        <div {{ stimulus_controller('cart', {
+                url: path('api_cart_add', {productId: product.id}),
+                productId: product.id
+            }) }}>
+            <div class="qty-selector">
+                <span class="qty-selector__label">{{ 'product.qty_label'|trans }}</span>
+                <button class="qty-btn" data-action="click->cart#decrement" aria-label="Moins">−</button>
+                <input type="number" class="qty-selector__input" value="1" min="1" max="20"
+                       {{ stimulus_target('cart', 'quantity') }} />
+                <button class="qty-btn" data-action="click->cart#increment" aria-label="Plus">+</button>
+            </div>
+
+            <div class="product-cta">
+                <button type="button" class="btn btn--solid"
+                        {{ stimulus_action('cart', 'addToCart', 'click') }}>
+                    {{ 'product.add_to_cart'|trans }}
+                </button>
+            </div>
+        </div>
+
+        {# Garanties #}
+        <div class="guarantees">
+            <div class="guarantees__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>{{ 'product.guarantee_free_shipping'|trans }}</span>
+            </div>
+            <div class="guarantees__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>{{ 'product.guarantee_returns'|trans }}</span>
+            </div>
+            <div class="guarantees__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>{{ 'product.guarantee_secure'|trans }}</span>
+            </div>
+            <div class="guarantees__item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                <span>{{ 'product.guarantee_packaging'|trans }}</span>
+            </div>
+        </div>
+
+        {# Accordéon #}
+        <div class="accordion">
+            <div class="accordion__item">
+                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="true">
+                    {{ 'product.acc_description'|trans }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion__panel is-open">
+                    <div class="accordion__panel-inner">
+                        {{ product.longDescription|trans|nl2br }}
+                    </div>
+                </div>
+            </div>
+            <div class="accordion__item">
+                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
+                    {{ 'product.acc_composition'|trans }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion__panel">
+                    <div class="accordion__panel-inner">
+                        <p>{{ product.shortDescription|trans }}</p>
+                        <p style="margin-top:0.5rem;">{{ 'product.acc_composition_extra'|trans }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion__item">
+                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
+                    {{ 'product.acc_shipping'|trans }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="accordion__panel">
+                    <div class="accordion__panel-inner">
+                        <p>{{ 'product.acc_shipping_text'|trans }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+{# ========== TRUST STRIP ========== #}
+<div class="trust">
+    <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="15" height="13"/><polygon points="23 7 16 12 23 17 23 7"/><circle cx="8" cy="19" r="2"/><circle cx="16" cy="19" r="2"/></svg>
+        <div class="trust__item-title">{{ 'product.trust_delivery_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_delivery_text'|trans }}</p>
+    </div>
+    <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="trust__item-title">{{ 'product.trust_secure_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_secure_text'|trans }}</p>
+    </div>
+    <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div class="trust__item-title">{{ 'product.trust_satisfied_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_satisfied_text'|trans }}</p>
+    </div>
+    <div class="trust__item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 22c1.25-1.25 2.5-2.5 4-4 1-1 2-2 3-3"/><path d="M12 2C6.5 2 2 6.5 2 12"/><path d="M22 12c0-5.5-4.5-10-10-10"/></svg>
+        <div class="trust__item-title">{{ 'product.trust_zerowaste_title'|trans }}</div>
+        <p class="trust__item-text">{{ 'product.trust_zerowaste_text'|trans }}</p>
+    </div>
+</div>
+
+{# ========== PRODUITS LIÉS ========== #}
+{% if relatedProducts|length > 0 %}
+    <section class="related">
+        <div class="wrap">
+            <div class="sec-head">
+                <div>
+                    <span class="eyebrow">{{ 'product.related_eyebrow'|trans }}</span>
+                    <h2>{{ 'product.related_title'|trans }}</h2>
+                </div>
+            </div>
+            <div class="grid">
+                {% for related in relatedProducts %}
+                    {% include './_partials/_card-product.html.twig' with { product: related } %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}
+
 {% endblock %}

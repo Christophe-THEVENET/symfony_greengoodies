@@ -2,38 +2,46 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+final class SecurityController extends AbstractController
 {
     #[Route(path: '/connexion', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils, SessionInterface $session): Response
     {
-        // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
 
-        // last username entered by the user
+        $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        // If there is an error, set it in the session for display with 
         if ($error) {
             $session->set('error', $error->getMessageKey());
         }
 
+        // Créer le formulaire d'inscription pour le split-screen
+        $user = new User();
+        $registrationForm = $this->createForm(RegistrationForm::class, $user, [
+            'action' => $this->generateUrl('app_register'),
+        ]);
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
+            'registrationForm' => $registrationForm,
         ]);
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/deconnexion', name: 'app_logout')]
     public function logout(): void
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new \LogicException('Cette méthode ne peut pas être appelée directement.');
     }
 }

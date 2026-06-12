@@ -1,61 +1,127 @@
 {% extends 'base.html.twig' %}
 
-{% set bodyClass = 'page-pink' %}
-
-{% block title %}{{ parent() }} - Panier{% endblock %}
+{% block title %}{{ parent() }} — Panier{% endblock %}
 
 {% block body %}
 
-{# ****************** PANIER ****************** #}
-<section class="cart container container--height">
-    <div class="cart__wrapper">
-        <h1 class="cart__title f-title-page-section">Mon panier</h1>
-        
-        {# Vider le panier #}
+{# Récapitulatif calculé côté serveur (source unique : CartDto) #}
+{% set s = cart.summary %}
+
+<section class="cart-page">
+    <div class="cart-page__grid">
+    {# ========== LISTE ARTICLES ========== #}
+    <div class="bag">
         {% if cart.items|length > 0 %}
-        <button type="button" 
-                class="cart__clear f-text"
-                {{ stimulus_controller('cart', {
-                    url: path('api_cart_clear')
-                }) }}
-                {{ stimulus_action('cart', 'clearCart', 'click') }}>
-            x Vider le panier
-        </button>
-        {% endif %}
-        
-        <div class="cart__item-wrapper">
             {% for item in cart.items %}
-                {% include "./_partials/_cart/_cart-item.html.twig" with { item: item } %}
-            {% else %}
-                <p class="cart__empty">Votre panier est vide.</p>
+                <div class="bag-item"
+                     data-product-id="{{ item.product.id }}"
+                     {{ stimulus_controller('cart', {
+                         url: path('api_cart_update', {productId: item.product.id}),
+                         removeUrl: path('api_cart_remove', {productId: item.product.id}),
+                         productId: item.product.id
+                     }) }}>
+                    <div class="bag-item__image">
+                        <img src="{{ asset('img/products/' ~ item.product.imageFilename) }}" alt="{{ item.product.name }}" />
+                    </div>
+                    <div class="bag-item__meta">
+                        <div class="bag-item__name">{{ item.product.name|trans }}</div>
+                        <div class="bag-item__variant">{{ item.product.shortDescription|trans|slice(0, 60) }}…</div>
+                        <div class="bag-item__actions">
+                            <div class="bag-item__qty">
+                                <button type="button" class="qty-btn" data-action="click->cart#decrement" aria-label="Moins">−</button>
+                                <input type="number"
+                                       value="{{ item.quantity }}"
+                                       min="1"
+                                       {{ stimulus_target('cart', 'quantity') }}
+                                       {{ stimulus_action('cart', 'updateQuantity', 'change') }} />
+                                <button type="button" class="qty-btn" data-action="click->cart#increment" aria-label="Plus">+</button>
+                            </div>
+                            <button type="button" class="bag-item__remove"
+                                    {{ stimulus_action('cart', 'removeItem', 'click') }}
+                                    aria-label="Retirer du panier">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bag-item__price"
+                         {{ stimulus_target('cart', 'total') }}>
+                        {{ item.total_price|number_format(2, ',', ' ') }}€
+                    </div>
+                </div>
             {% endfor %}
-            <div class="cart__total">
-                <p class="cart__total-amount f-title-page-section">
-                    Total panier: 
-                    <span class="cart__total-price f-cart-total-item-price"
-                          {{ stimulus_controller('cart') }}
-                          {{ stimulus_target('cart', 'total') }}
-                          data-cart-total>
-                        {{ cart.totalAmount|number_format(2, ',', ' ') }}€
-                    </span>
-                </p>
-                <p class="cart__total-info f-text">Frais de livraison: Offert</p>
+        {% else %}
+            <div class="bag__empty">
+                <p>{{ 'cart.empty'|trans }}</p>
+                <p><a href="{{ path('app_home') }}">{{ 'cart.discover'|trans }}</a></p>
             </div>
-        </div>
-        
-        {# Formulaire de validation #}
-        {% if cart.items|length > 0 %}
-            <form class="form-cart-valid"
-                {{ stimulus_controller('cart', {
+        {% endif %}
+    </div>
+
+    {# ========== COLONNE DROITE ========== #}
+    <div class="cart-aside">
+        {% if not cart.isEmpty %}
+            <p class="ship-note" data-ship-progress
+               data-pre="{{ 'cart.ship_remaining_pre'|trans }}"
+               data-post="{{ 'cart.ship_remaining_post'|trans }}"
+               data-unlocked="{{ 'cart.ship_unlocked'|trans }}">
+                <span data-ship-text>{% if s.freeShippingRemaining > 0 %}{{ 'cart.ship_remaining_pre'|trans }} <strong>{{ s.freeShippingRemaining|number_format(2, ',', ' ') }}€</strong> {{ 'cart.ship_remaining_post'|trans }}{% else %}{{ 'cart.ship_unlocked'|trans }}{% endif %}</span>
+            </p>
+        {% endif %}
+
+        {# Récapitulatif #}
+        <div class="cart-summary">
+            <h3 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h3>
+
+        {% if not cart.isEmpty %}
+            <div class="cart-summary__row">
+                <span>{{ 'cart.subtotal'|trans }}</span>
+                <span data-cart-subtotal>{{ s.subtotal|number_format(2, ',', ' ') }}€</span>
+            </div>
+            <div class="cart-summary__row">
+                <span>{{ 'cart.shipping'|trans }}</span>
+                <span data-cart-shipping data-free-label="{{ 'cart.shipping_free'|trans }}">{{ s.shipping > 0 ? s.shipping|number_format(2, ',', ' ') ~ '€' : 'cart.shipping_free'|trans }}</span>
+            </div>
+            <div class="cart-summary__row cart-summary__row--discount">
+                <span>{{ 'cart.eco_discount'|trans }}</span>
+                <span data-cart-discount>−{{ s.ecoDiscount|number_format(2, ',', ' ') }}€</span>
+            </div>
+
+            <div class="cart-summary__promo">
+                <input type="text" placeholder="{{ 'cart.promo_placeholder'|trans }}" />
+                <button type="button" class="btn btn--ghost btn--sm">{{ 'cart.promo_apply'|trans }}</button>
+            </div>
+
+            <div class="cart-summary__row cart-summary__row--total">
+                <span>{{ 'cart.total'|trans }}</span>
+                <span data-cart-total>{{ s.total|number_format(2, ',', ' ') }}€</span>
+            </div>
+
+            <form {{ stimulus_controller('cart', {
                     url: path('api_cart_validate')
                 }) }}
                 {{ stimulus_action('cart', 'validateCart', 'submit') }}>
-                <input type="hidden" name="_token" value="{{ csrf_token('app_order_validate') }}">
-                <button type="submit" class="btn-secondary order-validate">
-                    <span class="link">Valider la commande</span>
-                </button>
+                <input type="hidden" name="_token" value="{{ csrf_token('app_order_validate') }}" />
+                <button type="submit" class="cart-summary__cta">{{ 'cart.checkout'|trans }}</button>
             </form>
+
+            <p class="cart-summary__reassurance">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                {{ 'cart.reassurance'|trans }}
+            </p>
+
+            {# Vider le panier #}
+            <div style="text-align:center;margin-top:1rem;">
+                <button type="button" class="btn btn--ghost btn--sm"
+                    {{ stimulus_controller('cart', { url: path('api_cart_clear') }) }}
+                    {{ stimulus_action('cart', 'clearCart', 'click') }}>
+                    {{ 'cart.clear'|trans }}
+                </button>
+            </div>
+        {% else %}
+            <div class="cart-summary__empty">{{ 'cart.summary_empty'|trans }}</div>
         {% endif %}
+        </div>
+    </div>
     </div>
 </section>
 

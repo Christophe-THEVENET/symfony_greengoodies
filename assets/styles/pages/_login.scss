@@ -1,194 +1,351 @@
 @use "../abstracts/_all" as *;
 
-.login {
-    display: flex;
-    margin: 0 auto;
+// ============================================================
+// AUTH — Split-screen
+// ============================================================
+html.page-auth, body.page-auth { height: 100%; margin: 0; overflow: hidden; }
 
-    &__image {
-        flex: 1;
+.auth {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+
+    @media screen and (max-width: 860px) {
+        grid-template-columns: 1fr;
+    }
+
+    // Panneau marque (gauche)
+    &__brand {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        background: $ink;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 3rem;
         overflow: hidden;
 
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            object-position: center;
+        &-logo {
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            z-index: 2;
+
+            .logo__mark { background: $olive; color: $paper; }
+        }
+
+        .logo { color: $paper; }
+
+        @media screen and (max-width: 860px) {
+            display: none;
+        }
+
+        &-bg {
+            position: absolute;
+            inset: 0;
+            opacity: 0.34;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        &-halo {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba($terra, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        &-content {
+            position: relative;
+            text-align: center;
+            color: $white;
+            max-width: 340px;
+        }
+
+        &-pitch {
+            font-family: $fontDisplay;
+            font-size: $fs-h2;
+            font-weight: $fw-600;
+            line-height: 1.2;
+            margin-bottom: 2.5rem;
+        }
+
+        &-features {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        &-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: $fs-body-sm;
+            color: rgba($white, 0.75);
+
+            svg {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                margin-top: 0.1rem;
+                color: $terra;
+            }
+        }
+
+        &-quote {
+            margin-top: 3rem;
+            font-style: italic;
+            font-size: $fs-body-sm;
+            color: rgba($white, 0.5);
+            line-height: 1.6;
         }
     }
 
+    // Panneau formulaire (droite)
     &__form {
-        flex: 1;
-
-        &-title {
-            margin-bottom: 2rem;
-        }
-
-        &-wrapper {
-            max-width: 70%;
-            height: 100%;
-            padding-top: 5rem;
-            margin: 0 auto;
-        }
-    }
-
-    &__form-item {
-        margin-bottom: 1.5rem;
         display: flex;
-        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 6rem 2rem 3rem;
+        background: $cream;
+        overflow-y: auto;
+        scrollbar-gutter: stable;
 
-        input {
-            margin-top: 0.5rem;
-            height: 4.2rem;
-            background-color: $beige-light;
-            /*  border: 1px solid $gray-33; */
-            padding: 1rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-
-
-            // État valide
-            &.valid {
-                border-color: $green;
-                background-color: lighten($green, 5%);
-                box-shadow: 0 0 0 2px rgba($green, 0.2);
-            }
-
-            // État invalide
-            &.invalid {
-                border-color: #e74c3c;
-                background-color: #fdf2f2;
-                box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.2);
-            }
+        &-inner {
+            width: 100%;
+            max-width: 420px;
+            min-height: 480px;
         }
-    }
 
-    &__form-checkbox {
-        margin-bottom: 1.5rem;
-    }
-
-    &__link {
-
-        margin-top: 2rem;
-        width: 100%;
-        text-align: center;
-
-        &-a {
-            transition: color 0.3s ease;
+        &-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: $fs-body-sm;
+            color: $ink-soft;
+            margin-bottom: 2.5rem;
+            transition: color 0.2s;
 
             &:hover {
-                color: darken($gray-33, 10%);
+                color: $ink;
             }
         }
 
+        // Onglets
+        &-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid $line;
 
-    }
+            button {
+                flex: 1;
+                padding: 0.75rem 0;
+                text-align: center;
+                font-family: $fontDisplay;
+                font-size: $fs-body;
+                font-weight: $fw-600;
+                background: none;
+                border: none;
+                color: $ink-soft;
+                cursor: pointer;
+                border-bottom: 2px solid transparent;
+                margin-bottom: -2px;
+                transition: color 0.2s, border-color 0.2s;
 
-    // input mot de passe
-    input#registration_form_plainPassword_first,
-    input#registration_form_plainPassword_second {
-        width: 100%;
-    }
-
-    button.toggle-password-button {
-        margin-top: 0.8rem;
-        font-size: 10px;
-    }
-
-    // Bouton désactivé
-    .btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        /*  background-color: lighten($gray-33, 30%); */
-    }
-}
-
-// validation visuelle en temps réel strucure des mots de passe
-.password-requirements {
-    margin-top: 1.5rem;
-    margin-bottom: -1rem;
-    padding: 0.3rem;
-    border-radius: 6px;
-
-    small {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: #8f99a1;
-        font-size: 0.7rem;
-    }
-
-    .requirements-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-
-        li {
-            padding: 0.05rem 0;
-            transition: all 0.3s ease;
-            font-weight: 400;
-            font-size: 0.6rem;
-            color: #7c858d;
-
-            .requirement-icon {
-                display: inline-block;
-                margin-right: 0.5rem;
-                font-size: 0.4rem;
-                transition: all 0.3s ease;
-            }
-
-            &[data-valid="true"] {
-
-                .requirement-icon {
-
-                    transform: scale(1.4);
-                    animation: bounce 0.3s ease;
+                &.is-active {
+                    color: $ink;
+                    border-bottom-color: $terra;
                 }
             }
         }
     }
 
-}
+    // Champs formulaire
+    &__field {
+        margin-bottom: 1.25rem;
 
-@media screen and (max-width: $breakpoint-tablette) {
+        // Liste d'erreurs serveur (form_errors) — identique au contact
+        ul {
+            list-style: none;
+            margin: 0.4rem 0 0;
+            padding: 0;
 
-    .login {
-
-
-        &__image {
-
-            flex: 1
+            li {
+                font-size: $fs-caption;
+                font-weight: $fw-500;
+                color: $terra;
+            }
         }
 
-        &__form {
-            flex: 2;
+        label {
+            display: block;
+            font-size: $fs-body-sm;
+            font-weight: $fw-500;
+            color: $ink;
+            margin-bottom: 0.4rem;
+        }
 
-            &-wrapper {
-                max-width: 75%;
+        input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: none;
+            border-radius: $radius-md;
+            background: $paper;
+            font-size: $fs-body;
+            color: $ink;
+            outline: none;
+            transition: background 0.2s;
 
+            &::placeholder {
+                color: rgba($ink, 0.35);
+            }
+
+            // Inputs plus clairs que le panneau ; les états restent clairs
+            &:focus { background: #fff; }
+            &.valid { background: mix($ok, #fff, 10%); }
+            &.invalid { background: mix($terra, #fff, 10%); }
+        }
+    }
+
+    &__options {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+        font-size: $fs-body-sm;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: $ink-soft;
+            cursor: pointer;
+
+            input[type="checkbox"] {
+                accent-color: $terra;
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        a {
+            color: $terra;
+            font-weight: $fw-500;
+
+            &:hover {
+                text-decoration: underline;
             }
         }
     }
 
-}
+    &__submit {
+        @include btn-solid;
+        @include btn-block;
+        @include btn-lg;
+    }
 
-@media screen and (max-width: $breakpoint-mobile) {
-    .login {
-        flex-direction: column;
+    &__divider {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        color: $ink-soft;
+        font-size: $fs-caption;
 
-        &__image {
-
-            flex: none;
-            height: 6rem;
+        &::before,
+        &::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: $line;
         }
+    }
 
-        &__form {
-            flex: none;
+    &__social {
+        display: flex;
+        gap: 1rem;
 
-            &-wrapper {
-                max-width: 90%;
+        button {
+            @include btn-ghost;
+            @include btn-block;
+            @include btn-sm;
+            font-weight: $fw-500;
+        }
+    }
 
+    &__switch {
+        text-align: center;
+        margin-top: 1.5rem;
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+
+        button {
+            background: none;
+            border: none;
+            color: $terra;
+            font-weight: $fw-600;
+            cursor: pointer;
+            font-size: $fs-body-sm;
+
+            &:hover {
+                text-decoration: underline;
             }
         }
+    }
 
+    // Formulaire caché
+    &__panel {
+        &[hidden] {
+            display: none;
+        }
+    }
+}
+
+// Validation mot de passe en temps réel
+.password-requirements {
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+
+    small {
+        display: block;
+        margin-bottom: 0.25rem;
+        font-weight: $fw-600;
+        color: $ink-soft;
+        font-size: $fs-caption;
+    }
+
+    ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem 1rem;
+    }
+
+    li {
+        font-size: 11px;
+        color: $ink-soft;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: color 0.3s;
+
+        &[data-valid="true"] {
+            color: $ok;
+        }
+
+        .requirement-icon {
+            font-size: 10px;
+        }
     }
 }

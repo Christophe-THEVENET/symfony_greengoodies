@@ -1,15 +1,15 @@
-<article class="card-product">
-    <div class="card-product__image">
-        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" 
-             alt="{{ product.shortDescription }}">
-    </div>
-    <div class="card-product__content">
-        <h3 class="card-product__content-title f-card-product-title">{{ product.name }}</h3>
-        <p class="card-product__content-description f-card-product-text ">{{ product.shortDescription }}</p>
-        <p class="card-product__content-price f-card-product-price">{{ product.price|number_format(2, ',', ' ') }}€</p>
-        <a href="{{ path('app_product_show', { id: product.id }) }}" 
-           class="card-product__link btn">
-            <span class="link">Voir le produit</span>
-        </a>
+<article class="card" data-reveal>
+    <a class="card__media" href="{{ path('app_product_show', { slug: product.slug }) }}" aria-label="{{ product.name }}">
+        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name }}" loading="lazy" />
+    </a>
+    <div class="card__body">
+        <a href="{{ path('app_product_show', { slug: product.slug }) }}"><h3 class="card__name">{{ product.name|trans }}</h3></a>
+        <p class="card__desc">{{ product.shortDescription|trans }}</p>
+        <div class="card__foot">
+            <span class="card__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
+            <a class="card__add" href="{{ path('app_product_show', { slug: product.slug }) }}" aria-label="{{ product.name }}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+        </div>
     </div>
 </article>
