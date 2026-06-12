@@ -19,8 +19,15 @@ final class Version20260612072210 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP INDEX IDX_user_id ON `order`');
+        // Le DROP INDEX n'est tenté que si l'index existe (divergence prod).
+        $indexes = array_map(
+            'strtolower',
+            array_keys($this->connection->createSchemaManager()->listTableIndexes('order'))
+        );
+        if (in_array('idx_user_id', $indexes, true)) {
+            $this->addSql('DROP INDEX IDX_user_id ON `order`');
+        }
+
         $this->addSql('ALTER TABLE `order` ADD stripe_payment_intent_id VARCHAR(255) DEFAULT NULL, ADD paid_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\', ADD shipping_label VARCHAR(100) DEFAULT NULL, ADD shipping_line1 VARCHAR(255) DEFAULT NULL, ADD shipping_line2 VARCHAR(255) DEFAULT NULL, ADD shipping_postal_code VARCHAR(20) DEFAULT NULL, ADD shipping_city VARCHAR(100) DEFAULT NULL, ADD shipping_country VARCHAR(100) DEFAULT NULL');
     }
 
