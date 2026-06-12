@@ -6,15 +6,30 @@
 .header {
     position: fixed;
     inset: 0 0 auto 0;
-    z-index: 60;
+    z-index: 80; // au-dessus du menu mobile (70) : le header reste visible/cliquable
     padding: 20px 0;
     transition: .4s;
 
-    &.is-scrolled {
-        padding: 11px 0;
+    // Fond flouté au scroll porté par un pseudo-élément : on NE met PAS
+    // backdrop-filter sur .header lui-même, sinon il devient le bloc contenant
+    // de son enfant .nav--mobile (position:fixed) et casse le menu plein écran.
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
         background: rgba(228, 217, 208, .92);
         backdrop-filter: blur(12px);
         box-shadow: 0 4px 24px rgba(58, 45, 41, 0.15);
+        opacity: 0;
+        transition: opacity .4s;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    &.is-scrolled {
+        padding: 11px 0;
+
+        &::before { opacity: 1; }
     }
 
     &__bar {
@@ -22,6 +37,8 @@
         align-items: center;
         justify-content: space-between;
         gap: 24px;
+        position: relative;
+        z-index: 90; // au-dessus du menu mobile (70) : logo + burger restent visibles/cliquables
     }
 
     &__right {
@@ -242,27 +259,86 @@
         height: 2px;
         background: $ink;
         border-radius: 2px;
+        transition: transform .3s $ease-out, opacity .2s;
+    }
+
+    // À l'ouverture : les trois barres forment une croix (bouton fermer)
+    &.is-open {
+        span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        span:nth-child(2) { opacity: 0; }
+        span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
     }
 }
 
-// Menu mobile overlay
-.nav.is-open {
-    display: flex;
+// Menu mobile plein écran. Toujours présent dans le DOM mais invisible et
+// non interactif tant qu'il n'est pas ouvert : permet d'animer l'apparition
+// (opacity/visibility/transform — display ne peut pas être animé).
+.nav--mobile {
     position: fixed;
     inset: 0;
-    background: $cream;
+    z-index: 70; // sous le header (80) pour le garder visible
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 28px;
+    gap: 64px; // grande séparation entre le bloc compte et le bloc liens
+    padding: 24px;
     font-size: 28px;
     font-family: $fontDisplay;
-    z-index: 70;
+    background: $cream;
+
+    // État fermé
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity .3s $ease-out, transform .35s $ease-out, visibility .3s;
+}
+
+.nav--mobile.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+// Bloc compte en tête du menu : prénom puis ses liens (Mon compte / Déconnexion)
+// légèrement décalés en dessous pour montrer qu'ils lui appartiennent.
+.nav--mobile__account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+// Bloc des liens de navigation
+.nav--mobile__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+// Prénom — pastille couleur accent, non cliquable
+.nav--mobile__user {
+    font-family: $fontBody;
+    font-size: 15px;
+    font-weight: 700;
+    color: $terra;
+    background: rgba($terra, 0.1);
+    padding: 8px 20px;
+    border-radius: $radius-full;
+    margin-bottom: 4px;
+}
+
+// Liens du compte, plus petits et indentés sous le prénom
+.nav--mobile__sublink {
+    font-family: $fontBody;
+    font-size: 18px;
+    color: $ink-soft;
 }
 
 // Responsive
 @media (max-width: $breakpoint-tablette) {
-    .nav:not(.is-open) { display: none; }
-    .lang, .account-menu { display: none; }
+    .nav:not(.nav--mobile) { display: none; } // masque la nav desktop, pas le menu mobile
+    .lang, .account-menu { display: none; }   // le compte passe dans le menu burger
     .burger { display: flex; }
 }

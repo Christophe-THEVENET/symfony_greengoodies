@@ -15,14 +15,22 @@
 
     &__grid {
         display: grid;
-        grid-template-columns: 1.5fr 1fr;
+        // minmax(0, …) : empêche un enfant non rétractable d'élargir une colonne
+        // au-delà du conteneur (cause classique de débordement horizontal).
+        grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
         gap: 3rem;
         align-items: start;
 
         @media screen and (max-width: $breakpoint-tablette) {
-            grid-template-columns: 1fr;
+            grid-template-columns: minmax(0, 1fr);
         }
     }
+}
+
+// Les deux colonnes doivent pouvoir rétrécir (sinon leur contenu déborde)
+.bag,
+.cart-aside {
+    min-width: 0;
 }
 
 // Colonne droite : texte livraison + encadré récap
@@ -170,6 +178,22 @@
         color: $ink;
         text-align: right;
         min-width: 80px;
+    }
+
+    // Mobile : l'image + les actions + le prix ne tiennent pas sur une ligne.
+    // On autorise le retour à la ligne pour éviter le débordement horizontal.
+    @media screen and (max-width: $breakpoint-mobile) {
+        flex-wrap: wrap;
+        column-gap: 1rem;
+
+        .bag-item__image { width: 72px; height: 72px; }
+        .bag-item__actions { flex-wrap: wrap; }
+
+        .bag-item__price {
+            width: 100%;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
     }
 }
 

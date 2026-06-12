@@ -103,6 +103,15 @@
     &--tl { top: 8%; left: -26px; }
     &--br { bottom: 10%; right: -22px; }
 
+    // Responsive : l'image passe pleine largeur, les chips ne doivent plus
+    // déborder ni coller les bords de l'écran -> on les ramène dans l'image.
+    @media (max-width: $breakpoint-tablette) {
+        padding: 10px 14px;
+
+        &--tl { left: 10px; }
+        &--br { right: 10px; }
+    }
+
     &-txt {
         display: flex;
         flex-direction: column;
