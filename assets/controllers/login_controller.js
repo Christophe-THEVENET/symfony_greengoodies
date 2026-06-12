@@ -81,7 +81,9 @@ export default class extends Controller {
             }
         }
 
-        this.submitButtonTarget.disabled = !isValid;
+        // Le bouton reste toujours actif : le feedback live (fond vert/rouge)
+        // est indicatif, la validation Symfony au submit fait foi. Désactiver
+        // le bouton nuit à l'UX/accessibilité (l'utilisateur ne sait pas pourquoi).
     }
 
     validateEmail(email) {

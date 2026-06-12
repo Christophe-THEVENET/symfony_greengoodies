@@ -66,7 +66,7 @@
 
             {# ===== CONNEXION ===== #}
             <div class="auth__panel" data-auth-target="loginPanel"{% if tab == 'register' %} hidden{% endif %}>
-                <form method="post" action="{{ path('app_login') }}" data-controller="login" data-login-form-type-value="login" data-action="submit->login#onSubmit">
+                <form method="post" action="{{ path('app_login') }}" novalidate data-controller="login" data-login-form-type-value="login" data-action="submit->login#onSubmit">
                     <div class="auth__field">
                         <label for="login_email">{{ 'auth.email'|trans }}</label>
                         <input type="email" id="login_email" name="_username" value="{{ last_username }}" placeholder="{{ 'auth.ph_email'|trans }}" required autocomplete="email"
@@ -87,7 +87,7 @@
                         <a href="#">{{ 'auth.forgot'|trans }}</a>
                     </div>
 
-                    <button type="submit" class="auth__submit" data-login-target="submitButton" disabled>{{ 'auth.submit_login'|trans }}</button>
+                    <button type="submit" class="auth__submit" data-login-target="submitButton">{{ 'auth.submit_login'|trans }}</button>
                 </form>
             </div>
 
@@ -141,7 +141,7 @@
                     </label>
                 </div>
 
-                <button type="submit" class="auth__submit" data-login-target="submitButton" disabled>{{ 'auth.submit_register'|trans }}</button>
+                <button type="submit" class="auth__submit" data-login-target="submitButton">{{ 'auth.submit_register'|trans }}</button>
 
                 {{ form_end(registrationForm) }}
             </div>

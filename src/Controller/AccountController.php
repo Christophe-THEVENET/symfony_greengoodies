@@ -39,27 +39,44 @@ class AccountController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
+        // Onglet à réafficher si une soumission échoue (rendu sans redirection)
+        $forcedTab = null;
+
         // --- Formulaire profil (nom / email) ---
         $profileForm = $this->createForm(ProfileType::class, $user);
         $profileForm->handleRequest($request);
-        if ($profileForm->isSubmitted() && $profileForm->isValid()) {
-            $this->em->flush();
-            return $this->toastRedirect('toast.profile_updated', 'profil');
+        if ($profileForm->isSubmitted()) {
+            if ($profileForm->isValid()) {
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.profile_updated', 'profil');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderProfileForm($profileForm);
+            }
+            $forcedTab = 'profil';
         }
 
         // --- Formulaire ajout d'adresse ---
         $address = new Address();
         $addressForm = $this->createForm(AddressType::class, $address);
         $addressForm->handleRequest($request);
-        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
-            $address->setUser($user);
-            $this->applyDefault($user, $address);
-            $this->em->persist($address);
-            $this->em->flush();
-            return $this->toastRedirect('toast.address_added', 'adresses');
+        if ($addressForm->isSubmitted()) {
+            if ($addressForm->isValid()) {
+                $address->setUser($user);
+                $this->applyDefault($user, $address);
+                $this->em->persist($address);
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.address_added', 'adresses');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderAddressForm($addressForm);
+            }
+            $forcedTab = 'adresses';
         }
 
-        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request);
+        return $this->renderAccount($user, $orderRepository, $profileForm, $addressForm, $request, null, $forcedTab);
     }
 
     #[Route('/adresse/{id}/modifier', name: 'app_address_edit', methods: ['GET', 'POST'])]
@@ -69,10 +86,16 @@ class AccountController extends AbstractController
 
         $addressForm = $this->createForm(AddressType::class, $address);
         $addressForm->handleRequest($request);
-        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
-            $this->applyDefault($this->getUser(), $address);
-            $this->em->flush();
-            return $this->toastRedirect('toast.address_updated', 'adresses');
+        if ($addressForm->isSubmitted()) {
+            if ($addressForm->isValid()) {
+                $this->applyDefault($this->getUser(), $address);
+                $this->em->flush();
+                return $this->formSuccess($request, 'toast.address_updated', 'adresses');
+            }
+            // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
+            if ($request->isXmlHttpRequest()) {
+                return $this->renderAddressForm($addressForm, $address);
+            }
         }
 
         /** @var User $user */
@@ -176,14 +199,16 @@ class AccountController extends AbstractController
         FormInterface $addressForm,
         Request $request,
         ?Address $editingAddress = null,
+        ?string $forcedTab = null,
     ): Response {
         $orders = $orderRepository->findBy(['user' => $user, 'isValid' => true], ['createdAt' => 'DESC']);
 
-        // Onglet à afficher : forcé sur "adresses" en édition, sinon valeur
-        // déposée en session par une redirection de formulaire (lue une fois),
-        // par défaut "overview". L'URL reste propre (/mon-compte/).
+        // Onglet à afficher : forcé après une soumission invalide ou en édition,
+        // sinon valeur déposée en session par une redirection de formulaire
+        // (lue une fois), par défaut "overview". L'URL reste propre (/mon-compte/).
         $session = $this->requestStack->getSession();
-        $activeTab = $editingAddress ? 'adresses' : ($session->get('account_tab') ?? 'overview');
+        $activeTab = $forcedTab
+            ?? ($editingAddress ? 'adresses' : ($session->get('account_tab') ?? 'overview'));
         $session->remove('account_tab');
 
         return $this->render('security/account.html.twig', [
@@ -218,6 +243,48 @@ class AccountController extends AbstractController
         if (!$user instanceof User || $address->getUser()?->getId() !== $user->getId()) {
             throw $this->createAccessDeniedException();
         }
+    }
+
+    /**
+     * Succès d'un formulaire de la page compte. En AJAX, renvoie l'URL de
+     * redirection (suivie côté JS) ; sinon, effectue directement la redirection
+     * (PRG). $tab indique l'onglet à réafficher après la redirection.
+     */
+    private function formSuccess(Request $request, string $messageKey, string $tab): Response
+    {
+        $session = $this->requestStack->getSession();
+        $session->set('toast', $this->translator->trans($messageKey));
+        $session->set('account_tab', $tab);
+        $url = $this->generateUrl('app_account');
+
+        if ($request->isXmlHttpRequest()) {
+            return $this->json(['redirect' => $url]);
+        }
+
+        return $this->redirect($url);
+    }
+
+    /**
+     * Rendu du seul formulaire d'adresse (avec ses erreurs) pour réinjection
+     * AJAX, avec un statut 422 (Unprocessable Entity).
+     */
+    private function renderAddressForm(FormInterface $addressForm, ?Address $editingAddress = null): Response
+    {
+        return $this->render('security/_address_form.html.twig', [
+            'addressForm' => $addressForm,
+            'editingAddress' => $editingAddress,
+        ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
+    /**
+     * Rendu du seul formulaire profil (avec ses erreurs) pour réinjection AJAX,
+     * avec un statut 422 (Unprocessable Entity).
+     */
+    private function renderProfileForm(FormInterface $profileForm): Response
+    {
+        return $this->render('security/_profile_form.html.twig', [
+            'profileForm' => $profileForm,
+        ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 
     private function toastRedirect(string $messageKey, string $tab): Response

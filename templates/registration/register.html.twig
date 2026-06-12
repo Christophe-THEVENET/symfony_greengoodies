@@ -123,10 +123,9 @@
                         {{ form_label(registrationForm.agreeTerms, null, {'label_attr': {'class': 'f-text'}}) }}
                         {% include '_partials/_form-error.html.twig' with {'errors': registrationForm.agreeTerms.vars.errors} %}                    
                     </div>
-                    <button type="submit" 
+                    <button type="submit"
                             class="btn btn-secondary"
-                            data-login-target="submitButton"
-                            disabled>
+                            data-login-target="submitButton">
                             <span class="link">S'inscrire</span>
                     </button>
                     {{ form_end(registrationForm) }}
