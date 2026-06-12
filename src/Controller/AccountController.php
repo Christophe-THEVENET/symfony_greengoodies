@@ -67,7 +67,11 @@ class AccountController extends AbstractController
                 $this->applyDefault($user, $address);
                 $this->em->persist($address);
                 $this->em->flush();
-                return $this->formSuccess($request, 'toast.address_added', 'adresses');
+
+                // Si on venait du checkout (adresse manquante), on y retourne pour payer
+                $route = $request->getSession()->remove('checkout_redirect') ? 'app_checkout' : null;
+
+                return $this->formSuccess($request, 'toast.address_added', 'adresses', $route);
             }
             // En AJAX : on renvoie le formulaire avec ses erreurs (pas de reload)
             if ($request->isXmlHttpRequest()) {
@@ -250,12 +254,18 @@ class AccountController extends AbstractController
      * redirection (suivie côté JS) ; sinon, effectue directement la redirection
      * (PRG). $tab indique l'onglet à réafficher après la redirection.
      */
-    private function formSuccess(Request $request, string $messageKey, string $tab): Response
+    private function formSuccess(Request $request, string $messageKey, string $tab, ?string $route = null): Response
     {
         $session = $this->requestStack->getSession();
         $session->set('toast', $this->translator->trans($messageKey));
-        $session->set('account_tab', $tab);
-        $url = $this->generateUrl('app_account');
+
+        if ($route !== null) {
+            // Redirection vers une autre page (ex. retour au paiement)
+            $url = $this->generateUrl($route);
+        } else {
+            $session->set('account_tab', $tab);
+            $url = $this->generateUrl('app_account');
+        }
 
         if ($request->isXmlHttpRequest()) {
             return $this->json(['redirect' => $url]);

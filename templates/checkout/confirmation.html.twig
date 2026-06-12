@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} — {{ 'checkout.confirmation_title'|trans }}{% endblock %}
+
+{% block body %}
+<section class="checkout-result">
+    {% if status == 'succeeded' and order %}
+        <div class="checkout-result__icon checkout-result__icon--ok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <h1 class="checkout-result__title">{{ 'checkout.success_title'|trans }}</h1>
+        <p class="checkout-result__lead">{{ 'checkout.success_lead'|trans }}</p>
+        <p class="checkout-result__order">{{ 'checkout.order_number'|trans }} <strong>{{ order.orderNumber }}</strong></p>
+        <div class="checkout-result__actions">
+            <a href="{{ path('app_account') }}" class="btn btn--solid">{{ 'checkout.see_orders'|trans }}</a>
+            <a href="{{ path('app_home') }}" class="btn btn--ghost">{{ 'checkout.back_home'|trans }}</a>
+        </div>
+    {% else %}
+        <div class="checkout-result__icon checkout-result__icon--ko">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+        </div>
+        <h1 class="checkout-result__title">{{ 'checkout.failed_title'|trans }}</h1>
+        <p class="checkout-result__lead">{{ 'checkout.failed_lead'|trans }}</p>
+        <div class="checkout-result__actions">
+            <a href="{{ path('app_checkout') }}" class="btn btn--solid">{{ 'checkout.retry'|trans }}</a>
+            <a href="{{ path('app_cart') }}" class="btn btn--ghost">{{ 'checkout.back_cart'|trans }}</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

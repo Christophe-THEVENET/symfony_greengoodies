@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { font-family: "DejaVu Sans", sans-serif; }
+        body { color: #3A2D29; font-size: 12px; margin: 0; }
+        .wrap { padding: 8px 4px; }
+        .head { width: 100%; border-bottom: 3px solid #A2594F; padding-bottom: 16px; margin-bottom: 24px; }
+        .brand { font-size: 24px; font-weight: bold; color: #A2594F; }
+        .brand small { display: block; font-size: 11px; color: #6E5A52; font-weight: normal; margin-top: 4px; }
+        .doc-title { font-size: 20px; font-weight: bold; text-align: right; }
+        .meta { font-size: 11px; color: #6E5A52; text-align: right; }
+        .cols { width: 100%; margin-bottom: 24px; }
+        .cols td { vertical-align: top; width: 50%; font-size: 11px; line-height: 1.5; }
+        .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #7E9C89; font-weight: bold; margin-bottom: 4px; }
+        table.items { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        table.items th { background: #F0E6DE; color: #3A2D29; text-align: left; padding: 8px 10px; font-size: 11px; }
+        table.items th.r, table.items td.r { text-align: right; }
+        table.items td { padding: 8px 10px; border-bottom: 1px solid #EADFD6; }
+        .totals { width: 45%; margin-left: 55%; }
+        .totals td { padding: 5px 10px; font-size: 12px; }
+        .totals td.r { text-align: right; }
+        .totals tr.total td { border-top: 2px solid #3A2D29; font-weight: bold; font-size: 14px; padding-top: 8px; }
+        .foot { margin-top: 40px; padding-top: 12px; border-top: 1px solid #EADFD6; font-size: 10px; color: #6E5A52; text-align: center; }
+        .paid { display: inline-block; color: #5E7344; border: 1px solid #5E7344; border-radius: 4px; padding: 2px 8px; font-size: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <table class="head">
+        <tr>
+            <td style="width:55%">
+                <div class="brand">GreenGoodies
+                    <small>12 rue de la Croix-Rousse · 69004 Lyon, France<br>contact@greengoodies.space</small>
+                </div>
+            </td>
+            <td style="width:45%">
+                <div class="doc-title">FACTURE</div>
+                <div class="meta">
+                    N° {{ order.orderNumber }}<br>
+                    Date : {{ (order.paidAt ?? order.createdAt)|date('d/m/Y') }}<br>
+                    {% if order.paidAt %}<span class="paid">PAYÉE</span>{% endif %}
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table class="cols">
+        <tr>
+            <td>
+                <div class="label">Facturé à</div>
+                {{ order.user.firstname }} {{ order.user.lastname }}<br>
+                {{ order.user.email }}
+            </td>
+            <td>
+                {% if order.shippingLine1 %}
+                    <div class="label">Adresse de livraison</div>
+                    {% if order.shippingLabel %}<strong>{{ order.shippingLabel }}</strong><br>{% endif %}
+                    {{ order.shippingLine1 }}<br>
+                    {% if order.shippingLine2 %}{{ order.shippingLine2 }}<br>{% endif %}
+                    {{ order.shippingPostalCode }} {{ order.shippingCity }}<br>
+                    {{ order.shippingCountry }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    <table class="items">
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th class="r">Qté</th>
+                <th class="r">Prix unitaire</th>
+                <th class="r">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.orderItems %}
+                <tr>
+                    <td>{{ item.productName }}</td>
+                    <td class="r">{{ item.quantity }}</td>
+                    <td class="r">{{ item.unitPrice|number_format(2, ',', ' ') }} €</td>
+                    <td class="r">{{ item.totalPrice|number_format(2, ',', ' ') }} €</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="totals">
+        <tr>
+            <td>Sous-total</td>
+            <td class="r">{{ subtotal|number_format(2, ',', ' ') }} €</td>
+        </tr>
+        {% if adjustment != 0 %}
+            <tr>
+                <td>Livraison &amp; remise éco</td>
+                <td class="r">{{ adjustment|number_format(2, ',', ' ') }} €</td>
+            </tr>
+        {% endif %}
+        <tr class="total">
+            <td>Total {{ order.paidAt ? 'payé' : '' }}</td>
+            <td class="r">{{ order.totalAmount|number_format(2, ',', ' ') }} €</td>
+        </tr>
+    </table>
+
+    <div class="foot">
+        Merci pour votre commande chez GreenGoodies — épicerie bio &amp; éthique.<br>
+        Facture générée automatiquement · TVA non applicable (démo).
+    </div>
+
+</div>
+</body>
+</html>

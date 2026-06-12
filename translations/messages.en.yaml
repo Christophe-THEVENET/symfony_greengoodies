@@ -133,6 +133,28 @@ cart:
     clear: Empty cart
     summary_empty: Add products to see the summary.
 
+# Checkout / Payment
+checkout:
+    title: Checkout
+    card_payment: Card payment
+    test_mode: Demo mode — test payment
+    test_card: "Use the card:"
+    pay: Pay
+    shipping_to: Shipping to
+    change_address: Change address
+    address_required: Add a shipping address before ordering.
+    payment_error: Payment could not be initialized. Please try again.
+    confirmation_title: Confirmation
+    success_title: Thank you for your order!
+    success_lead: Your payment was received. A confirmation email will be sent to you.
+    order_number: Order number
+    see_orders: View my orders
+    back_home: Back to home
+    failed_title: Payment not completed
+    failed_lead: Your payment could not be confirmed. No amount was charged.
+    retry: Retry payment
+    back_cart: Back to cart
+
 # Sign in / Sign up
 auth:
     brand_pitch: Join the grocery that does good
@@ -183,6 +205,7 @@ account:
     status_delivered: Delivered
     status_transit: In transit
     track: Track
+    invoice: PDF invoice
     no_orders: No orders yet.
     recharge_title: Refill programme
     recharge_desc: Bring back your empty containers and earn rewards. Every refill brings you closer to a discount.

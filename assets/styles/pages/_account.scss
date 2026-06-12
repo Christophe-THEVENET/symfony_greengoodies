@@ -251,6 +251,24 @@
         @include btn-sm;
         white-space: nowrap;
     }
+
+    &__invoice {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        color: $terra;
+        white-space: nowrap;
+        padding: 0.4rem 0.7rem;
+        border: 1px solid $line;
+        border-radius: $radius-full;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover { background: rgba($terra, 0.08); color: $terra-deep; }
+
+        svg { flex-shrink: 0; }
+    }
 }
 
 // --- PANNEAUX (onglets) ---

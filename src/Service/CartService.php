@@ -4,6 +4,7 @@
 namespace App\Service;
 
 use App\Dto\CartDto;
+use App\Entity\Address;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\User;
@@ -96,28 +97,31 @@ class CartService
         $this->saveCartToSession();
     }
 
-    public function validateCart(User $user): Order
+    /**
+     * Finalise une commande après confirmation du paiement Stripe.
+     * Idempotent : ne fait rien si la commande est déjà payée.
+     */
+    public function markOrderPaid(Order $order, string $paymentIntentId, float $paidAmount, ?Address $address = null): void
     {
-        if ($this->cart->isEmpty()) {
-            throw new \InvalidArgumentException('Le panier est vide');
+        if ($order->isPaid()) {
+            return;
         }
 
-        // Récupérer la commande non validée ou générer une erreur
-        $order = $this->orderRepository->findUnvalidatedOrderByUser($user) ?? throw new \RuntimeException('Commande introuvable');
-
-        // Synchroniser une dernière fois avec le panier
-        $this->syncOrderItems($order);
-
-        // Finaliser la commande
         $order->setIsValid(true);
         $order->setOrderNumber($this->generateOrderNumber());
+        $order->setStripePaymentIntentId($paymentIntentId);
+        $order->setPaidAt(new \DateTimeImmutable());
+        $order->setTotalAmount($paidAmount);
+
+        if ($address) {
+            $order->setShippingFromAddress($address);
+        }
 
         $this->entityManager->flush();
 
-        // Vider le panier après validation
+        // Vide le panier : la commande étant désormais validée (isValid=true),
+        // cleanupEmptyOrder ne la supprimera pas (il ne cible que les non-validées).
         $this->clearCart();
-
-        return $order;
     }
 
     public function persistCart(): void

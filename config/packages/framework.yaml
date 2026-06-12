@@ -5,6 +5,13 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    # Reverse proxy : par défaut 127.0.0.1 (= inactif, aucune IP forwardée n'est
+    # crue -> pas de spoofing possible). En prod, mettre TRUSTED_PROXIES à l'IP/
+    # plage du proxy (ex. réseau Docker) ET s'assurer que nginx pose lui-même la
+    # vraie IP client (X-Forwarded-For / X-Real-IP) en écrasant toute valeur cliente.
+    trusted_proxies: '%env(TRUSTED_PROXIES)%'
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']
+
     #esi: true
     #fragments: true
 

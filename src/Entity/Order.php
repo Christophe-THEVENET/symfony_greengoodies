@@ -56,6 +56,32 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'orderRef', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $orderItems;
 
+    // --- Paiement Stripe ---
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripePaymentIntentId = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $paidAt = null;
+
+    // --- Snapshot de l'adresse de livraison (figée au moment du paiement) ---
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $shippingLabel = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shippingLine1 = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shippingLine2 = null;
+
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $shippingPostalCode = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $shippingCity = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $shippingCountry = null;
+
 
     public function __construct()
     {
@@ -157,6 +183,117 @@ class Order
             }
         }
 
+        return $this;
+    }
+
+    // --- Paiement Stripe ---
+
+    public function getStripePaymentIntentId(): ?string
+    {
+        return $this->stripePaymentIntentId;
+    }
+
+    public function setStripePaymentIntentId(?string $stripePaymentIntentId): static
+    {
+        $this->stripePaymentIntentId = $stripePaymentIntentId;
+        return $this;
+    }
+
+    public function getPaidAt(): ?\DateTimeImmutable
+    {
+        return $this->paidAt;
+    }
+
+    public function setPaidAt(?\DateTimeImmutable $paidAt): static
+    {
+        $this->paidAt = $paidAt;
+        return $this;
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->paidAt !== null;
+    }
+
+    // --- Adresse de livraison (snapshot) ---
+
+    public function getShippingLabel(): ?string
+    {
+        return $this->shippingLabel;
+    }
+
+    public function setShippingLabel(?string $shippingLabel): static
+    {
+        $this->shippingLabel = $shippingLabel;
+        return $this;
+    }
+
+    public function getShippingLine1(): ?string
+    {
+        return $this->shippingLine1;
+    }
+
+    public function setShippingLine1(?string $shippingLine1): static
+    {
+        $this->shippingLine1 = $shippingLine1;
+        return $this;
+    }
+
+    public function getShippingLine2(): ?string
+    {
+        return $this->shippingLine2;
+    }
+
+    public function setShippingLine2(?string $shippingLine2): static
+    {
+        $this->shippingLine2 = $shippingLine2;
+        return $this;
+    }
+
+    public function getShippingPostalCode(): ?string
+    {
+        return $this->shippingPostalCode;
+    }
+
+    public function setShippingPostalCode(?string $shippingPostalCode): static
+    {
+        $this->shippingPostalCode = $shippingPostalCode;
+        return $this;
+    }
+
+    public function getShippingCity(): ?string
+    {
+        return $this->shippingCity;
+    }
+
+    public function setShippingCity(?string $shippingCity): static
+    {
+        $this->shippingCity = $shippingCity;
+        return $this;
+    }
+
+    public function getShippingCountry(): ?string
+    {
+        return $this->shippingCountry;
+    }
+
+    public function setShippingCountry(?string $shippingCountry): static
+    {
+        $this->shippingCountry = $shippingCountry;
+        return $this;
+    }
+
+    /**
+     * Copie les champs d'une Address dans le snapshot de la commande.
+     */
+    public function setShippingFromAddress(Address $address): static
+    {
+        $this->shippingLabel = $address->getLabel();
+        $this->shippingLine1 = $address->getLine1();
+        $this->shippingLine2 = $address->getLine2();
+        $this->shippingPostalCode = $address->getPostalCode();
+        $this->shippingCity = $address->getCity();
+        $this->shippingCountry = $address->getCountry();
         return $this;
     }
 }
