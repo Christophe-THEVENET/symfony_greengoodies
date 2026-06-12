@@ -25,8 +25,12 @@ class ApiExceptionListener
             $message = 'Ressource non trouvée';
         } elseif ($exception instanceof MethodNotAllowedHttpException) {
             $message = 'Méthode HTTP non autorisée';
-        } else {
+        } elseif ($exception instanceof HttpExceptionInterface) {
+            // Erreur HTTP volontaire (4xx) : le message est sûr à exposer
             $message = $exception->getMessage() ?: 'Une erreur est survenue';
+        } else {
+            // Erreur interne non maîtrisée (5xx) : pas de détail divulgué
+            $message = 'Une erreur interne est survenue';
         }
 
         $data = [

@@ -1,4 +1,6 @@
 # .symfony.local.yaml
+http:
+    port: 8088
 workers:
     # ...
     sass:

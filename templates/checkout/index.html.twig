@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} — {{ 'checkout.title'|trans }}{% endblock %}
+
+{% block javascripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<section class="checkout">
+    <h1 class="checkout__title">{{ 'checkout.title'|trans }}</h1>
+
+    <div class="checkout__grid">
+        {# ===== Colonne paiement ===== #}
+        <div class="checkout__main"
+             data-controller="stripe-payment"
+             data-stripe-payment-public-key-value="{{ stripePublicKey }}"
+             data-stripe-payment-intent-url-value="{{ path('api_checkout_intent') }}"
+             data-stripe-payment-return-url-value="{{ url('app_checkout_confirmation') }}"
+             data-stripe-payment-csrf-token-value="{{ csrf_token('checkout_intent') }}">
+
+            <div class="checkout__card">
+                <h3 class="checkout__card-title">{{ 'checkout.card_payment'|trans }}</h3>
+
+                <div class="checkout__test-hint">
+                    <strong>{{ 'checkout.test_mode'|trans }}</strong>
+                    {{ 'checkout.test_card'|trans }} <code>4242 4242 4242 4242</code>
+                </div>
+
+                <form class="checkout__form" data-action="submit->stripe-payment#submit">
+                    <div class="checkout__payment-element" data-stripe-payment-target="payment">
+                        {# Stripe Payment Element monté ici #}
+                    </div>
+
+                    <p class="checkout__error" data-stripe-payment-target="error" role="alert"></p>
+
+                    <button type="submit" class="btn btn--solid btn--block" data-stripe-payment-target="submit">
+                        {{ 'checkout.pay'|trans }} {{ summary.total|number_format(2, ',', ' ') }}€
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {# ===== Colonne récap ===== #}
+        <aside class="checkout__aside">
+            {# Adresse de livraison #}
+            <div class="checkout__card">
+                <h3 class="checkout__card-title">{{ 'checkout.shipping_to'|trans }}</h3>
+                <p class="checkout__address">
+                    {% if address.label %}<strong>{{ address.label }}</strong><br>{% endif %}
+                    {{ address.line1 }}{% if address.line2 %}<br>{{ address.line2 }}{% endif %}<br>
+                    {{ address.postalCode }} {{ address.city }}<br>
+                    {{ address.country }}
+                </p>
+                <a href="{{ path('app_account') }}" class="link-btn">{{ 'checkout.change_address'|trans }}</a>
+            </div>
+
+            {# Récap commande #}
+            <div class="checkout__card">
+                <h3 class="checkout__card-title">{{ 'cart.summary_title'|trans }}</h3>
+
+                {% for productId, item in items %}
+                    <div class="checkout__line">
+                        <span>{{ item.quantity }}× {{ item.product.name|trans }}</span>
+                        <span>{{ item.total_price|number_format(2, ',', ' ') }}€</span>
+                    </div>
+                {% endfor %}
+
+                <div class="checkout__row">
+                    <span>{{ 'cart.subtotal'|trans }}</span>
+                    <span>{{ summary.subtotal|number_format(2, ',', ' ') }}€</span>
+                </div>
+                <div class="checkout__row">
+                    <span>{{ 'cart.shipping'|trans }}</span>
+                    <span>{{ summary.shipping > 0 ? summary.shipping|number_format(2, ',', ' ') ~ '€' : 'cart.shipping_free'|trans }}</span>
+                </div>
+                <div class="checkout__row checkout__row--discount">
+                    <span>{{ 'cart.eco_discount'|trans }}</span>
+                    <span>−{{ summary.ecoDiscount|number_format(2, ',', ' ') }}€</span>
+                </div>
+                <div class="checkout__row checkout__row--total">
+                    <span>{{ 'cart.total'|trans }}</span>
+                    <span>{{ summary.total|number_format(2, ',', ' ') }}€</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+{% endblock %}

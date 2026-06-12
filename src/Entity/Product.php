@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
@@ -30,6 +31,11 @@ class Product
     )]
     #[Groups(['product:read'])]
     private ?string $name = null;
+
+    // Slug pour des URLs lisibles (/produit/savon-bio). Généré depuis le nom.
+    #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['product:read'])]
+    private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: 'La description courte ne peut pas être vide.')]
@@ -106,6 +112,20 @@ class Product
     public function setName(string $name): static
     {
         $this->name = $name;
+        // Garde le slug synchronisé avec le nom
+        $this->slug = (new AsciiSlugger())->slug($name)->lower()->toString();
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

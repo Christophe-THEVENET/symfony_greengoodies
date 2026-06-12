@@ -1,49 +1,156 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	{{ parent() }}
-	- Accueil
-{% endblock %}
-
+{% block title %}{{ parent() }} — Terre Vive{% endblock %}
 
 {% block body %}
-	{% include "./_partials/_hero.html.twig" %}
 
-            {# ****************** PRODUCTS LIST****************** #}
-	<section class="products">
-		<div class="products__header">
-			<h2 class="products__header-title f-title-page-section">Nos produits</h2>
-		</div>
-		<div class="products__list">
+{# ========== HERO ========== #}
+<section class="hero">
+    <div class="wrap hero__grid">
+        <div class="hero__copy">
+            <span class="eyebrow hero__eyebrow" data-reveal>{{ 'home.hero.eyebrow'|trans }}</span>
+            <h1 class="hero__title" data-reveal data-reveal-delay="60">
+                <span>{{ 'home.hero.title_1'|trans }}</span><br />
+                <span class="o">{{ 'home.hero.title_2'|trans }}</span><br />
+                <span class="u">{{ 'home.hero.title_3'|trans }}</span>
+            </h1>
+            <p class="hero__lead" data-reveal data-reveal-delay="140">{{ 'home.hero.lead'|trans }}</p>
+            <div class="hero__cta" data-reveal data-reveal-delay="220">
+                <a href="{{ path('app_home') }}#produits" data-scroll="produits" class="btn btn--solid">{{ 'home.hero.cta'|trans }}</a>
+                <div class="hero__rating"><b>★★★★★</b><span>{{ 'home.hero.rating'|trans }}</span></div>
+            </div>
+        </div>
+        <div class="hero__media" data-reveal="fade">
+            <div class="hero__blob"><img src="{{ asset('img/products/savon.png') }}" alt="Savon bio" data-parallax="0.06" /></div>
+            <div class="hero__chip hero__chip--tl"><span class="ic">%</span><span class="hero__chip-txt"><b>{{ 'home.hero.chip_waste'|trans }}</b><small>{{ 'home.hero.chip_waste_sub'|trans }}</small></span></div>
+            <div class="hero__chip hero__chip--br"><span class="ic">↻</span><span class="hero__chip-txt"><b>{{ 'home.hero.chip_refill'|trans }}</b><small>{{ 'home.hero.chip_refill_sub'|trans }}</small></span></div>
+        </div>
+    </div>
+</section>
+
+{# ========== TICKER ========== #}
+<div class="ticker" aria-hidden="true">
+    <div class="ticker__row">
+        {% set tickerItems = ['home.ticker.carbon', 'home.ticker.zero_waste', 'home.ticker.made_in_france', 'home.ticker.no_plastic', 'home.ticker.secure_payment'] %}
+        {% for i in 1..2 %}{% for key in tickerItems %}<span class="ticker__item">{{ key|trans }}</span>{% endfor %}{% endfor %}
+    </div>
+</div>
+
+{# ========== PRODUITS ========== #}
+<section class="products" id="produits">
+    <div class="wrap">
+        <div class="sec-head" data-reveal>
+            <div><span class="eyebrow">{{ 'home.products.eyebrow'|trans }}</span><h2>{{ 'home.products.title'|trans }}</h2></div>
+            <p>{{ 'home.products.intro'|trans }}</p>
+        </div>
+        <div class="grid">
             {% for product in products %}
-                {% include "./_partials/_card-product.html.twig" with {'product': product} %}
-            {% endfor %}
-		</div>
-	</section>
-
-            {# ****************** VALUES ****************** #}
-    <section class="values">
-			<article class="values__item">
-                <div class="values__item-content">
-                    <h3  class="values__item-title f-values-title">notre conviction</h3>
-                    <p class="values__item-text f-values-text ">Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique.</p>
-                </div>
-                 <div class="values__item-image">
-                    <img src="{{ asset('img/site/convictions.png') }}" alt="fleurs décoration">
-                </div>
-            </article>
-
-            <article class="values__item reverse">
-                <div class="values__item-content">
-                    <div class="values__item-content-reverse">
-                        <h3   class="values__item-title f-values-title">NOS VALEURS</h3>
-                        <p class="values__item-text f-values-text">Durabilité : Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité. Éthique : Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques. Écologie : Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.</p>
+                <article class="card" data-reveal data-reveal-delay="{{ (loop.index0 % 3) * 80 }}">
+                    <a class="card__media" href="{{ path('app_product_show', { slug: product.slug }) }}">
+                        {% if productTags[product.id] is defined %}
+                            <span class="card__pill">{{ productTags[product.id] }}</span>
+                        {% endif %}
+                        <button class="card__fav" aria-label="Favori" onclick="event.preventDefault()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#32241B" stroke-width="1.7"><path d="M12 21s-7.5-4.6-10-9.2C.4 8.5 1.7 5 5 5c2 0 3.2 1.2 4 2.3C9.8 6.2 11 5 13 5c3.3 0 4.6 3.5 3 6.8C16.5 16.4 12 21 12 21z"/></svg>
+                        </button>
+                        <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name|trans }}" loading="lazy" />
+                    </a>
+                    <div class="card__body">
+                        <a href="{{ path('app_product_show', { slug: product.slug }) }}"><h3 class="card__name">{{ product.name|trans }}</h3></a>
+                        <p class="card__desc">{{ product.shortDescription|trans }}</p>
+                        <div class="card__foot">
+                            <span class="card__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
+                            <button class="card__add" aria-label="Ajouter au panier" onclick="event.preventDefault()"
+                                    {{ stimulus_controller('cart', { url: path('api_cart_add', {productId: product.id}), productId: product.id }) }}
+                                    {{ stimulus_action('cart', 'addToCart', 'click') }}>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
+                        </div>
                     </div>
-                </div>
-                <div class="values__item-image">
-                    <img src="{{ asset('img/site/valeurs.png') }}" alt="fleurs décoration">
-                </div>
-            </article>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
-    </section>
+{# ========== HISTOIRE ========== #}
+<section class="story" id="histoire">
+    <div class="wrap story__grid">
+        <div class="story__media" data-reveal="fade">
+            <div class="story__media-frame"><img src="{{ asset('img/site/hero.png') }}" alt="Atelier GreenGoodies" data-parallax="0.05" /></div>
+            <div class="story__badge">{{ 'home.story.badge'|trans }}</div>
+        </div>
+        <div class="story__copy">
+            <span class="eyebrow" data-reveal>{{ 'home.story.eyebrow'|trans }}</span>
+            <h2 data-reveal data-reveal-delay="60">{{ 'home.story.title'|trans }}</h2>
+            <p data-reveal data-reveal-delay="120">{{ 'home.story.text'|trans }}</p>
+            <blockquote class="story__quote" data-reveal data-reveal-delay="160">{{ 'home.story.quote'|trans }}</blockquote>
+            <div class="story__sign" data-reveal data-reveal-delay="200"><div class="story__av">AC</div><div><b>Aurélie C.</b><br /><small>{{ 'home.story.founder'|trans }}</small></div></div>
+        </div>
+    </div>
+</section>
+
+{# ========== VALEURS ========== #}
+<section class="values" id="valeurs">
+    <div class="wrap">
+        <div class="values__list">
+            <article class="value" data-reveal style="--value-bg: url('{{ asset('img/site/register.png') }}')"><span class="value__num">01</span><h4>{{ 'home.values.durability_title'|trans }}</h4><p>{{ 'home.values.durability_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="100" style="--value-bg: url('{{ asset('img/site/convictions.png') }}')"><span class="value__num">02</span><h4>{{ 'home.values.ethics_title'|trans }}</h4><p>{{ 'home.values.ethics_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="200" style="--value-bg: url('{{ asset('img/site/valeurs.png') }}')"><span class="value__num">03</span><h4>{{ 'home.values.ecology_title'|trans }}</h4><p>{{ 'home.values.ecology_text'|trans }}</p></article>
+        </div>
+    </div>
+</section>
+
+{# ========== TÉMOIGNAGES CAROUSEL ========== #}
+<section class="testi">
+    <div class="wrap">
+        <div class="testi__head"><span class="eyebrow">{{ 'home.testi.eyebrow'|trans }}</span><h2>{{ 'home.testi.title'|trans }}</h2></div>
+        <div class="testi__carousel" data-controller="carousel" data-carousel-interval-value="4000">
+            <div class="testi__track" data-carousel-target="track">
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q1'|trans }}</p><figcaption class="quote__who"><span class="quote__av">CL</span><span><b>Camille L.</b><br /><small>Lyon</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q2'|trans }}</p><figcaption class="quote__who"><span class="quote__av">MT</span><span><b>Marc T.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q3'|trans }}</p><figcaption class="quote__who"><span class="quote__av">SB</span><span><b>Sofia B.</b><br /><small>Lyon</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q4'|trans }}</p><figcaption class="quote__who"><span class="quote__av">AD</span><span><b>Antoine D.</b><br /><small>Caluire</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★☆</div><p>{{ 'home.testi.q5'|trans }}</p><figcaption class="quote__who"><span class="quote__av">LB</span><span><b>Léa B.</b><br /><small>Bron</small></span></figcaption></figure>
+                </div>
+                <div class="testi__slide" data-carousel-target="slide">
+                    <figure class="quote"><div class="quote__stars">★★★★★</div><p>{{ 'home.testi.q6'|trans }}</p><figcaption class="quote__who"><span class="quote__av">PR</span><span><b>Paul R.</b><br /><small>Villeurbanne</small></span></figcaption></figure>
+                </div>
+            </div>
+            <div class="testi__nav">
+                <button class="testi__arrow" data-action="click->carousel#prev" aria-label="Précédent">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="testi__arrow" data-action="click->carousel#next" aria-label="Suivant">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+{# ========== NEWSLETTER ========== #}
+<section class="news" id="newsletter">
+    <div class="wrap">
+        <div class="news__inner" data-reveal="fade">
+            <span class="eyebrow">{{ 'home.news.eyebrow'|trans }}</span>
+            <h2>{{ 'home.news.title'|trans }}</h2>
+            <p>{{ 'home.news.text'|trans }}</p>
+            <form class="news__form" onsubmit="return false" data-controller="newsletter" data-newsletter-url-value="{{ path('app_newsletter_subscribe') }}">
+                <input type="email" placeholder="{{ 'home.news.placeholder'|trans }}" aria-label="Email" data-newsletter-target="input" />
+                <button type="submit" data-newsletter-target="button" data-action="click->newsletter#subscribe">{{ 'home.news.cta'|trans }}</button>
+            </form>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

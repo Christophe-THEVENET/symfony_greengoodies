@@ -1,74 +1,153 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>GreenGoodies — {% if activeTab|default('login') == 'register' %}{{ 'auth.submit_register'|trans }}{% else %}{{ 'auth.tab_login'|trans }}{% endif %}</title>
+    <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% block stylesheets %}{% endblock %}
+    {% block javascripts %}
+        {{ importmap('app') }}
+    {% endblock %}
+</head>
+<body class="page-auth">
 
-{% block title %}{{parent()}} - Connexion{% endblock %}
+<div {{ stimulus_controller('notification') }}></div>
 
-{% block body %}
+{% if app.session.get('toast') %}
+<script>sessionStorage.setItem('toast', '{{ app.session.get('toast')|e('js') }}');</script>
+{% do app.session.remove('toast') %}
+{% endif %}
 
-    <section class="login container container--height">
-        <div class="login__image">
-            <img src="{{ asset('./img/site/convictions.png') }}" alt="Déodorant naturel" />
+{% if app.session.get('error') %}
+<script>sessionStorage.setItem('error', '{{ app.session.get('error')|trans({}, 'security')|e('js') }}');</script>
+{% do app.session.remove('error') %}
+{% endif %}
+
+<div class="auth">
+    <div class="auth__brand">
+        <div class="auth__brand-logo"><a href="{{ path('app_home') }}" class="logo"><span class="logo__mark">G</span>GreenGoodies</a></div>
+        <div class="auth__brand-bg">
+            <img src="{{ asset('img/site/register.png') }}" alt="" />
         </div>
-        <div class="login__form">
-            <div class="login__form-wrapper">
+        <div class="auth__brand-halo"></div>
+        <div class="auth__brand-content">
+            <p class="auth__brand-pitch">{{ 'auth.brand_pitch'|trans }}</p>
+            <div class="auth__brand-features">
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>{{ 'auth.brand_feature_shipping'|trans }}</span>
+                </div>
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>{{ 'auth.brand_feature_products'|trans }}</span>
+                </div>
+                <div class="auth__brand-feature">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span>{{ 'auth.brand_feature_loyalty'|trans }}</span>
+                </div>
+            </div>
+            <p class="auth__brand-quote">{{ 'auth.brand_quote'|trans }}</p>
+        </div>
+    </div>
 
-                <h1 class="login__form-title f-title-page-section">Connexion</h1>               
+    {% set tab = activeTab|default('login') %}
+    <div class="auth__form" data-controller="auth"
+         data-auth-active-tab-value="{{ tab }}"
+         data-auth-login-url-value="{{ path('app_login') }}"
+         data-auth-register-url-value="{{ path('app_register') }}">
+        <div class="auth__form-inner">
+            <a href="{{ path('app_home') }}" class="auth__form-back">← {{ 'auth.back'|trans }}</a>
 
-                {% if app.user %}
-                    <div>Vous êtes connecté en tant que {{ app.user.userIdentifier }}, 
-                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+            <div class="auth__form-tabs">
+                <button class="{{ tab == 'login' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showLogin">{{ 'auth.tab_login'|trans }}</button>
+                <button class="{{ tab == 'register' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showRegister">{{ 'auth.tab_register'|trans }}</button>
+            </div>
+
+            {# ===== CONNEXION ===== #}
+            <div class="auth__panel" data-auth-target="loginPanel"{% if tab == 'register' %} hidden{% endif %}>
+                <form method="post" action="{{ path('app_login') }}" novalidate data-controller="login" data-login-form-type-value="login" data-action="submit->login#onSubmit">
+                    <div class="auth__field">
+                        <label for="login_email">{{ 'auth.email'|trans }}</label>
+                        <input type="email" id="login_email" name="_username" value="{{ last_username }}" placeholder="{{ 'auth.ph_email'|trans }}" required autocomplete="email"
+                               data-login-target="email" data-action="input->login#checkForm" />
                     </div>
-                {% endif %}
+                    <div class="auth__field">
+                        <label for="login_password">{{ 'auth.password'|trans }}</label>
+                        <input type="password" id="login_password" name="_password" placeholder="••••••••" required autocomplete="current-password"
+                               data-login-target="password" data-action="input->login#checkForm" />
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
 
-                {% if not app.user %}
-                    <form method="post" 
-                        data-controller="login"
-                        data-login-form-type-value="login"
-                        data-action="submit->login#onSubmit">
+                    <div class="auth__options">
+                        <label>
+                            <input type="checkbox" name="_remember_me" checked />
+                            {{ 'auth.remember'|trans }}
+                        </label>
+                        <a href="#">{{ 'auth.forgot'|trans }}</a>
+                    </div>
 
-                        <div class="login__form-item">
-                            <label class="f-text" for="username">Email</label>
-                            <input type="email" 
-                                value="{{ last_username }}" 
-                                name="_username" 
-                                id="username" 
-                                class="form-control" 
-                                autocomplete="email" 
-                                required 
-                                autofocus
-                                data-login-target="email"
-                                data-action="input->login#checkForm">
-                        </div>
-                                
-                        <div class="login__form-item">
-                            <label class="f-text" for="password">Mot de passe</label>
-                            <input type="password" 
-                                name="_password" 
-                                id="password" 
-                                class="form-control" 
-                                autocomplete="current-password" 
-                                required
-                                data-login-target="password"
-                                data-action="input->login#checkForm">
-                        </div>
+                    <button type="submit" class="auth__submit" data-login-target="submitButton">{{ 'auth.submit_login'|trans }}</button>
+                </form>
+            </div>
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            {# ===== INSCRIPTION ===== #}
+            <div class="auth__panel" data-auth-target="registerPanel"{% if tab != 'register' %} hidden{% endif %}>
+                {{ form_start(registrationForm, { attr: { novalidate: 'novalidate', 'data-controller': 'login', 'data-login-form-type-value': 'register', 'data-action': 'submit->login#onSubmit' } }) }}
 
-                        <div class="login__form-checkbox">
-                            <input type="checkbox" name="_remember_me" id="_remember_me">
-                            <label class="f-text" for="_remember_me">Se souvenir de moi</label>
-                        </div>
+                <div class="auth__field">
+                    <label for="registration_form_firstname">{{ 'form.firstname'|trans }}</label>
+                    {{ form_widget(registrationForm.firstname, { attr: { placeholder: 'auth.ph_firstname'|trans, 'data-login-target': 'firstname', 'data-action': 'input->login#checkForm' } }) }}
+                    {{ form_errors(registrationForm.firstname) }}
+                </div>
 
-                        <button class="btn btn-secondary" 
-                            type="submit"
-                            data-login-target="submitButton"
-                            disabled>
-                            <span class="link">Connexion</span>
-                        </button>
-                        
-                    </form>
-                    <div class="login__link"><a class="login__link-a f-text" href="{{ path('app_register') }}">Pas encore de compte ? S'inscrire</a></div>
-                {% endif %}
+                <div class="auth__field">
+                    <label for="registration_form_lastname">{{ 'form.lastname'|trans }}</label>
+                    {{ form_widget(registrationForm.lastname, { attr: { placeholder: 'auth.ph_lastname'|trans, 'data-login-target': 'lastname', 'data-action': 'input->login#checkForm' } }) }}
+                    {{ form_errors(registrationForm.lastname) }}
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_email">{{ 'form.email'|trans }}</label>
+                    {{ form_widget(registrationForm.email, { attr: { placeholder: 'auth.ph_email'|trans, 'data-login-target': 'email', 'data-action': 'input->login#checkForm' } }) }}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_plainPassword_first">{{ 'form.password'|trans }}</label>
+                    {{ form_widget(registrationForm.plainPassword.first, { attr: { placeholder: 'auth.ph_password_min'|trans, 'data-login-target': 'password', 'data-action': 'input->login#checkForm' } }) }}
+                    <div class="password-requirements" data-login-target="passwordRequirements">
+                        <small>{{ 'auth.pwd_req_title'|trans }}</small>
+                        <ul>
+                            <li data-requirement="length"><span class="requirement-icon">✗</span> {{ 'auth.pwd_req_length'|trans }}</li>
+                            <li data-requirement="uppercase"><span class="requirement-icon">✗</span> {{ 'auth.pwd_req_upper'|trans }}</li>
+                            <li data-requirement="lowercase"><span class="requirement-icon">✗</span> {{ 'auth.pwd_req_lower'|trans }}</li>
+                            <li data-requirement="number"><span class="requirement-icon">✗</span> {{ 'auth.pwd_req_number'|trans }}</li>
+                            <li data-requirement="special"><span class="requirement-icon">✗</span> {{ 'auth.pwd_req_special'|trans }}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="auth__field">
+                    <label for="registration_form_plainPassword_second">{{ 'form.password_confirm'|trans }}</label>
+                    {{ form_widget(registrationForm.plainPassword.second, { attr: { placeholder: 'auth.ph_password_confirm'|trans, 'data-login-target': 'passwordConfirm', 'data-action': 'input->login#checkForm' } }) }}
+                </div>
+                {{ form_errors(registrationForm.plainPassword) }}
+
+                <div class="auth__options">
+                    <label>
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                        {{ 'auth.terms_pre'|trans }} <a href="#">{{ 'auth.terms_cgv'|trans }}</a> {{ 'auth.terms_and'|trans }} <a href="#">{{ 'auth.terms_privacy'|trans }}</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth__submit" data-login-target="submitButton">{{ 'auth.submit_register'|trans }}</button>
+
+                {{ form_end(registrationForm) }}
             </div>
         </div>
-    </section>
-{% endblock %}
+    </div>
+</div>
+
+</body>
+</html>

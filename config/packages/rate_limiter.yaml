@@ -1,0 +1,31 @@
+framework:
+    rate_limiter:
+        # Login formulaire (session-based)
+        login:
+            policy: fixed_window
+            limit: 5
+            interval: 1 minute
+
+        # Login API JWT (stateless)
+        api_login:
+            policy: fixed_window
+            limit: 5
+            interval: 1 minute
+
+        # Inscription (anti-spam)
+        register:
+            policy: fixed_window
+            limit: 3
+            interval: 1 hour
+
+        # Inscription newsletter (anti-spam)
+        newsletter:
+            policy: fixed_window
+            limit: 5
+            interval: 1 hour
+
+        # Formulaire de contact (anti-spam)
+        contact:
+            policy: fixed_window
+            limit: 5
+            interval: 1 hour

@@ -1,88 +1,74 @@
-<!-- filepath: e:\wamp\www\symfony\openclassrooms\greengoodies\templates\components\_header.html.twig -->
-<header class="header"
-        data-controller="header"
-        data-header-active-class="active">
-        <div class="container">
-            <a href="{{ path('app_home') }}" class="header__logo">
-            <img src="{{ asset('./img/logo.svg') }}" alt="Logo" class="header__logo-icon"/>
-            </a>
-            
-            <!-- Navigation desktop -->
-            <nav class="header__nav">
-                <a href="{{ path('app_home') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
-                data-action="click->header#closeOnLink">Produits</a>
-                <a href="{{ path('app_cart') }}" class="header__nav-link header__cart-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}">
-                    Panier
-                    {% if cart_count() > 0 %}
-                        <span class="header__cart-badge" data-cart-badge>{{ cart_count() }}</span>
-                    {% else %}
-                        <span class="header__cart-badge header__cart-badge--hidden" data-cart-badge></span>
-                    {% endif %}
-                </a>
-                {% if not app.user %}
-                    <a href="{{ path('app_login') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}">Se connecter</a>
-                    <a href="{{ path('app_register') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}">S'inscrire</a>
-                {% endif %}
-                {% if app.user %}
-                <a href="{{ path('app_account') }}" class="header__nav-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}">Mon compte</a>
-                {% endif %}
+<header class="header" data-controller="header" data-header-active-class="is-open">
+    <div class="wrap header__bar">
+        <a href="{{ path('app_home') }}" class="logo">
+            <span class="logo__mark">G</span>GreenGoodies
+        </a>
 
-                {% if app.user %}
-                    <a
-                        href="{{ path('app_logout') }}" 
-                        class="header__avatar"
-                        data-tooltip="Se déconnecter"
-                        aria-label="Se déconnecter">
-                            {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
-                    </a>
-                {% endif %}
-            </nav>
-            
-            <!-- Button burger -->
-            <button class="header__burger" 
-                    data-header-target="burger"
-                    data-action="click->header#toggle"
-                    aria-label="Menu"
-                    aria-expanded="false">
-                <span class="header__burger-line"></span>
-                <span class="header__burger-line"></span>
-                <span class="header__burger-line"></span>
-            </button>
-            
-            <!-- Navigation mobile -->
-            <nav class="header__mobilemenu" data-header-target="mobileMenu">
-                {% if app.user %}
-                    <a href="{{ path('app_logout') }}" class="header__avatar"  aria-label="Se déconnecter"> {{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}
-                    </a>
-                {% endif %}
-                <a href="{{ path('app_home') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_home' %}active{% endif %}" 
-                data-action="click->header#closeOnLink">Produits</a>
-                <a href="{{ path('app_cart') }}" class="header__mobilemenu-link header__cart-link f-hfp {% if app.request.get('_route') starts with 'app_cart' %}active{% endif %}"
-                data-action="click->header#closeOnLink">
-                    Panier
-                    {% if cart_count() > 0 %}
-                        <span class="header__cart-badge" data-cart-badge>{{ cart_count() }}</span>
-                    {% else %}
-                        <span class="header__cart-badge header__cart-badge--hidden" data-cart-badge></span>
-                    {% endif %}
-                </a>
-                {% if not app.user %}
-                    <a href="{{ path('app_login') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_login' %}active{% endif %}"
-                    data-action="click->header#closeOnLink">Se connecter</a>
-                    <a href="{{ path('app_register') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_register' %}active{% endif %}"
-                    data-action="click->header#closeOnLink">S'inscrire</a>
-                {% endif %}
-                {% if app.user %}
-                <a href="{{ path('app_account') }}" class="header__mobilemenu-link f-hfp {% if app.request.get('_route') starts with 'app_account' %}active{% endif %}"
-                data-action="click->header#closeOnLink">Mon compte</a>
-                {% endif %}
+        <nav class="nav" data-nav>
+            <a href="{{ path('app_home') }}#produits" data-scroll="produits">{{ 'nav.products'|trans }}</a>
+            <a href="{{ path('app_home') }}#histoire" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
+            <a href="{{ path('app_home') }}#valeurs" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
+            <a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a>
+        </nav>
 
-            </nav>
-            
-            <!-- Overlay -->
-            <div class="header__overlay" 
-                data-header-target="overlay"
-                data-action="click->header#closeOnOverlay">
+        <div class="header__right">
+            {# 1. Connexion / Compte #}
+            {% if app.user %}
+                <div class="account-menu">
+                    <button type="button" class="account-menu__trigger" aria-haspopup="true">
+                        {{ app.user.firstname }}
+                        <svg class="account-menu__chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                    <div class="account-menu__dropdown" role="menu">
+                        <a href="{{ path('app_account') }}" role="menuitem">{{ 'nav.account'|trans }}</a>
+                        <a href="{{ path('app_logout') }}" role="menuitem">{{ 'nav.logout'|trans }}</a>
+                    </div>
                 </div>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="icon-btn" aria-label="{{ 'nav.login'|trans }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+                </a>
+            {% endif %}
+
+            {# 2. Panier (icône) #}
+            <a href="{{ path('app_cart') }}" class="cart-btn" aria-label="{{ 'nav.cart'|trans }}">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                {% if cart_count() > 0 %}
+                    <span class="badge" data-cart-badge>{{ cart_count() }}</span>
+                {% else %}
+                    <span class="badge" data-cart-badge style="display:none;"></span>
+                {% endif %}
+            </a>
+
+            {# 3. Langue (actif discret) #}
+            <div class="lang">
+                <a href="{{ path('app_locale', {_locale: 'fr'}) }}" class="{{ app.request.locale == 'fr' ? 'is-active' }}" hreflang="fr">FR</a>
+                <span>/</span>
+                <a href="{{ path('app_locale', {_locale: 'en'}) }}" class="{{ app.request.locale == 'en' ? 'is-active' }}" hreflang="en">EN</a>
+            </div>
+
+            <button class="burger" data-header-target="burger" data-action="click->header#toggle" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
         </div>
+    </div>
+
+    {# Menu mobile #}
+    <nav class="nav nav--mobile" data-header-target="mobileMenu" data-nav>
+        {% if app.user %}
+            <div class="nav--mobile__account">
+                <span class="nav--mobile__user">{{ app.user.firstname }}</span>
+                <a href="{{ path('app_account') }}" class="nav--mobile__sublink" data-action="click->header#closeOnLink">{{ 'nav.account'|trans }}</a>
+                <a href="{{ path('app_logout') }}" class="nav--mobile__sublink">{{ 'nav.logout'|trans }}</a>
+            </div>
+        {% endif %}
+        <div class="nav--mobile__links">
+            <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
+            <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
+            <a href="{{ path('app_home') }}#valeurs" data-action="click->header#closeOnLink">{{ 'nav.values'|trans }}</a>
+            <a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a>
+        </div>
+    </nav>
+
+    <div class="header__overlay" data-header-target="overlay" data-action="click->header#closeOnOverlay"></div>
 </header>

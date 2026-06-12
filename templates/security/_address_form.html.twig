@@ -1,0 +1,18 @@
+<h4 class="account-section__title">{{ editingAddress ? 'address.edit_title'|trans : 'address.add_title'|trans }}</h4>
+{{ form_start(addressForm, { attr: { class: 'address-form', novalidate: 'novalidate' }, action: editingAddress ? path('app_address_edit', {id: editingAddress.id}) : path('app_account') }) }}
+    <div class="address-form__row">
+        <div class="field">{{ form_label(addressForm.label) }}{{ form_widget(addressForm.label) }}{{ form_errors(addressForm.label) }}</div>
+    </div>
+    <div class="field">{{ form_label(addressForm.line1) }}{{ form_widget(addressForm.line1) }}{{ form_errors(addressForm.line1) }}</div>
+    <div class="field">{{ form_label(addressForm.line2) }}{{ form_widget(addressForm.line2) }}{{ form_errors(addressForm.line2) }}</div>
+    <div class="address-form__row">
+        <div class="field">{{ form_label(addressForm.postalCode) }}{{ form_widget(addressForm.postalCode) }}{{ form_errors(addressForm.postalCode) }}</div>
+        <div class="field">{{ form_label(addressForm.city) }}{{ form_widget(addressForm.city) }}{{ form_errors(addressForm.city) }}</div>
+    </div>
+    <div class="field">{{ form_label(addressForm.country) }}{{ form_widget(addressForm.country) }}{{ form_errors(addressForm.country) }}</div>
+    <div class="field field--check">{{ form_widget(addressForm.isDefault) }}{{ form_label(addressForm.isDefault) }}</div>
+    <div class="address-form__actions">
+        <button type="submit" class="btn btn--solid">{{ editingAddress ? 'address.save'|trans : 'address.add'|trans }}</button>
+        {% if editingAddress %}<a href="{{ path('app_account', {tab: 'adresses'}) }}" class="link-btn">{{ 'address.cancel'|trans }}</a>{% endif %}
+    </div>
+{{ form_end(addressForm) }}

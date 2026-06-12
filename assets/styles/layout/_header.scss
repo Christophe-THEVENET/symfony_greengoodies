@@ -1,236 +1,344 @@
 @use "../abstracts/_all" as *;
 
+// ============================================================
+// HEADER — Fidèle à accueil.html
+// ============================================================
 .header {
-    
-    background-color: $beige-light;
-    border-bottom: 1px solid $border-color-hf;
-    height: 80px;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 80; // au-dessus du menu mobile (70) : le header reste visible/cliquable
+    padding: 20px 0;
+    transition: .4s;
 
-    .container {
+    // Fond flouté au scroll porté par un pseudo-élément : on NE met PAS
+    // backdrop-filter sur .header lui-même, sinon il devient le bloc contenant
+    // de son enfant .nav--mobile (position:fixed) et casse le menu plein écran.
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(228, 217, 208, .92);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 24px rgba(58, 45, 41, 0.15);
+        opacity: 0;
+        transition: opacity .4s;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    &.is-scrolled {
+        padding: 11px 0;
+
+        &::before { opacity: 1; }
+    }
+
+    &__bar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 100%;
-        padding: 0 $container-padding;
-    }
-
-    &__logo-icon {
-        height: 24px;
-        width: auto;
-
-        &:hover {
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-        }
-    }
-
-    // Lien panier avec badge
-    &__cart-link {
+        gap: 24px;
         position: relative;
+        z-index: 90; // au-dessus du menu mobile (70) : logo + burger restent visibles/cliquables
     }
 
-    &__cart-badge {
-        position: absolute;
-        top: -8px;
-        right: -12px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 16px;
-        height: 16px;
-        padding: 0 4px;
-        background-color: $gray-33;
-        color: $white;
-        font-size: $fs-10px;
-        font-weight: $fw-600;
-        border-radius: 50%;
-        line-height: 1;
-
-        &--hidden {
-            display: none;
-        }
-    }
-
-    // Navigation desktop
-    &__nav {
+    &__right {
         display: flex;
         align-items: center;
-        gap: 2rem;
-
-        // responsive ------------------------------------
-        @media screen and (max-width: $breakpoint-mobile) {
-            display: none;
-        }
-
-        &-link {
-            transition: color 0.3s ease;
-
-            &:hover {
-                color: $black;
-            }
-
-            &.active {
-                color: $gray-66;
-            }
-        }
+        gap: 16px;
     }
 
-    // Bouton burger
-    &__burger {
-        display: none;
-        background: none;
-        border: none;
-        gap: 4px;
-        cursor: pointer;
-        padding: 8px;
-        z-index: 1001;
-
-        &.active {
-            .header__burger-line {
-                &:nth-child(1) {
-                    transform: rotate(45deg) translate(0, 6px);
-                }
-
-                &:nth-child(2) {
-                    opacity: 0;
-                }
-
-                &:nth-child(3) {
-                    transform: rotate(-45deg) translate(0, -6px);
-                }
-            }
-        }
-
-        // responsive ------------------------------------
-        @media screen and (max-width: $breakpoint-mobile) {
-            display: flex;
-            @include centerElement(column);
-        }
-
-        &-line {
-            width: 24px;
-            height: 2px;
-            background-color: $gray-33;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-            z-index: 999;
-        }
-    }
-
-    // Navigation mobile
-    &__mobilemenu {
-        display: none;
-        position: fixed;
-        top: 80px;
-        right: 0;
-        width: 280px;
-        height: calc(100vh - 80px);
-        background-color: $beige-light;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
-        padding: 2rem;
-        flex-direction: column;
-        gap: 1.5rem;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        z-index: 999;
-
-        &.active {
-            transform: translateX(0);
-        }
-
-        @media screen and (max-width: $breakpoint-mobile) {
-            display: flex;
-        }
-
-        &-link {
-            padding: 1rem 0;
-            border-bottom: 1px solid $border-color;
-            transition: color 0.3s ease;
-
-            &:last-child {
-                border-bottom: none;
-            }
-
-            &.active {
-                color: $gray-66;
-            }
-        }
-    }
-
-    // Overlay
     &__overlay {
         display: none;
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 998;
+        inset: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 59;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity .3s;
 
-        &.active {
+        &.is-open {
             display: block;
             opacity: 1;
         }
     }
+}
 
-        // User connected
-    &__avatar {
+// Logo texte
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-family: $fontDisplay;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -.02em;
+
+    &__mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        background: $olive;
+        color: $paper;
+        display: grid;
+        place-items: center;
+        font-family: $fontDisplay;
+        font-size: 19px;
+        font-weight: 700;
+    }
+}
+
+// Navigation
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+
+    a {
+        font-size: 14px;
+        font-weight: 600;
         position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: darken($beige-dark, 10%);
-        color: $white;
-        font-weight: 500;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        font-size: 0.875rem;
 
-       
-
-        &:hover {
-            background-color: darken($beige-dark, 20%);
-            transform: scale(1.05);
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 100%;
+            bottom: -4px;
+            height: 2px;
+            background: $terra;
+            transition: right .4s;
         }
 
-        // Tooltip avec délai
-        &[data-tooltip] {
-            &::before {
-                content: attr(data-tooltip);
-                position: absolute;
-                top: 40px;
-                right: -10px;
-                background-color: $gray-33;
-                color: $white;
-                padding: 4px 8px;
-                border-radius: 6px;
-                font-size: $fs-10px;
-                font-weight: $fw-500;
-                white-space: nowrap;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                transition-delay: 0.8s;
-                z-index: 9999;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            }
+        &:hover::after { right: 0; }
+    }
+}
 
-            &:hover::before {
-                opacity: 1;
-                visibility: visible;
-            }
+// Langue
+.lang {
+    display: flex;
+    gap: 2px;
+    font-size: 12px;
+    font-weight: 700;
 
-            // Quand on arrête de survoler, on retire immédiatement
-            &:not(:hover)::before {
-                transition-delay: 0s;
-            }
+    button, a {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: $ink-soft;
+        font: inherit;
+        text-decoration: none;
+        padding: 4px 6px;
+        border-radius: 6px;
+        opacity: .45;
+        transition: opacity .2s, color .2s;
+
+        // La langue active reste discrète : juste un peu plus marquée
+        &.is-active {
+            opacity: 1;
+            color: $ink;
+        }
+
+        &:hover { opacity: 1; }
+    }
+
+    span { color: $line; opacity: .5; }
+}
+
+// Icône compte (utilisateur non connecté)
+.icon-btn {
+    display: inline-flex;
+    align-items: center;
+    color: $ink;
+    transition: color .2s;
+
+    &:hover { color: $terra; }
+}
+
+// Panier (icône + pastille de comptage)
+.cart-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    color: $ink;
+    transition: color .2s;
+
+    &:hover { color: $terra; }
+
+    .badge {
+        position: absolute;
+        top: -7px;
+        right: -9px;
+        display: grid;
+        place-items: center;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        border-radius: 20px;
+        background: $terra;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+    }
+}
+
+// Menu compte (prénom + déroulant au survol)
+.account-menu {
+    position: relative;
+
+    &__trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 600;
+        font-size: 14px;
+        color: $ink;
+        padding: 6px 4px;
+        transition: color .2s;
+    }
+
+    &__chevron { transition: transform .25s; }
+
+    &__dropdown {
+        position: absolute;
+        top: 100%;           // collé au déclencheur : pas de "trou" qui ferme le survol
+        right: 0;
+        min-width: 190px;
+        background: $paper;
+        border-radius: 14px;
+        box-shadow: 0 22px 44px -22px rgba(50, 36, 27, .55);
+        border: 1px solid $line;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity .2s, transform .2s, visibility .2s;
+        z-index: 70;
+
+        a {
+            padding: 10px 12px;
+            border-radius: 9px;
+            font-size: 14px;
+            color: $ink;
+            text-decoration: none;
+            transition: background .2s, color .2s;
+
+            &:hover { background: $cream; color: $terra; }
         }
     }
 
+    &:hover &__trigger { color: $terra; }
+    &:hover &__chevron { transform: rotate(180deg); }
+
+    &:hover &__dropdown,
+    &:focus-within &__dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+}
+
+// Burger
+.burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+
+    span {
+        width: 24px;
+        height: 2px;
+        background: $ink;
+        border-radius: 2px;
+        transition: transform .3s $ease-out, opacity .2s;
+    }
+
+    // À l'ouverture : les trois barres forment une croix (bouton fermer)
+    &.is-open {
+        span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        span:nth-child(2) { opacity: 0; }
+        span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    }
+}
+
+// Menu mobile plein écran. Toujours présent dans le DOM mais invisible et
+// non interactif tant qu'il n'est pas ouvert : permet d'animer l'apparition
+// (opacity/visibility/transform — display ne peut pas être animé).
+.nav--mobile {
+    position: fixed;
+    inset: 0;
+    z-index: 70; // sous le header (80) pour le garder visible
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px; // grande séparation entre le bloc compte et le bloc liens
+    padding: 24px;
+    font-size: 28px;
+    font-family: $fontDisplay;
+    background: $cream;
+
+    // État fermé
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity .3s $ease-out, transform .35s $ease-out, visibility .3s;
+}
+
+.nav--mobile.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+// Bloc compte en tête du menu : prénom puis ses liens (Mon compte / Déconnexion)
+// légèrement décalés en dessous pour montrer qu'ils lui appartiennent.
+.nav--mobile__account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+// Bloc des liens de navigation
+.nav--mobile__links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+}
+
+// Prénom — pastille couleur accent, non cliquable
+.nav--mobile__user {
+    font-family: $fontBody;
+    font-size: 15px;
+    font-weight: 700;
+    color: $terra;
+    background: rgba($terra, 0.1);
+    padding: 8px 20px;
+    border-radius: $radius-full;
+    margin-bottom: 4px;
+}
+
+// Liens du compte, plus petits et indentés sous le prénom
+.nav--mobile__sublink {
+    font-family: $fontBody;
+    font-size: 18px;
+    color: $ink-soft;
+}
+
+// Responsive
+@media (max-width: $breakpoint-tablette) {
+    .nav:not(.nav--mobile) { display: none; } // masque la nav desktop, pas le menu mobile
+    .lang, .account-menu { display: none; }   // le compte passe dans le menu burger
+    .burger { display: flex; }
 }

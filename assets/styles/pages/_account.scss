@@ -1,174 +1,479 @@
-// assets/styles/pages/_account.scss
 @use "../abstracts/_all" as *;
 
-.account {
+// ============================================================
+// MON COMPTE
+// ============================================================
+.account-page {
+    @include container;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 3rem;
+    align-items: start;
+    padding-block: 130px 5rem;
 
-    // userinfo item
-    .account__item {
-        margin: 0;
-        height: 4rem;
-        padding: 0;
+    @media screen and (max-width: $breakpoint-tablette) {
+        grid-template-columns: 1fr;
+    }
+}
 
-        .account__item__wrapper {
-            display: flex;
-            margin: 0;
-            height: 100%;
-            width: 100%;
+// --- HEADER COMPTE ---
+.account-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 
-        }
-
-        .account__item__image {
-            flex: 1;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                padding: 0;
-            }
-        }
-
-        .account__item__info {
-            flex: 2;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-
-            &-name {
-                font-size: 1.2rem;
-                font-weight: 600;
-                color: rgb(151, 60, 3);
-                margin-right: 2rem;
-                margin-left: 1rem;
-            }
-
-            &-details {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                margin-left: auto;
-                padding-right: 1rem;
-            }
-
-            &-email {
-                font-size: 0.7rem;
-                color: $black;
-            }
-
-            &-date {
-                font-size: 0.6rem;
-                margin-left: auto;
-                /*  color: $text-light; */
-                font-style: italic
-            }
-        }
-
+    &__avatar {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: $ink;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-700;
+        color: $paper;
+        flex-shrink: 0;
     }
 
-    // orders item
-    .orders {
-        // Le bloc principal des commandes
-        @include centerElement(column);
+    &__greeting {
+        font-family: $fontDisplay;
+        font-size: $fs-h2;
+        font-weight: $fw-600;
+        color: $ink;
+    }
+
+    &__since {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        margin-top: 0.25rem;
+    }
+}
+
+// --- SIDEBAR ---
+.account-sidebar {
+    position: sticky;
+    top: 120px;
+
+    @media screen and (max-width: $breakpoint-tablette) {
+        position: static;
+        margin-bottom: 1.5rem;
+    }
+
+    &__link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
         width: 100%;
-        padding: 4rem;
+        padding: 0.75rem 1rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        text-align: left;
+        border-radius: $radius-md;
+        font-family: inherit;
+        font-size: $fs-body-sm;
+        font-weight: $fw-500;
+        color: $ink-soft;
+        transition: all 0.2s;
 
-
-        &__title {
-            margin-bottom: 1.5rem !important;
-            align-self: flex-start;
-            display: block;
+        &:hover {
+            background: rgba($ink, 0.04);
+            color: $ink;
         }
 
-        &__table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 0.5rem; // ✅ Réduit l'espacement
-
-
-
-            &-head {
-
-
-                &:nth-child(1) {
-                    text-align: left;
-                    width: 45%;
-
-                }
-
-                &:nth-child(2) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-                &:nth-child(3) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-
-
-            }
-
-
-
-            // ✅ &-cell au même niveau que &-row
-            &-cell {
-                vertical-align: middle;
-                text-align: left;
-                font-size: 14px;
-
-
-                &:nth-child(1) {
-                    text-align: left;
-                    width: 45%;
-                }
-
-                &:nth-child(2) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-                &:nth-child(3) {
-                    text-align: left;
-                    width: 100%;
-                }
-
-
-
-                /*   &--header {
-                    font-weight: 600;
-                    color: #6c757d;
-                    font-size: 0.875rem;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                    background-color: #f8f9fa;
-                }
-
-                &--number {
-                    font-weight: 600;
-                    color: $green;
-                    font-size: 1rem;
-                }
-
-                &--date {
-                    color: #6c757d;
-                    font-size: 0.9375rem;
-                }
-
-                &--price {
-                    font-weight: 600;
-                    font-size: 1rem;
-                    color: #212529;
-                }
-
-                &--empty {
-                    text-align: center;
-                    color: #6c757d;
-                    font-style: italic;
-                } */
-            }
+        &.is-active {
+            background: rgba($terra, 0.08);
+            color: $terra;
+            font-weight: $fw-600;
         }
 
+        svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+    }
+
+    &__logout {
+        margin-top: 1.5rem;
+    }
+}
+
+// --- STATS ---
+.account-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.stat-card {
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 1.5rem;
+    box-shadow: $shadow-card;
+
+    &__icon {
+        width: 48px;
+        height: 48px;
+        border-radius: $radius-md;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+
+        &--terra {
+            background: rgba($terra, 0.12);
+            color: $terra;
+        }
+
+        &--olive {
+            background: rgba($olive, 0.12);
+            color: $olive;
+        }
+
+        &--clay {
+            background: rgba($clay, 0.12);
+            color: $clay;
+        }
+    }
+
+    &__value {
+        font-family: $fontDisplay;
+        font-size: $fs-h2;
+        font-weight: $fw-700;
+        color: $ink;
+        line-height: 1;
+    }
+
+    &__label {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        margin-top: 0.25rem;
+    }
+}
+
+// --- COMMANDES ---
+.orders-section {
+    margin-bottom: 2.5rem;
+
+    &__title {
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 1rem;
+    }
+}
+
+.order-row {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: $paper;
+    border-radius: $radius-lg;
+    margin-bottom: 0.75rem;
+    box-shadow: $shadow-card;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: $shadow-card-hover;
+    }
+
+    @media screen and (max-width: $breakpoint-mobile) {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    &__images {
+        display: flex;
+        flex-shrink: 0;
+
+        img {
+            width: 48px;
+            height: 48px;
+            border-radius: $radius-sm;
+            object-fit: cover;
+            border: 2px solid $paper;
+
+            + img {
+                margin-left: -16px;
+            }
+        }
+    }
+
+    &__id {
+        font-family: $fontDisplay;
+        font-size: $fs-body-sm;
+        font-weight: $fw-600;
+        color: $ink;
+        min-width: 100px;
+    }
+
+    &__status {
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        padding: 0.25rem 0.75rem;
+        border-radius: $radius-full;
+        white-space: nowrap;
+
+        &--done {
+            background: rgba($ok, 0.1);
+            color: $ok;
+        }
+
+        &--transit {
+            background: rgba($terra, 0.1);
+            color: $terra;
+        }
+    }
+
+    &__total {
+        margin-left: auto;
+        font-family: $fontDisplay;
+        font-size: $fs-body;
+        font-weight: $fw-600;
+        color: $ink;
+        white-space: nowrap;
+    }
+
+    &__action {
+        @include btn-ghost;
+        @include btn-sm;
+        white-space: nowrap;
+    }
+
+    &__invoice {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        color: $terra;
+        white-space: nowrap;
+        padding: 0.4rem 0.7rem;
+        border: 1px solid $line;
+        border-radius: $radius-full;
+        transition: background 0.2s, color 0.2s;
+
+        &:hover { background: rgba($terra, 0.08); color: $terra-deep; }
+
+        svg { flex-shrink: 0; }
+    }
+}
+
+// --- PANNEAUX (onglets) ---
+.account-panel[hidden] { display: none; }
+
+.order-row__date {
+    font-size: $fs-caption;
+    color: $ink-soft;
+    white-space: nowrap;
+}
+
+.account-empty {
+    color: $ink-soft;
+    font-size: $fs-body-sm;
+    padding: 1rem 0;
+}
+
+// --- CARNET D'ADRESSES ---
+.address-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.address-card {
+    position: relative;
+    background: $paper;
+    border-radius: $radius-lg;
+    padding: 1.25rem 1.5rem;
+    // Ombre plus marquée : la carte se détache du fond crème (sans bordure)
+    box-shadow: 0 8px 28px rgba(58, 45, 41, 0.12);
+
+    &--default {
+        background: rgba($terra, 0.03);
+    }
+
+    &__badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: $fs-caption;
+        font-weight: $fw-600;
+        color: $paper;
+        background: $terra;
+        padding: 0.15rem 0.6rem;
+        border-radius: $radius-full;
+    }
+
+    &__label {
+        font-family: $fontDisplay;
+        font-size: $fs-body;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 0.5rem;
+    }
+
+    &__body {
+        font-size: $fs-body-sm;
+        color: $ink-soft;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+
+        form { display: inline; }
+    }
+}
+
+// Boutons d'action discrets (liens)
+.link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    font-size: $fs-body-sm;
+    color: $ink-soft;
+    text-decoration: underline;
+    transition: color 0.2s;
+
+    &:hover { color: $terra; }
+    &--danger:hover { color: #e74c3c; }
+}
+
+// --- SECTIONS COMPTE (profil, sécurité) ---
+.account-section {
+    background: $paper;
+    border-radius: $radius-xl;
+    padding: 1.5rem 2rem;
+    box-shadow: $shadow-card;
+    margin-bottom: 1rem;
+
+    &__title {
+        font-family: $fontDisplay;
+        font-size: $fs-h3;
+        font-weight: $fw-600;
+        color: $ink;
+        margin-bottom: 1.25rem;
+    }
+
+    &--danger {
+        border: 1.5px solid rgba(#e74c3c, 0.2);
+    }
+
+    .btn--danger {
+        @include btn-base;
+        @include btn-md;
+        background: transparent;
+        color: #e74c3c;
+        border: 1.5px solid rgba(#e74c3c, 0.3);
+
+        &:hover {
+            background: rgba(#e74c3c, 0.06);
+            border-color: #e74c3c;
+        }
+    }
+}
+
+// --- CHAMPS DE FORMULAIRE ---
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+
+    label {
+        font-size: $fs-body-sm;
+        font-weight: $fw-600;
+        color: $ink;
+    }
+
+    input:not([type="checkbox"]) {
+        width: 100%;
+        padding: 0.7rem 0.9rem;
+        border: none;
+        border-radius: $radius-md;
+        font: inherit;
+        font-size: $fs-body-sm;
+        color: $ink;
+        background: $cream;
+        outline: none;
+        transition: background 0.2s;
+
+        &:focus { background: rgba($ink, 0.05); }
+
+        // Validation live : seul le fond change (vert/terracotta)
+        &.valid { background: rgba($ok, 0.1); }
+        &.invalid { background: rgba($terra, 0.1); }
+
+        &:disabled {
+            color: $ink-soft;
+            background: rgba($ink, 0.04);
+            cursor: not-allowed;
+        }
+    }
+
+    &__hint {
+        font-size: $fs-caption;
+        color: $ink-soft;
+    }
+
+    // Liste d'erreurs serveur (form_errors)
+    ul {
+        list-style: none;
+        margin: 0.4rem 0 0;
+        padding: 0;
+
+        li {
+            font-size: $fs-caption;
+            font-weight: $fw-500;
+            color: $terra;
+        }
+    }
+
+    &--check {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+
+        label { font-weight: $fw-500; color: $ink-soft; }
+    }
+}
+
+.address-form,
+.account-section form.address-form {
+    &__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+
+        @media screen and (max-width: $breakpoint-mobile) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 0.5rem;
     }
 }
