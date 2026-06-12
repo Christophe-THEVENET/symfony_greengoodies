@@ -23,4 +23,12 @@
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
-/refonte_design
+
+# Référence design (handoff, hors dépôt)
+/refonte_design/
+
+# Infra LOCALE non versionnée (chargée auto par Docker Compose en local,
+# absente en prod). Templates fournis : *.dist
+/compose.yaml
+/compose.override.yaml
+/docker/nginx/default.local.conf
