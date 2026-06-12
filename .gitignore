@@ -27,8 +27,11 @@
 # Référence design (handoff, hors dépôt)
 /refonte_design/
 
-# Infra LOCALE non versionnée (chargée auto par Docker Compose en local,
-# absente en prod). Templates fournis : *.dist
+# Infra spécifique à l'environnement, gérée HORS dépôt :
+#  - local : compose.yaml + compose.override.yaml (chargés auto par Docker Compose)
+#  - prod  : docker-compose.yml (édité directement sur le serveur)
+# Aucune config d'orchestration n'est versionnée -> pas de fuite ni de conflit.
 /compose.yaml
 /compose.override.yaml
+/docker-compose.yml
 /docker/nginx/default.local.conf
