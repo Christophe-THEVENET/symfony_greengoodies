@@ -117,45 +117,6 @@ class CartController extends AbstractController
         ]);
     }
 
-    // ************** validate cart and create order (bouton valider panier page panier) **************
-    #[Route('/valider', name: 'api_cart_validate', methods: ['POST'])]
-    public function validate(Request $request): JsonResponse
-    {
-        // 1. Vérification de l'authentification
-        if (!$this->getUser()) {
-            return $this->json([
-                'success' => false,
-                'message' => $this->translator->trans('toast.login_required'),
-                'redirectUrl' => $this->generateUrl('app_login'),
-            ], 401);
-        }
-
-        // 2. Vérification du token CSRF
-        if (!$this->isCsrfTokenValid('app_order_validate', $request->request->get('_token'))) {
-            return $this->json([
-                'success' => false,
-                'message' => 'Token CSRF invalide.',
-            ], 403);
-        }
-
-        try {
-            // 3. Validation du panier
-            $order = $this->cartService->validateCart($this->getUser());
-
-            return $this->json([
-                'success' => true,
-                'message' => $this->translator->trans('toast.order_validated'),
-                'redirectUrl' => $this->generateUrl('app_home'),
-            ]);
-        } catch (\Exception $e) {
-            return $this->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-                'redirectUrl' => $this->generateUrl('app_cart'),
-            ], 400);
-        }
-    }
-
     // ************** Utility methods **************
 
     /**

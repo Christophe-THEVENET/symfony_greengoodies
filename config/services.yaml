@@ -8,6 +8,9 @@ parameters:
     # variable. Les vraies clés (test) sont à mettre dans .env.local (non versionné).
     env(STRIPE_PUBLIC_KEY): ''
     env(STRIPE_SECRET_KEY): ''
+    # Proxy de confiance : 127.0.0.1 par défaut = inactif (aucune IP forwardée
+    # n'est crue). À surcharger en prod via .env.local (ex. réseau Docker).
+    env(TRUSTED_PROXIES): '127.0.0.1'
 
 services:
     # default configuration for services in *this* file

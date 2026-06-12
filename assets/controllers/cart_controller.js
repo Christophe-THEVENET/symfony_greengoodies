@@ -133,34 +133,6 @@ export default class extends Controller {
         input.dispatchEvent(new Event("change", { bubbles: true }));
     }
 
-    // ****** VALIDATION DU PANIER ******
-    async validateCart(event) {
-        event.preventDefault();
-        const url = this.urlValue;
-        const form = event.currentTarget;
-
-        await this.sendRequest(
-            url,
-            {
-                method: "POST",
-                // contient uniquement le token CSRF
-                body: new FormData(form),
-            },
-            (data) => {
-                if (data.redirectUrl) {
-                    this.updateCartBadge(0);
-                    sessionStorage.setItem("toast", data.message);
-                    window.location.href = data.redirectUrl;
-                } else {
-                    NotificationController.display(
-                        data.message,
-                        data.success ? "success" : "error"
-                    );
-                }
-            }
-        );
-    }
-
     // ****** MÉTHODES UTILITAIRES ******
     updateItemUI(data) {
         if (!data.cart?.updatedItem) return;

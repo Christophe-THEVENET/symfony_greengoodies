@@ -97,30 +97,6 @@ class CartService
         $this->saveCartToSession();
     }
 
-    public function validateCart(User $user): Order
-    {
-        if ($this->cart->isEmpty()) {
-            throw new \InvalidArgumentException('Le panier est vide');
-        }
-
-        // Récupérer la commande non validée ou générer une erreur
-        $order = $this->orderRepository->findUnvalidatedOrderByUser($user) ?? throw new \RuntimeException('Commande introuvable');
-
-        // Synchroniser une dernière fois avec le panier
-        $this->syncOrderItems($order);
-
-        // Finaliser la commande
-        $order->setIsValid(true);
-        $order->setOrderNumber($this->generateOrderNumber());
-
-        $this->entityManager->flush();
-
-        // Vider le panier après validation
-        $this->clearCart();
-
-        return $order;
-    }
-
     /**
      * Finalise une commande après confirmation du paiement Stripe.
      * Idempotent : ne fait rien si la commande est déjà payée.
