@@ -12,7 +12,9 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    scroll-behavior: smooth;
+    // Pas de scroll-behavior global : il rendait animé le scrollTo(0,0) de Turbo
+    // (remontée visible au clic sur une card produit). Les défilements voulus
+    // (nav, CTA) utilisent un behavior:"smooth" explicite en JS.
 }
 
 img {

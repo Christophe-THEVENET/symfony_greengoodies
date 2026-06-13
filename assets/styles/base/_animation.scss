@@ -152,3 +152,20 @@
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+// ********************* TRANSITION DE PAGE (Turbo) *********************
+// Turbo remplace le <body> à chaque visite : le nouveau contenu rejoue donc
+// cette animation, ce qui adoucit les changements de page (clic sur une card
+// produit, retours, etc.). Opacité seule : pas d'impact sur le scroll ni sur
+// les animations de reveal.
+@media (prefers-reduced-motion: no-preference) {
+    main,
+    .auth {
+        animation: pageFadeIn 0.35s ease both;
+    }
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
