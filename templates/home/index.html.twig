@@ -2,11 +2,6 @@
 
 {% block title %}{{ parent() }} — Terre Vive{% endblock %}
 
-{# Pas d'aperçu Turbo en cache : on évite le double rendu (aperçu révélé puis
-   re-render frais) quand on revient sur l'accueil via un lien (inscription,
-   panier). Le retour navigateur (visite restore) n'est pas concerné. #}
-{% block head_meta %}<meta name="turbo-cache-control" content="no-preview">{% endblock %}
-
 {% block body %}
 
 {# ========== HERO ========== #}

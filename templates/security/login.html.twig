@@ -5,6 +5,7 @@
     <title>GreenGoodies — {% if activeTab|default('login') == 'register' %}{{ 'auth.submit_register'|trans }}{% else %}{{ 'auth.tab_login'|trans }}{% endif %}</title>
     <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="turbo-cache-control" content="no-preview">
     {% block stylesheets %}{% endblock %}
     {% block javascripts %}
         {{ importmap('app') }}

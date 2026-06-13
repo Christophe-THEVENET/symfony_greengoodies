@@ -43,25 +43,6 @@ document.addEventListener("turbo:render", function () {
     handleHashScroll();
 });
 
-// Compteur de navigations internes. Turbo Drive conserve l'état JS entre les
-// visites, donc ce compteur survit à la navigation : > 1 signifie qu'on a déjà
-// navigué dans le site, et qu'un history.back() reste sur le site.
-var internalNavCount = 0;
-document.addEventListener("turbo:load", function () { internalNavCount++; });
-
-// Liens « retour » (vue produit, login, panier vide). On reproduit le retour
-// navigateur (instantané, scroll restauré, pas de ré-animation ni double rendu)
-// quand on a un historique interne ; sinon on laisse le lien suivre son href
-// (ex. /#produits, géré par handleHashScroll).
-document.addEventListener("click", function (e) {
-    var link = e.target.closest("[data-back]");
-    if (!link) return;
-    if (internalNavCount > 1 && window.history.length > 1) {
-        e.preventDefault();
-        window.history.back();
-    }
-});
-
 // Scroll smooth si la cible est sur la page courante (accueil),
 // sinon on laisse le navigateur suivre le href (ex. depuis une autre page).
 document.addEventListener("click", function (e) {

@@ -2,6 +2,10 @@
 
 {% block title %}{{ parent() }} — Panier{% endblock %}
 
+{# Panier volatil (ajout/suppression via AJAX) : jamais d'instantané Turbo, sinon
+   on verrait un panier périmé (ex. vide) avant la version fraîche. #}
+{% block head_meta %}<meta name="turbo-cache-control" content="no-cache">{% endblock %}
+
 {% block body %}
 
 {# Récapitulatif calculé côté serveur (source unique : CartDto) #}

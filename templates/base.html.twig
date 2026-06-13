@@ -5,7 +5,12 @@
         <title>{% block title %}GreenGoodies — Épicerie bio & éthique{% endblock %}</title>
         <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {% block head_meta %}{% endblock %}
+        {# Pas d'aperçu Turbo en cache : les visites « advance » rendent une seule
+           fois (pas d'instantané périmé affiché puis remplacé), ce qui évite les
+           doubles rendus/doubles fondus. Le retour navigateur (visite « restore »)
+           continue d'utiliser le cache. Surchargé en « no-cache » sur les pages au
+           contenu volatil (panier). #}
+        {% block head_meta %}<meta name="turbo-cache-control" content="no-preview">{% endblock %}
         {% block stylesheets %}
         {% endblock %}
 
