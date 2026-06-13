@@ -27,7 +27,9 @@ function handleHashScroll() {
     if (hash.length < 2) return;
     var el = document.getElementById(hash.slice(1));
     if (!el) return;
-    el.scrollIntoView({ behavior: "smooth" });
+    // Positionnement instantané (et avant le paint sur une visite Turbo) : pas de
+    // scroll animé depuis le haut, donc pas de flash « accueil puis défilement ».
+    el.scrollIntoView();
     history.replaceState(null, "", window.location.pathname + window.location.search);
 }
 
