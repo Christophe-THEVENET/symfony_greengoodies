@@ -5,6 +5,11 @@
         <title>{% block title %}GreenGoodies — Épicerie bio & éthique{% endblock %}</title>
         <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {# Polices auto-hébergées préchargées : prêtes avant le paint → plus de
+           reflow titre/chips au premier chargement (et conforme RGPD, pas de CDN). #}
+        <link rel="preload" href="{{ asset('fonts/bricolage-grotesque-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="{{ asset('fonts/hanken-grotesk-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+
         {# Pas d'aperçu Turbo en cache : les visites « advance » rendent une seule
            fois (pas d'instantané périmé affiché puis remplacé), ce qui évite les
            doubles rendus/doubles fondus. Le retour navigateur (visite « restore »)

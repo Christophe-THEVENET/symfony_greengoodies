@@ -43,6 +43,13 @@ document.addEventListener("turbo:render", function () {
     handleHashScroll();
 });
 
+// Le fondu de page ne s'applique qu'aux navigations Turbo : before-render ne se
+// déclenche pas au chargement initial, donc le héro garde une entrée nette (ses
+// reveals) sans le micro-décalage dû au conflit fondu/transform.
+document.addEventListener("turbo:before-render", function (e) {
+    e.detail.newBody.classList.add("is-turbo-nav");
+});
+
 // Scroll smooth si la cible est sur la page courante (accueil),
 // sinon on laisse le navigateur suivre le href (ex. depuis une autre page).
 document.addEventListener("click", function (e) {

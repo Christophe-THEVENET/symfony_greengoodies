@@ -1,5 +1,24 @@
 @use "../abstracts/_all" as *;
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+
+// Polices auto-hébergées (RGPD : pas d'appel au CDN Google) — sous-ensemble latin
+// (couvre FR + EN). Ce sont des polices variables : un seul fichier par famille
+// couvre tous les poids (400→700). Préchargées dans le <head> + font-display:swap
+// pour être prêtes avant le paint → plus de reflow titre/chips au premier chargement.
+@font-face {
+    font-family: "Bricolage Grotesque";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("../fonts/bricolage-grotesque-latin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Hanken Grotesk";
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url("../fonts/hanken-grotesk-latin.woff2") format("woff2");
+}
 
 body {
     font-family: $fontBody;
