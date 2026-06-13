@@ -6,6 +6,8 @@
     <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="turbo-cache-control" content="no-preview">
+    <link rel="preload" href="{{ asset('fonts/bricolage-grotesque-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('fonts/hanken-grotesk-latin.woff2') }}" as="font" type="font/woff2" crossorigin>
     {% block stylesheets %}{% endblock %}
     {% block javascripts %}
         {{ importmap('app') }}

@@ -154,13 +154,14 @@
 }
 
 // ********************* TRANSITION DE PAGE (Turbo) *********************
-// Turbo remplace le <body> à chaque visite : le nouveau contenu rejoue donc
-// cette animation, ce qui adoucit les changements de page (clic sur une card
-// produit, retours, etc.). Opacité seule : pas d'impact sur le scroll ni sur
-// les animations de reveal.
+// Fondu adoucissant les changements de page (clic sur une card produit, retours,
+// etc.). Réservé aux navigations Turbo (classe posée en JS via turbo:before-render)
+// pour NE PAS jouer au premier chargement : là, les animations de reveal du héro
+// suffisent, et un fondu sur le conteneur entrerait en conflit avec leurs
+// transitions de transform (micro-décalage). Opacité seule.
 @media (prefers-reduced-motion: no-preference) {
-    main,
-    .auth {
+    .is-turbo-nav main,
+    .is-turbo-nav .auth {
         animation: pageFadeIn 0.35s ease both;
     }
 }
