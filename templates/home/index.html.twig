@@ -29,7 +29,7 @@
 </section>
 
 {# ========== TICKER ========== #}
-<div class="ticker" aria-hidden="true" data-reveal="fade">
+<div class="ticker" aria-hidden="true" data-reveal="fade" data-reveal-delay="250">
     <div class="ticker__row">
         {% set tickerItems = ['home.ticker.carbon', 'home.ticker.zero_waste', 'home.ticker.made_in_france', 'home.ticker.no_plastic', 'home.ticker.secure_payment'] %}
         {% for i in 1..2 %}{% for key in tickerItems %}<span class="ticker__item">{{ key|trans }}</span>{% endfor %}{% endfor %}
