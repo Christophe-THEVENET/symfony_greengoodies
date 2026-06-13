@@ -158,6 +158,11 @@
     position: relative;
     z-index: 3;
 
+    // Fondu d'apparition plus lent que le reveal global (0.9s)
+    &[data-reveal] {
+        transition: opacity 1.8s ease;
+    }
+
     &__row {
         display: flex;
         gap: 50px;
