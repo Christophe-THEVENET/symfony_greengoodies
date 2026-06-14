@@ -1,5 +1,16 @@
 # GreenGoodies
 
+![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
+![Symfony](https://img.shields.io/badge/Symfony-7.3-000000?logo=symfony&logoColor=white)
+![Doctrine](https://img.shields.io/badge/Doctrine_ORM-3.x-FC6A31?logo=doctrine&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![Stimulus](https://img.shields.io/badge/Symfony_UX_/_Stimulus-2.x-000000?logo=stimulus&logoColor=white)
+![Sass](https://img.shields.io/badge/Sass-Dart-CC6699?logo=sass&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Lexik-000000?logo=jsonwebtokens&logoColor=white)
+![Stripe](https://img.shields.io/badge/Stripe-API-635BFF?logo=stripe&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-stable-009639?logo=nginx&logoColor=white)
+
 > **Pas de Node.js / npm.** Le front est géré entièrement par **Symfony Asset Mapper** (importmap) + **Symfony UX/Stimulus**, sans bundler ni `node_modules`. Le SCSS est compilé par `symfonycasts/sass-bundle` (binaire Dart Sass autonome).
 
 > **Refonte design.** Le projet initial a été développé **sans IA**. Une **refonte complète de l'interface** vient d'être réalisée avec **Claude Design** (maquettes) et **Claude Code** (intégration).
