@@ -12,7 +12,7 @@ nav:
 
 # Footer
 footer:
-    tagline: Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement, vraiment.
+    tagline: Boutique lyonnaise de produits biologiques, éthiques et écologiques. Consommer autrement.
     shop: Boutique
     shop_hygiene: Hygiène & beauté
     shop_accessories: Accessoires
@@ -35,9 +35,8 @@ home:
     hero:
         eyebrow: Boutique éco-responsable · Lyon
         title_1: Consommer
-        title_2: autrement,
-        title_3: vraiment.
-        lead: Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien — beaux, utiles, faits pour durer.
+        title_2: autrement
+        lead: Des produits bio, éthiques et zéro déchet, choisis un par un. Pour la salle de bain, la cuisine et le quotidien, beaux, utiles, faits pour durer.
         cta: Voir la boutique
         rating: '+1 200 avis · 4,9/5'
         chip_waste: -30% déchet
@@ -80,7 +79,7 @@ home:
     news:
         eyebrow: Newsletter
         title: Rejoignez le mouvement.
-        text: Conseils zéro déchet, nouveautés et rencontres avec nos artisans — une lettre par mois, jamais plus.
+        text: Conseils zéro déchet, nouveautés et rencontres avec nos artisans, une lettre par mois, jamais plus.
         placeholder: vous@exemple.fr
         cta: S'inscrire
 
