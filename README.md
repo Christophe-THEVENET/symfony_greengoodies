@@ -1,5 +1,9 @@
 # GreenGoodies
 
+> **Pas de Node.js / npm.** Le front est géré entièrement par **Symfony Asset Mapper** (importmap) + **Symfony UX/Stimulus**, sans bundler ni `node_modules`. Le SCSS est compilé par `symfonycasts/sass-bundle` (binaire Dart Sass autonome).
+
+> **Refonte design.** Le projet initial a été développé **sans IA**. Une **refonte complète de l'interface** vient d'être réalisée avec **Claude Design** (maquettes) et **Claude Code** (intégration).
+
 ## Formation Bootcamp avancé Symfony OpenClassRooms
 
 ### Projet final - Mettre en place un site de e-commerce avec Symfony
@@ -44,37 +48,102 @@ Réaliser un site web complet avec PHP et Symfony, comprenant une base de donné
 
 ## Prérequis
 
--   PHP 8.2.0 ou plus;
+-   Docker;
+-   Docker Compose (plugin `docker compose`);
+-   Git.
 
--   Symfony 7.3 ou plus;
--   Composer;
+Tout le reste (PHP 8.3, Composer, MySQL, Dart Sass) tourne dans les conteneurs : rien à installer en local.
 
--   MySQL/MariaDB;
+## Installation (environnement local Docker)
 
-## Installation
+1. Cloner le dépôt :
 
-`git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git`
+```bash
+git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git
+cd symfony_greengoodies/
+```
 
-`cd symfony_greengoodies/`
+2. Créer le fichier d'environnement local (non versionné) et renseigner les variables :
 
-`composer install`
+```bash
+cp .env .env.local
+```
 
-`cp .env .env.local` > configurer le DNS de la base de données
+Variables à compléter dans `.env.local` :
 
-`php bin/console cache:clear`
+```dotenv
+APP_ENV=dev
+APP_SECRET=               # chaîne aléatoire
 
-`php bin/console doctrine:database:create`
+MYSQL_DATABASE=           # ex. greengoodies
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_ROOT_PASSWORD=
+# DATABASE_URL est déjà construit à partir des variables MYSQL_* ci-dessus (hôte = db)
 
-`php bin/console doctrine:migrations:migrate`
+###> lexik/jwt-authentication-bundle ###
+JWT_PASSPHRASE=           # passphrase des clés JWT (voir étape 6)
+###< lexik/jwt-authentication-bundle ###
 
-`php bin/console doctrine:fixtures:load`
+STRIPE_PUBLIC_KEY=        # clés depuis le dashboard Stripe (mode test)
+STRIPE_SECRET_KEY=
+```
 
-`php bin/console asset-map:compile`
+3. Construire et démarrer les conteneurs. En local, `compose.yaml` et `compose.override.yaml` sont chargés automatiquement (nginx exposé sur le port **8088**, MySQL 8, Mailpit) :
+
+```bash
+docker compose build
+docker compose up -d
+```
+
+4. Installer les dépendances et préparer la base de données dans le conteneur `php` :
+
+```bash
+docker compose exec php composer install
+docker compose exec php php bin/console doctrine:database:create
+docker compose exec php php bin/console doctrine:migrations:migrate
+docker compose exec php php bin/console doctrine:fixtures:load
+```
+
+5. Compiler les assets (SCSS + Asset Mapper) :
+
+```bash
+docker compose exec php php bin/console sass:build
+docker compose exec php php bin/console asset-map:compile
+```
+
+> Astuce dev : `docker compose exec php php bin/console sass:build --watch` recompile le SCSS à la volée.
+
+6. Générer la paire de clés JWT (API sécurisée Lexik). La passphrase doit correspondre à `JWT_PASSPHRASE` de `.env.local` ; les clés sont créées dans `config/jwt/` (non versionnées) :
+
+```bash
+docker compose exec php php bin/console lexik:jwt:generate-keypair
+```
 
 ## Utilisation
 
-`symfony server:start`
-
-url: localhost:8000
+-   Application : <http://localhost:8088>
+-   Mailpit (mails de test) : <http://localhost:8025>
 
 Connectez-vous avec les comptes créés dans les fixtures (voir les identifiants dans le fichier `src/DataFixtures/AppFixtures.php`) ou inscrivez-vous en tant que nouvel utilisateur.
+
+## Déploiement (production)
+
+Site en production : <https://greengoodies.space/>
+
+La production tourne sous Docker via `docker-compose.yml` (services `db`, `php`, `nginx` avec certificats Let's Encrypt) et un fichier `.env.prod` (non versionné) contenant les secrets.
+
+Le déploiement est automatisé par le script `deploy.sh`, exécuté sur le serveur depuis `/var/www/greengoodies`. Il :
+
+1. récupère la dernière version (`git pull origin master`) ;
+2. corrige les permissions (`www-data`) ;
+3. installe les dépendances Composer (`--no-dev --optimize-autoloader`) ;
+4. joue les migrations Doctrine ;
+5. compile les assets (`sass:build` + `asset-map:compile`) ;
+6. vide le cache, le tout en `--env=prod`.
+
+```bash
+./deploy.sh
+```
+
+> Les commandes ciblent le conteneur `greengoodies-php-1`. Adaptez ce nom si le projet Compose est lancé sous un autre nom.
