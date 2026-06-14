@@ -12,7 +12,7 @@ nav:
 
 # Footer
 footer:
-    tagline: A Lyon-based shop for organic, ethical and eco-friendly goods. Consume differently, for real.
+    tagline: A Lyon-based shop for organic, ethical and eco-friendly goods. Consume differently.
     shop: Shop
     shop_hygiene: Hygiene & beauty
     shop_accessories: Accessories
@@ -35,9 +35,8 @@ home:
     hero:
         eyebrow: Eco-friendly shop · Lyon
         title_1: Consume
-        title_2: differently,
-        title_3: for real.
-        lead: Organic, ethical and zero-waste products, chosen one by one. For the bathroom, the kitchen and everyday life — beautiful, useful, made to last.
+        title_2: differently
+        lead: Organic, ethical and zero-waste products, chosen one by one. For the bathroom, the kitchen and everyday life, beautiful, useful, made to last.
         cta: Shop now
         rating: '+1,200 reviews · 4.9/5'
         chip_waste: -30% waste
@@ -80,7 +79,7 @@ home:
     news:
         eyebrow: Newsletter
         title: Join the movement.
-        text: Zero-waste tips, new arrivals and stories from our makers — one letter a month, never more.
+        text: Zero-waste tips, new arrivals and stories from our makers, one letter a month, never more.
         placeholder: you@example.com
         cta: Subscribe
 
