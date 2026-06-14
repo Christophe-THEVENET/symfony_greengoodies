@@ -145,6 +145,10 @@ Connectez-vous avec les comptes créés dans les fixtures (voir les identifiants
 
 À faire **une seule fois** sur le serveur, avant que `deploy.sh` ne prenne le relais.
 
+> **Quel fichier Compose ?** Le projet en contient deux jeux :
+> - **Local / dev** → `compose.yaml` + `compose.override.yaml` (MySQL 8, Mailpit, nginx sur `:8088`). Ils sont chargés **automatiquement** par `docker compose`, sans option.
+> - **Production** → `docker-compose.yml` (MySQL 5.7, nginx en `:80`/`:443` avec Let's Encrypt, `env_file: .env.prod`). Ce fichier n'est **pas** lu par défaut : il faut le cibler explicitement avec `-f docker-compose.yml` sur **toutes** les commandes prod.
+
 `git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git`
 
 `cd symfony_greengoodies/`
@@ -166,29 +170,29 @@ MYSQL_ROOT_PASSWORD=xxxxxxxxxxxx
 DATABASE_URL=mysql://xxxxxxx:xxxxxxx@db:3306/xxxxxxxx?serverVersion=5.7.44&charset=utf8mb4
 ```
 
-`docker compose up -d --build`
+`docker compose -f docker-compose.yml up -d --build`
 
 Installer les dépendances :
 
-`docker compose exec php bash -lc "composer install --no-dev --optimize-autoloader"`
+`docker compose -f docker-compose.yml exec php bash -lc "composer install --no-dev --optimize-autoloader"`
 
 Base de données et fixtures :
 
-`docker compose exec php bash -lc "php bin/console doctrine:database:create --if-not-exists --env=prod"`
+`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:database:create --if-not-exists --env=prod"`
 
-`docker compose exec php bash -lc "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"`
+`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"`
 
-`docker compose exec php bash -lc "php bin/console doctrine:fixtures:load --no-interaction --env=prod"`
+`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:fixtures:load --no-interaction --env=prod"`
 
 Droits sur les dossiers `var` et cache :
 
-`docker compose exec php bash -lc "mkdir -p var/cache var/log var/sass && chown -R www-data:www-data var && chmod -R u+rwX,g+rwX,o-rwx var"`
+`docker compose -f docker-compose.yml exec php bash -lc "mkdir -p var/cache var/log var/sass && chown -R www-data:www-data var && chmod -R u+rwX,g+rwX,o-rwx var"`
 
-`docker compose exec php bash -lc "php bin/console cache:clear --env=prod --no-debug && php bin/console cache:warmup --env=prod"`
+`docker compose -f docker-compose.yml exec php bash -lc "php bin/console cache:clear --env=prod --no-debug && php bin/console cache:warmup --env=prod"`
 
 Compiler les assets :
 
-`docker compose exec --user www-data php bash -lc "php bin/console asset-map:compile --env=prod --no-debug || true; php bin/console sass:build --env=prod --no-debug || true"`
+`docker compose -f docker-compose.yml exec --user www-data php bash -lc "php bin/console asset-map:compile --env=prod --no-debug || true; php bin/console sass:build --env=prod --no-debug || true"`
 
 ## Déploiements suivants (production)
 
