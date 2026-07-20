@@ -4,11 +4,13 @@
             <span class="logo__mark">G</span>GreenGoodies
         </a>
 
-        <nav class="nav" data-nav>
-            <a href="{{ path('app_home') }}#produits" data-scroll="produits">{{ 'nav.products'|trans }}</a>
-            <a href="{{ path('app_home') }}#histoire" data-scroll="histoire">{{ 'nav.story'|trans }}</a>
-            <a href="{{ path('app_home') }}#valeurs" data-scroll="valeurs">{{ 'nav.values'|trans }}</a>
-            <a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a>
+        <nav class="nav" data-nav aria-label="{{ 'nav.aria_main'|trans }}">
+            <ul class="nav__list">
+                <li><a href="{{ path('app_home') }}#produits" data-scroll="produits">{{ 'nav.products'|trans }}</a></li>
+                <li><a href="{{ path('app_home') }}#histoire" data-scroll="histoire">{{ 'nav.story'|trans }}</a></li>
+                <li><a href="{{ path('app_home') }}#valeurs" data-scroll="valeurs">{{ 'nav.values'|trans }}</a></li>
+                <li><a href="{{ path('app_contact') }}">{{ 'nav.contact'|trans }}</a></li>
+            </ul>
         </nav>
 
         <div class="header__right">
@@ -54,7 +56,7 @@
     </div>
 
     {# Menu mobile #}
-    <nav class="nav nav--mobile" data-header-target="mobileMenu" data-nav>
+    <nav class="nav nav--mobile" data-header-target="mobileMenu" data-nav aria-label="{{ 'nav.aria_mobile'|trans }}">
         {% if app.user %}
             <div class="nav--mobile__account">
                 <span class="nav--mobile__user">{{ app.user.firstname }}</span>
@@ -62,12 +64,12 @@
                 <a href="{{ path('app_logout') }}" class="nav--mobile__sublink">{{ 'nav.logout'|trans }}</a>
             </div>
         {% endif %}
-        <div class="nav--mobile__links">
-            <a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a>
-            <a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a>
-            <a href="{{ path('app_home') }}#valeurs" data-action="click->header#closeOnLink">{{ 'nav.values'|trans }}</a>
-            <a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a>
-        </div>
+        <ul class="nav--mobile__links">
+            <li><a href="{{ path('app_home') }}#produits" data-action="click->header#closeOnLink">{{ 'nav.products'|trans }}</a></li>
+            <li><a href="{{ path('app_home') }}#histoire" data-action="click->header#closeOnLink">{{ 'nav.story'|trans }}</a></li>
+            <li><a href="{{ path('app_home') }}#valeurs" data-action="click->header#closeOnLink">{{ 'nav.values'|trans }}</a></li>
+            <li><a href="{{ path('app_contact') }}" data-action="click->header#closeOnLink">{{ 'nav.contact'|trans }}</a></li>
+        </ul>
     </nav>
 
     <div class="header__overlay" data-header-target="overlay" data-action="click->header#closeOnOverlay"></div>

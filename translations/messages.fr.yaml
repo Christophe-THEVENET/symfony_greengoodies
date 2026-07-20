@@ -9,6 +9,15 @@ nav:
     login: Se connecter
     logout: Se déconnecter
     contact: Contact
+    aria_main: Navigation principale
+    aria_mobile: Menu mobile
+    aria_account: Navigation du compte
+
+# Meta descriptions (SEO)
+meta:
+    default: "Épicerie bio, éthique et zéro déchet à Lyon. Hygiène, maison et quotidien : des produits choisis un par un, faits pour durer."
+    home: "Boutique bio et zéro déchet à Lyon depuis 2019. Hygiène, maison, accessoires : des essentiels durables, rechargeables et fabriqués en France."
+    contact: "Une question sur une commande ou un produit ? Écrivez-nous ou passez à la boutique GreenGoodies, 12 rue de la Croix-Rousse à Lyon."
 
 # Footer
 footer:
@@ -61,6 +70,7 @@ home:
         founder: Fondatrice
         badge: Lyon depuis 2019
     values:
+        title: Nos engagements
         durability_title: Durabilité
         durability_text: Des produits choisis pour durer, rechargeables et réparables, qui respectent l'environnement à chaque étape.
         ethics_title: Éthique
@@ -114,6 +124,7 @@ product:
 
 # Panier
 cart:
+    title: Votre panier
     ship_remaining_pre: Plus que
     ship_remaining_post: pour la livraison offerte
     ship_unlocked: 🎉 Livraison offerte !

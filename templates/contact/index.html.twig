@@ -1,14 +1,17 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} — {{ 'contact.title'|trans }}{% endblock %}
+{% block meta_description %}{{ 'meta.contact'|trans }}{% endblock %}
 
 {% block body %}
 
 <section class="contact">
     <div class="contact__grid">
 
-        {# ===== Colonne infos ===== #}
-        <aside class="contact__info">
+        {# ===== Colonne infos =====
+           <div> et non <aside> : ce bloc porte le titre principal de la page,
+           c'est du contenu principal, pas du contenu tangentiel. #}
+        <div class="contact__info">
             <span class="eyebrow">{{ 'contact.eyebrow'|trans }}</span>
             <h1 class="contact__title">{{ 'contact.title'|trans }}</h1>
             <p class="contact__lead">{{ 'contact.lead'|trans }}</p>
@@ -27,7 +30,7 @@
                     <span>{{ 'contact.hours'|trans }}</span>
                 </li>
             </ul>
-        </aside>
+        </div>
 
         {# ===== Colonne formulaire ===== #}
         <div class="contact__form-wrap">

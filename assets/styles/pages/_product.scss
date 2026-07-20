@@ -234,6 +234,13 @@
         border-bottom: 1px solid $line;
     }
 
+    // Enveloppe de titre autour du déclencheur : purement sémantique, elle ne
+    // doit rien apporter visuellement (le bouton porte déjà toute la typo).
+    &__heading {
+        font: inherit;
+        margin: 0;
+    }
+
     &__trigger {
         width: 100%;
         display: flex;
