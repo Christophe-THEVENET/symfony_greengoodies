@@ -12,6 +12,8 @@
 {% set s = cart.summary %}
 
 <section class="cart-page">
+    {# Titre de page pour lecteurs d'écran : le design n'affiche pas de titre. #}
+    <h1 class="sr-only">{{ 'cart.title'|trans }}</h1>
     <div class="cart-page__grid">
     {# ========== LISTE ARTICLES ========== #}
     <div class="bag">
@@ -74,7 +76,7 @@
 
         {# Récapitulatif #}
         <div class="cart-summary">
-            <h3 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h3>
+            <h2 class="cart-summary__title">{{ 'cart.summary_title'|trans }}</h2>
 
         {% if not cart.isEmpty %}
             <div class="cart-summary__row">

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} — Terre Vive{% endblock %}
+{% block meta_description %}{{ 'meta.home'|trans }}{% endblock %}
 
 {% block body %}
 
@@ -55,7 +56,7 @@
                         <img src="{{ asset('img/products/' ~ product.imageFilename) }}" alt="{{ product.name|trans }}" loading="lazy" />
                     </a>
                     <div class="card__body">
-                        <a href="{{ path('app_product_show', { slug: product.slug }) }}"><h3 class="card__name">{{ product.name|trans }}</h3></a>
+                        <h3 class="card__name"><a href="{{ path('app_product_show', { slug: product.slug }) }}">{{ product.name|trans }}</a></h3>
                         <p class="card__desc">{{ product.shortDescription|trans }}</p>
                         <div class="card__foot">
                             <span class="card__price">{{ product.price|number_format(2, ',', ' ') }}€</span>
@@ -92,10 +93,13 @@
 {# ========== VALEURS ========== #}
 <section class="values" id="valeurs">
     <div class="wrap">
+        {# Titre de section réservé aux lecteurs d'écran et aux moteurs : le design
+           n'en affiche pas, mais une <section> sans titre n'a pas d'ancrage. #}
+        <h2 class="sr-only">{{ 'home.values.title'|trans }}</h2>
         <div class="values__list">
-            <article class="value" data-reveal style="--value-bg: url('{{ asset('img/site/register.png') }}')"><span class="value__num">01</span><h4>{{ 'home.values.durability_title'|trans }}</h4><p>{{ 'home.values.durability_text'|trans }}</p></article>
-            <article class="value" data-reveal data-reveal-delay="100" style="--value-bg: url('{{ asset('img/site/convictions.png') }}')"><span class="value__num">02</span><h4>{{ 'home.values.ethics_title'|trans }}</h4><p>{{ 'home.values.ethics_text'|trans }}</p></article>
-            <article class="value" data-reveal data-reveal-delay="200" style="--value-bg: url('{{ asset('img/site/valeurs.png') }}')"><span class="value__num">03</span><h4>{{ 'home.values.ecology_title'|trans }}</h4><p>{{ 'home.values.ecology_text'|trans }}</p></article>
+            <article class="value" data-reveal style="--value-bg: url('{{ asset('img/site/register.png') }}')"><span class="value__num">01</span><h3>{{ 'home.values.durability_title'|trans }}</h3><p>{{ 'home.values.durability_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="100" style="--value-bg: url('{{ asset('img/site/convictions.png') }}')"><span class="value__num">02</span><h3>{{ 'home.values.ethics_title'|trans }}</h3><p>{{ 'home.values.ethics_text'|trans }}</p></article>
+            <article class="value" data-reveal data-reveal-delay="200" style="--value-bg: url('{{ asset('img/site/valeurs.png') }}')"><span class="value__num">03</span><h3>{{ 'home.values.ecology_title'|trans }}</h3><p>{{ 'home.values.ecology_text'|trans }}</p></article>
         </div>
     </div>
 </section>

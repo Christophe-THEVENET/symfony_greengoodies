@@ -93,6 +93,14 @@
     align-items: center;
     gap: 32px;
 
+    // Liste des liens : c'est elle qui porte la rangée depuis le passage en <ul>/<li>
+    // (le <ul> est le seul enfant de .nav, qui reste flex sans effet de bord).
+    &__list {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+
     a {
         font-size: 14px;
         font-weight: 600;

@@ -62,6 +62,9 @@
         <div class="auth__form-inner">
             <a href="{{ path('app_home') }}" class="auth__form-back">← {{ 'auth.back'|trans }}</a>
 
+            {# Titre de page pour lecteurs d'écran : le design s'appuie sur les onglets. #}
+            <h1 class="sr-only">{% if tab == 'register' %}{{ 'auth.submit_register'|trans }}{% else %}{{ 'auth.tab_login'|trans }}{% endif %}</h1>
+
             <div class="auth__form-tabs">
                 <button class="{{ tab == 'login' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showLogin">{{ 'auth.tab_login'|trans }}</button>
                 <button class="{{ tab == 'register' ? 'is-active' }}" data-auth-target="tab" data-action="click->auth#showRegister">{{ 'auth.tab_register'|trans }}</button>

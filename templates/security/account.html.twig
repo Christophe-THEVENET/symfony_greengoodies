@@ -8,8 +8,9 @@
 
 <section class="account-page" data-controller="account-tabs" data-account-tabs-active-value="{{ activeTab }}">
 
-    {# ========== SIDEBAR ========== #}
-    <aside class="account-sidebar">
+    {# ========== SIDEBAR ==========
+       <nav> et non <aside> : ce sont les onglets de navigation du compte. #}
+    <nav class="account-sidebar" aria-label="{{ 'nav.aria_account'|trans }}">
         <button type="button" class="account-sidebar__link" data-account-tabs-target="tab" data-tab="overview" data-action="account-tabs#select">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             {{ 'account.nav_overview'|trans }}
@@ -32,14 +33,14 @@
                 {{ 'account.nav_logout'|trans }}
             </a>
         </div>
-    </aside>
+    </nav>
 
     {# ========== CONTENU ========== #}
     <div class="account-content">
         <div class="account-header">
             <div class="account-header__avatar">{{ app.user.firstname[:1]|upper }}{{ app.user.lastname[:1]|upper }}</div>
             <div>
-                <div class="account-header__greeting">{{ 'account.greeting'|trans }}, {{ app.user.firstname }}</div>
+                <h1 class="account-header__greeting">{{ 'account.greeting'|trans }}, {{ app.user.firstname }}</h1>
                 <div class="account-header__since">{{ 'account.member_since'|trans }} {{ app.user.createdAt ? app.user.createdAt|date('m/Y') : '—' }}</div>
             </div>
         </div>
@@ -71,7 +72,7 @@
             </div>
 
             <div class="orders-section">
-                <h3 class="orders-section__title">{{ 'account.orders_title'|trans }}</h3>
+                <h2 class="orders-section__title">{{ 'account.orders_title'|trans }}</h2>
                 {% for order in orders|slice(0, 3) %}
                     {{ m.orderRow(order) }}
                 {% else %}
@@ -83,7 +84,7 @@
         {# ===== PANEL : COMMANDES ===== #}
         <div class="account-panel" data-account-tabs-target="panel" data-tab="commandes">
             <div class="orders-section">
-                <h3 class="orders-section__title">{{ 'account.nav_orders'|trans }}</h3>
+                <h2 class="orders-section__title">{{ 'account.nav_orders'|trans }}</h2>
                 {% for order in orders %}
                     {{ m.orderRow(order) }}
                 {% else %}
@@ -94,7 +95,7 @@
 
         {# ===== PANEL : ADRESSES ===== #}
         <div class="account-panel" data-account-tabs-target="panel" data-tab="adresses">
-            <h3 class="orders-section__title">{{ 'account.nav_addresses'|trans }}</h3>
+            <h2 class="orders-section__title">{{ 'account.nav_addresses'|trans }}</h2>
 
             {% if app.user.addresses|length > 0 %}
                 <div class="address-grid">
@@ -140,7 +141,7 @@
             </div>
 
             <div class="account-section">
-                <h3 class="account-section__title">{{ 'account.api_title'|trans }}</h3>
+                <h2 class="account-section__title">{{ 'account.api_title'|trans }}</h2>
                 <form method="post" action="{{ path('api_account_toggle_api') }}" data-controller="account" data-action="submit->account#toggleApiAccess">
                     <input type="hidden" name="_token" value="{{ csrf_token('access_api') }}" />
                     <button type="submit" class="btn btn--ghost" data-account-target="button">
@@ -150,7 +151,7 @@
             </div>
 
             <div class="account-section account-section--danger">
-                <h3 class="account-section__title">{{ 'account.danger_title'|trans }}</h3>
+                <h2 class="account-section__title">{{ 'account.danger_title'|trans }}</h2>
                 <form method="post" action="{{ path('app_account_delete') }}" onsubmit="return confirm('{{ 'account.delete_confirm'|trans|e('js') }}');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete_account') }}" />
                     <button type="submit" class="btn--danger">{{ 'account.delete_account'|trans }}</button>

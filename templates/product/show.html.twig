@@ -1,6 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{{ parent() }} — {{ product.name|trans }}{% endblock %}
+{# Description unique par produit : c'est ce que Google reprend dans le snippet. #}
+{% block meta_description %}{{ product.shortDescription|trans }}{% endblock %}
 
 {% block body %}
 
@@ -77,10 +79,12 @@
         {# Accordéon #}
         <div class="accordion">
             <div class="accordion__item">
-                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="true">
-                    {{ 'product.acc_description'|trans }}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
+                <h2 class="accordion__heading">
+                    <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="true">
+                        {{ 'product.acc_description'|trans }}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                </h2>
                 <div class="accordion__panel is-open">
                     <div class="accordion__panel-inner">
                         {{ product.longDescription|trans|nl2br }}
@@ -88,10 +92,12 @@
                 </div>
             </div>
             <div class="accordion__item">
-                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
-                    {{ 'product.acc_composition'|trans }}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
+                <h2 class="accordion__heading">
+                    <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
+                        {{ 'product.acc_composition'|trans }}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                </h2>
                 <div class="accordion__panel">
                     <div class="accordion__panel-inner">
                         <p>{{ product.shortDescription|trans }}</p>
@@ -100,10 +106,12 @@
                 </div>
             </div>
             <div class="accordion__item">
-                <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
-                    {{ 'product.acc_shipping'|trans }}
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
+                <h2 class="accordion__heading">
+                    <button class="accordion__trigger" data-action="click->accordion#toggle" aria-expanded="false">
+                        {{ 'product.acc_shipping'|trans }}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                </h2>
                 <div class="accordion__panel">
                     <div class="accordion__panel-inner">
                         <p>{{ 'product.acc_shipping_text'|trans }}</p>

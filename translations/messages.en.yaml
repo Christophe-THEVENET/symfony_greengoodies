@@ -9,6 +9,15 @@ nav:
     login: Sign in
     logout: Sign out
     contact: Contact
+    aria_main: Main navigation
+    aria_mobile: Mobile menu
+    aria_account: Account navigation
+
+# Meta descriptions (SEO)
+meta:
+    default: "Organic, ethical and zero-waste grocery in Lyon. Hygiene, home and everyday goods, each one chosen to last."
+    home: "Organic and zero-waste shop in Lyon since 2019. Hygiene, home and accessories: durable, refillable essentials made in France."
+    contact: "A question about an order or a product? Write to us or visit the GreenGoodies shop at 12 rue de la Croix-Rousse in Lyon."
 
 # Footer
 footer:
@@ -61,6 +70,7 @@ home:
         founder: Founder
         badge: Lyon since 2019
     values:
+        title: Our commitments
         durability_title: Durability
         durability_text: Products chosen to last, refillable and repairable, that respect the environment at every step.
         ethics_title: Ethics
@@ -114,6 +124,7 @@ product:
 
 # Cart
 cart:
+    title: Your cart
     ship_remaining_pre: Only
     ship_remaining_post: away from free shipping
     ship_unlocked: 🎉 Free shipping unlocked!

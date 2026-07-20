@@ -21,7 +21,7 @@
              data-stripe-payment-csrf-token-value="{{ csrf_token('checkout_intent') }}">
 
             <div class="checkout__card">
-                <h3 class="checkout__card-title">{{ 'checkout.card_payment'|trans }}</h3>
+                <h2 class="checkout__card-title">{{ 'checkout.card_payment'|trans }}</h2>
 
                 <div class="checkout__test-hint">
                     <strong>{{ 'checkout.test_mode'|trans }}</strong>
@@ -46,7 +46,7 @@
         <aside class="checkout__aside">
             {# Adresse de livraison #}
             <div class="checkout__card">
-                <h3 class="checkout__card-title">{{ 'checkout.shipping_to'|trans }}</h3>
+                <h2 class="checkout__card-title">{{ 'checkout.shipping_to'|trans }}</h2>
                 <p class="checkout__address">
                     {% if address.label %}<strong>{{ address.label }}</strong><br>{% endif %}
                     {{ address.line1 }}{% if address.line2 %}<br>{{ address.line2 }}{% endif %}<br>
@@ -58,7 +58,7 @@
 
             {# Récap commande #}
             <div class="checkout__card">
-                <h3 class="checkout__card-title">{{ 'cart.summary_title'|trans }}</h3>
+                <h2 class="checkout__card-title">{{ 'cart.summary_title'|trans }}</h2>
 
                 {% for productId, item in items %}
                     <div class="checkout__line">

@@ -11,6 +11,12 @@ body {
     position: relative;
 }
 
+// Contenu réservé aux lecteurs d'écran et aux moteurs : titres de page/section
+// que le design n'affiche pas mais dont la structure a besoin.
+.sr-only {
+    @include sr-only;
+}
+
 // Grain papier
 body::before {
     content: "";

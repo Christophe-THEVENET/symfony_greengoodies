@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale|default('fr') }}">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}GreenGoodies — Épicerie bio & éthique{% endblock %}</title>
+        <meta name="description" content="{% block meta_description %}{{ 'meta.default'|trans }}{% endblock %}">
+        {# Canonique auto-référente sur le chemin seul : évite que les variantes
+           avec query string (tracking, ancres de tri) soient indexées séparément. #}
+        <link rel="canonical" href="{{ app.request.schemeAndHttpHost ~ app.request.pathInfo }}">
         <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {# Polices auto-hébergées préchargées : prêtes avant le paint → plus de
