@@ -1,6 +1,6 @@
 # GreenGoodies
 
-L'appli est en ligne ici : <https://greengoodies.space>
+L'appli est en ligne ici : <https://greengoodies.eu>
 
 ![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
 ![Symfony](https://img.shields.io/badge/Symfony-7.3-000000?logo=symfony&logoColor=white)
@@ -137,7 +137,7 @@ docker compose exec php php bin/console lexik:jwt:generate-keypair
 
 -   Application (local) : <http://localhost:8088>
 -   Mailpit (mails de test) : <http://localhost:8025>
--   Production : <https://greengoodies.space>
+-   Production : <https://greengoodies.eu>
 
 Connectez-vous avec les comptes créés dans les fixtures (voir les identifiants dans le fichier `src/DataFixtures/AppFixtures.php`) ou inscrivez-vous en tant que nouvel utilisateur.
 

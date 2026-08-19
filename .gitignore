@@ -35,3 +35,6 @@
 /compose.override.yaml
 /docker-compose.yml
 /docker/nginx/default.local.conf
+
+# Claude Code : settings locaux (non partagés)
+.claude/settings.local.json
