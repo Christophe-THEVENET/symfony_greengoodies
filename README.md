@@ -2,10 +2,10 @@
 
 L'appli est en ligne ici : <https://greengoodies.eu>
 
-![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
-![Symfony](https://img.shields.io/badge/Symfony-7.3-000000?logo=symfony&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)
+![Symfony](https://img.shields.io/badge/Symfony-7.4_LTS-000000?logo=symfony&logoColor=white)
 ![Doctrine](https://img.shields.io/badge/Doctrine_ORM-3.x-FC6A31?logo=doctrine&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.4_LTS-4479A1?logo=mysql&logoColor=white)
 ![Stimulus](https://img.shields.io/badge/Symfony_UX_/_Stimulus-2.x-000000?logo=stimulus&logoColor=white)
 ![Sass](https://img.shields.io/badge/Sass-Dart-CC6699?logo=sass&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-Lexik-000000?logo=jsonwebtokens&logoColor=white)
@@ -65,7 +65,7 @@ Réaliser un site web complet avec PHP et Symfony, comprenant une base de donné
 -   Docker Compose (plugin `docker compose`);
 -   Git.
 
-Tout le reste (PHP 8.3, Composer, MySQL, Dart Sass) tourne dans les conteneurs : rien à installer en local.
+Tout le reste (PHP 8.5, Composer, MySQL, Dart Sass) tourne dans les conteneurs : rien à installer en local.
 
 ## Installation (environnement local Docker)
 
@@ -102,7 +102,7 @@ STRIPE_PUBLIC_KEY=        # clés depuis le dashboard Stripe (mode test)
 STRIPE_SECRET_KEY=
 ```
 
-3. Construire et démarrer les conteneurs. En local, `compose.yaml` et `compose.override.yaml` sont chargés automatiquement (nginx exposé sur le port **8088**, MySQL 8, Mailpit) :
+3. Construire et démarrer les conteneurs. En local, `compose.yaml` et `compose.override.yaml` sont chargés automatiquement (nginx exposé sur le port **8088**, MySQL 8.4, Mailpit) :
 
 ```bash
 docker compose build
@@ -141,74 +141,51 @@ docker compose exec php php bin/console lexik:jwt:generate-keypair
 
 Connectez-vous avec les comptes créés dans les fixtures (voir les identifiants dans le fichier `src/DataFixtures/AppFixtures.php`) ou inscrivez-vous en tant que nouvel utilisateur.
 
-## Premier déploiement en production (Docker)
+## Production (Docker)
 
-À faire **une seule fois** sur le serveur, avant que `deploy.sh` ne prenne le relais.
+La prod tourne sur un VPS dans `/var/www/greengoodies`, orchestrée par **`compose.prod.yaml`** (versionné, sans aucun secret) : MySQL 8.4, PHP 8.5-FPM, nginx avec certificats Let's Encrypt. Les secrets sont dans `.env.local` sur le serveur (non versionné).
 
-> **Quel fichier Compose ?** Le projet en contient deux jeux :
-> - **Local / dev** → `compose.yaml` + `compose.override.yaml` (MySQL 8, Mailpit, nginx sur `:8088`). Ils sont chargés **automatiquement** par `docker compose`, sans option.
-> - **Production** → `docker-compose.yml` (MySQL 5.7, nginx en `:80`/`:443` avec Let's Encrypt, `env_file: .env.prod`). Ce fichier n'est **pas** lu par défaut : il faut le cibler explicitement avec `-f docker-compose.yml` sur **toutes** les commandes prod.
+> **Quel fichier Compose ?**
+> - **Local / dev** → `compose.yaml` + `compose.override.yaml` (non versionnés, chargés automatiquement par `docker compose`).
+> - **Production** → `compose.prod.yaml`, toujours ciblé explicitement : `docker compose -f compose.prod.yaml …` (c'est ce que fait `deploy.sh`).
 
-`git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git`
+### Premier déploiement (une seule fois)
 
-`cd symfony_greengoodies/`
-
-`cp .env .env.prod`
-
-> Exemple de configuration pour `.env.prod` (pour utiliser l'API en prod, adapter les chemins des clés JWT) :
+```bash
+git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git /var/www/greengoodies
+cd /var/www/greengoodies
+cp .env .env.local   # puis renseigner les valeurs ci-dessous
+```
 
 ```dotenv
-JWT_SECRET_KEY=/path/to/your/prod/private.pem
-JWT_PUBLIC_KEY=/path/to/your/prod/public.pem
-JWT_PASSPHRASE=xxxxxxxxxxxxxxxxxxxx
 APP_ENV=prod
 APP_SECRET=xxxxxxxxxxx
 MYSQL_DATABASE=xxxxxxxxxxxx
 MYSQL_USER=xxxxxxxxxxxx
 MYSQL_PASSWORD=xxxxxxxxxxxx
 MYSQL_ROOT_PASSWORD=xxxxxxxxxxxx
-DATABASE_URL=mysql://xxxxxxx:xxxxxxx@db:3306/xxxxxxxx?serverVersion=5.7.44&charset=utf8mb4
+DATABASE_URL=mysql://xxxxxxx:xxxxxxx@db:3306/xxxxxxxx?serverVersion=8.4&charset=utf8mb4
+JWT_PASSPHRASE=xxxxxxxxxxxx   # ex. openssl rand -hex 32
+STRIPE_PUBLIC_KEY=pk_live_xxx
+STRIPE_SECRET_KEY=sk_live_xxx
 ```
-
-`docker compose -f docker-compose.yml up -d --build`
-
-Installer les dépendances :
-
-`docker compose -f docker-compose.yml exec php bash -lc "composer install --no-dev --optimize-autoloader"`
-
-Base de données et fixtures :
-
-`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:database:create --if-not-exists --env=prod"`
-
-`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:migrations:migrate --no-interaction --env=prod"`
-
-`docker compose -f docker-compose.yml exec php bash -lc "php bin/console doctrine:fixtures:load --no-interaction --env=prod"`
-
-Droits sur les dossiers `var` et cache :
-
-`docker compose -f docker-compose.yml exec php bash -lc "mkdir -p var/cache var/log var/sass && chown -R www-data:www-data var && chmod -R u+rwX,g+rwX,o-rwx var"`
-
-`docker compose -f docker-compose.yml exec php bash -lc "php bin/console cache:clear --env=prod --no-debug && php bin/console cache:warmup --env=prod"`
-
-Compiler les assets :
-
-`docker compose -f docker-compose.yml exec --user www-data php bash -lc "php bin/console asset-map:compile --env=prod --no-debug || true; php bin/console sass:build --env=prod --no-debug || true"`
-
-## Déploiements suivants (production)
-
-La production tourne sous Docker via `docker-compose.yml` (services `db`, `php`, `nginx` avec certificats Let's Encrypt) et le fichier `.env.prod` ci-dessus.
-
-Les mises à jour sont automatisées par le script `deploy.sh`, exécuté sur le serveur depuis `/var/www/greengoodies`. Il :
-
-1. récupère la dernière version (`git pull origin master`) ;
-2. corrige les permissions (`www-data`) ;
-3. installe les dépendances Composer (`--no-dev --optimize-autoloader`) ;
-4. joue les migrations Doctrine ;
-5. compile les assets (`sass:build` + `asset-map:compile`) ;
-6. vide le cache, le tout en `--env=prod`.
 
 ```bash
-./deploy.sh
+sudo ./deploy.sh
+docker compose -f compose.prod.yaml exec -u www-data php php bin/console lexik:jwt:generate-keypair --env=prod
 ```
 
-> Les commandes ciblent le conteneur `greengoodies-php-1`. Adaptez ce nom si le projet Compose est lancé sous un autre nom.
+### Déploiements suivants
+
+```bash
+cd /var/www/greengoodies && sudo ./deploy.sh
+```
+
+Le script `deploy.sh` :
+
+1. sauvegarde la base (`/var/backups/greengoodies/db-<date>.sql.gz`) ;
+2. récupère la dernière version (`git pull --ff-only origin master`) ;
+3. met à jour les images Docker et reconstruit PHP : **chaque déploiement embarque les derniers correctifs de sécurité** de PHP, MySQL et nginx ;
+4. relance les conteneurs (attend que MySQL soit prêt) ;
+5. installe les dépendances, joue les migrations, compile les assets, vide le cache ;
+6. vérifie que les pages clés répondent en 200 et affiche, en cas de problème, la version précédente et la sauvegarde à restaurer.
