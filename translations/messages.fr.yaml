@@ -335,6 +335,8 @@ form:
     email: Email
     password: Mot de passe
     password_confirm: Confirmer le mot de passe
+    password_show: Afficher
+    password_hide: Masquer
     agree_terms: J'accepte les CGU de GreenGoodies
 
 # ===== Long descriptions =====

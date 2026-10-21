@@ -46,18 +46,10 @@ class RegistrationForm extends AbstractType
                 'first_options'  => [
                     'label' => 'form.password',
                     'toggle' => true,
-                    'hidden_label' => 'Masquer',
-                    'visible_label' => 'Afficher',
-                    'visible_icon' => null,
-                    'hidden_icon' => null, // <-- Ajout ici
                 ],
                 'second_options' => [
                     'label' => 'form.password_confirm',
                     'toggle' => true,
-                    'hidden_label' => 'Masquer',
-                    'visible_label' => 'Afficher',
-                    'visible_icon' => null,
-                    'hidden_icon' => null, // <-- Ajout ici
                 ],
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'attr' => ['autocomplete' => 'new-password'],
