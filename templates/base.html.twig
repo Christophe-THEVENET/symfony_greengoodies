@@ -20,6 +20,9 @@
            continue d'utiliser le cache. Surchargé en « no-cache » sur les pages au
            contenu volatil (panier). #}
         {% block head_meta %}<meta name="turbo-cache-control" content="no-preview">{% endblock %}
+        {# Turbo 8 précharge les liens au survol : désactivé, car certains liens GET
+           ont un effet de bord (déconnexion, changement de langue). #}
+        <meta name="turbo-prefetch" content="false">
         {% block stylesheets %}
         {% endblock %}
 
