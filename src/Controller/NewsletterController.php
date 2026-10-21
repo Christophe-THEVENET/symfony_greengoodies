@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -24,7 +24,7 @@ final class NewsletterController extends AbstractController
         NewsletterSubscriptionRepository $repository,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RateLimiterFactory $newsletterLimiter,
+        RateLimiterFactoryInterface $newsletterLimiter,
     ): JsonResponse {
         // Anti-spam : limite par IP
         if (!$newsletterLimiter->create($request->getClientIp() ?? 'anon')->consume()->isAccepted()) {

@@ -161,6 +161,8 @@
     </div>
 </section>
 
+{% endblock %}
+
 {# Ligne de commande réutilisable #}
 {% macro orderRow(order) %}
     {% set delivered = order.createdAt < date('-5 days') %}
@@ -182,5 +184,3 @@
         </a>
     </div>
 {% endmacro %}
-
-{% endblock %}

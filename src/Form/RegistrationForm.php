@@ -37,9 +37,7 @@ class RegistrationForm extends AbstractType
                 'mapped' => false,
                 'label' => 'form.agree_terms',
                 'constraints' => [
-                    new IsTrue([
-                        'message' => 'Vous devez accepter nos conditions.',
-                    ]),
+                    new IsTrue(message: 'Vous devez accepter nos conditions.'),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
@@ -64,19 +62,17 @@ class RegistrationForm extends AbstractType
                 'invalid_message' => 'Les mots de passe doivent être identiques.',
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Entrez un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
+                    new NotBlank(message: 'Entrez un mot de passe'),
+                    new Length(
+                        min: 6,
                         // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                    new Regex([
-                        'pattern' => '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.*\\s).{8,32}$/',
-                        'message' => 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et faire entre 8 et 32 caractères.',
-                    ]),
+                        max: 4096,
+                        minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
+                    ),
+                    new Regex(
+                        pattern: '/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?!.*\\s).{8,32}$/',
+                        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre, un caractère spécial et faire entre 8 et 32 caractères.',
+                    ),
                     /*   new PasswordStrength([
                         'minScore' => PasswordStrength::STRENGTH_STRONG,
                         'message' => 'Le mot de passe n\'est pas assez fort.',

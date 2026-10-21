@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,7 +20,7 @@ final class ContactController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         TranslatorInterface $translator,
-        RateLimiterFactory $contactLimiter,
+        RateLimiterFactoryInterface $contactLimiter,
     ): Response {
         $contact = new ContactMessage();
         $form = $this->createForm(ContactType::class, $contact);

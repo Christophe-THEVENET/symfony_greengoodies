@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 /**
  * Applique un rate limiting sur les endpoints sensibles.
@@ -23,9 +23,9 @@ final class RateLimiterSubscriber implements EventSubscriberInterface
     ];
 
     public function __construct(
-        private readonly RateLimiterFactory $loginLimiter,
-        private readonly RateLimiterFactory $apiLoginLimiter,
-        private readonly RateLimiterFactory $registerLimiter,
+        private readonly RateLimiterFactoryInterface $loginLimiter,
+        private readonly RateLimiterFactoryInterface $apiLoginLimiter,
+        private readonly RateLimiterFactoryInterface $registerLimiter,
     ) {
     }
 

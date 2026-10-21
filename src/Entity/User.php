@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use SortDirection;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -76,7 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Address>
      */
     #[ORM\OneToMany(targetEntity: Address::class, mappedBy: 'user', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    #[ORM\OrderBy(['isDefault' => 'DESC', 'createdAt' => 'DESC'])]
+    #[ORM\OrderBy(['isDefault' => SortDirection::Descending, 'createdAt' => SortDirection::Descending])]
     private Collection $addresses;
 
     public function __construct()
