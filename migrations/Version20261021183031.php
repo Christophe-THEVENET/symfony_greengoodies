@@ -17,6 +17,12 @@ final class Version20261021183031 extends AbstractMigration
         return 'DBAL 4 : suppression des commentaires DC2Type et nouvel index composite messenger_messages';
     }
 
+    // DDL uniquement : MySQL valide implicitement chaque ALTER, une transaction n'a pas de sens
+    public function isTransactional(): bool
+    {
+        return false;
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('ALTER TABLE address CHANGE created_at created_at DATETIME NOT NULL');

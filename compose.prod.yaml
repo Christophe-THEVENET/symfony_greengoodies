@@ -14,7 +14,9 @@ services:
     env_file:
       - .env.local
     volumes:
-      - db_data:/var/lib/mysql
+      # Volume créé en MySQL 8.4 (oct. 2026). L'ancien « db_data » (hérité de 5.7,
+      # tables système MyISAM) est conservé à part comme sauvegarde.
+      - mysql_data:/var/lib/mysql
     networks:
       - appnet
     healthcheck:
@@ -57,7 +59,7 @@ services:
       - appnet
 
 volumes:
-  db_data:
+  mysql_data:
 
 networks:
   appnet:
