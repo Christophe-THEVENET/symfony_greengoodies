@@ -30,7 +30,8 @@ function handleHashScroll() {
     // Positionnement instantané (et avant le paint sur une visite Turbo) : pas de
     // scroll animé depuis le haut, donc pas de flash « accueil puis défilement ».
     el.scrollIntoView();
-    history.replaceState(null, "", window.location.pathname + window.location.search);
+    // history.state conservé : identifiant de restauration Turbo (bouton « retour »)
+    history.replaceState(history.state, "", window.location.pathname + window.location.search);
 }
 
 // Exécuter au chargement initial

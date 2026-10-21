@@ -32,8 +32,10 @@ export default class extends Controller {
         this.activeTabValue = "register";
     }
 
-    // Met à jour l'URL (sans rechargement) vers la route propre, sans hashtag ni query
+    // Met à jour l'URL (sans rechargement) vers la route propre, sans hashtag ni query.
+    // history.state est conservé : il porte l'identifiant de restauration de Turbo,
+    // sans lequel le bouton « retour » du navigateur ne réaffiche plus cette page.
     updateUrl(url) {
-        if (url) history.replaceState(null, "", url);
+        if (url) history.replaceState(history.state, "", url);
     }
 }
