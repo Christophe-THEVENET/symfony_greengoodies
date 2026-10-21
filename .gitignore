@@ -27,10 +27,12 @@
 # Référence design (handoff, hors dépôt)
 /refonte_design/
 
-# Infra spécifique à l'environnement, gérée HORS dépôt :
-#  - local : compose.yaml + compose.override.yaml (chargés auto par Docker Compose)
-#  - prod  : docker-compose.yml (édité directement sur le serveur)
-# Aucune config d'orchestration n'est versionnée -> pas de fuite ni de conflit.
+# Orchestration :
+#  - prod  : compose.prod.yaml VERSIONNÉ (aucun secret, tout vient de .env.local),
+#            utilisé par deploy.sh -> plus de config éditée à la main sur le serveur
+#  - local : compose.yaml + compose.override.yaml, hors dépôt (chargés auto par
+#            Docker Compose ; absents du serveur, donc jamais lus en prod par erreur)
+#  - docker-compose.yml : ancien fichier prod, remplacé par compose.prod.yaml
 /compose.yaml
 /compose.override.yaml
 /docker-compose.yml

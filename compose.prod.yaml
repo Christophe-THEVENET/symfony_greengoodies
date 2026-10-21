@@ -1,0 +1,63 @@
+# Orchestration de PRODUCTION (VPS), utilisée par deploy.sh :
+#   docker compose -f compose.prod.yaml <commande>
+# Aucun secret ici : tout vient de .env.local (non versionné) sur le serveur.
+# Le local utilise compose.yaml + compose.override.yaml (non versionnés).
+name: greengoodies
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    env_file:
+      - .env.local
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - appnet
+    healthcheck:
+      # ping sans identifiants : renvoie 0 dès que le serveur répond
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+  php:
+    build:
+      context: ./docker/php
+    restart: unless-stopped
+    env_file:
+      - .env.local
+    volumes:
+      - ./:/var/www/html
+    expose:
+      - "9000"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - appnet
+
+  nginx:
+    image: nginx:stable
+    restart: unless-stopped
+    ports:
+      - "${NGINX_HTTP_PORT:-80}:80"
+      - "${NGINX_HTTPS_PORT:-443}:443"
+    volumes:
+      - ./:/var/www/html:ro
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - php
+    networks:
+      - appnet
+
+volumes:
+  db_data:
+
+networks:
+  appnet:
