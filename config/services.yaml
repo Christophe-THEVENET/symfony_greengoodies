@@ -11,6 +11,13 @@ parameters:
     # Proxy de confiance : 127.0.0.1 par défaut = inactif (aucune IP forwardée
     # n'est crue). À surcharger en prod via .env.local (ex. réseau Docker).
     env(TRUSTED_PROXIES): '127.0.0.1'
+    # Messenger : transport Doctrine par défaut (aucune variable définie sinon,
+    # ce qui faisait échouer doctrine:schema:update / migrations:diff).
+    env(MESSENGER_TRANSPORT_DSN): 'doctrine://default?auto_setup=0'
+    # JWT : chemins des clés par défaut (générées par lexik:jwt:generate-keypair).
+    # La passphrase reste dans .env.local (secret, non versionné).
+    env(JWT_SECRET_KEY): '%kernel.project_dir%/config/jwt/private.pem'
+    env(JWT_PUBLIC_KEY): '%kernel.project_dir%/config/jwt/public.pem'
 
 services:
     # default configuration for services in *this* file
