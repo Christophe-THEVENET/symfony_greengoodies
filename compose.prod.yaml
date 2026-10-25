@@ -46,20 +46,23 @@ services:
   nginx:
     image: nginx:stable
     restart: unless-stopped
-    ports:
-      - "${NGINX_HTTP_PORT:-80}:80"
-      - "${NGINX_HTTPS_PORT:-443}:443"
+    # Aucun port publié : Caddy (projet « edge ») reçoit le trafic et le transmet par le réseau edge
     volumes:
       - ./:/var/www/html:ro
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
-      - /etc/letsencrypt:/etc/letsencrypt:ro
     depends_on:
       - php
     networks:
-      - appnet
+      appnet:
+      edge:
+        aliases:
+          - greengoodies-nginx
 
 volumes:
   mysql_data:
 
 networks:
   appnet:
+  # Réseau partagé du VPS, créé une fois hors de ce fichier (docker network create --subnet 172.30.0.0/24 edge)
+  edge:
+    external: true
