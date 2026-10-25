@@ -4,13 +4,25 @@
 # Le local utilise compose.yaml + compose.override.yaml (non versionnés).
 name: greengoodies
 
+# Site de démonstration : sur ce VPS partagé, le site du club alblse passe avant lui. En cas de manque de
+# mémoire, ses conteneurs sont arrêtés en premier (oom_score_adj) ; il reçoit moins de temps processeur
+# quand les deux sites en demandent (cpu_shares, 1024 par défaut).
+x-cede-la-priorite: &cede-la-priorite
+  oom_score_adj: 500
+  cpu_shares: 512
+
 services:
   db:
     image: mysql:8.4
     restart: unless-stopped
+    <<: *cede-la-priorite
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      # Petite base de démonstration : environ 150 Mo au lieu de 460
+      - --performance-schema=OFF
+      - --innodb-buffer-pool-size=64M
+      - --max-connections=20
     env_file:
       - .env.local
     volumes:
@@ -31,6 +43,7 @@ services:
     build:
       context: ./docker/php
     restart: unless-stopped
+    <<: *cede-la-priorite
     env_file:
       - .env.local
     volumes:
@@ -46,6 +59,7 @@ services:
   nginx:
     image: nginx:stable
     restart: unless-stopped
+    <<: *cede-la-priorite
     # Aucun port publié : Caddy (projet « edge ») reçoit le trafic et le transmet par le réseau edge
     volumes:
       - ./:/var/www/html:ro
