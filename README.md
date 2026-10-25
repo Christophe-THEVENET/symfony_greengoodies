@@ -143,13 +143,15 @@ Connectez-vous avec les comptes créés dans les fixtures (voir les identifiants
 
 ## Production (Docker)
 
-La prod tourne sur un VPS dans `/var/www/greengoodies`, orchestrée par **`compose.prod.yaml`** (versionné, sans aucun secret) : MySQL 8.4, PHP 8.5-FPM, nginx avec certificats Let's Encrypt. Les secrets sont dans `.env.local` sur le serveur (non versionné).
+La prod tourne sur un VPS dans `/var/www/greengoodies`, orchestrée par **`compose.prod.yaml`** (versionné, sans aucun secret) : MySQL 8.4, PHP 8.5-FPM, nginx en HTTP seulement. Le trafic arrive par **Caddy**, point d'entrée partagé du VPS (projet `edge` dans `~/edge` : ports 80/443, certificats Let's Encrypt obtenus et renouvelés automatiquement), qui le transmet à nginx par le réseau Docker `edge`. Les secrets sont dans `.env.local` sur le serveur (non versionné).
 
 > **Quel fichier Compose ?**
 > - **Local / dev** → `compose.yaml` + `compose.override.yaml` (non versionnés, chargés automatiquement par `docker compose`).
 > - **Production** → `compose.prod.yaml`, toujours ciblé explicitement : `docker compose -f compose.prod.yaml …` (c'est ce que fait `deploy.sh`).
 
 ### Premier déploiement (une seule fois)
+
+Prérequis : le réseau Docker `edge` et Caddy démarrés, avec un bloc `greengoodies.eu` dans le `Caddyfile` du projet `edge`.
 
 ```bash
 git clone https://github.com/Christophe-THEVENET/symfony_greengoodies.git /var/www/greengoodies
