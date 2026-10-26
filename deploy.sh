@@ -50,8 +50,9 @@ step "Images à jour (correctifs de sécurité)"
 
 step "Redémarrage des conteneurs"
 "${COMPOSE[@]}" up -d --wait --remove-orphans
-# nginx résout l'adresse de PHP au démarrage : rechargé au cas où PHP a été recréé
-"${COMPOSE[@]}" exec -T nginx nginx -s reload
+# Redémarré (un simple reload ne suffit pas) : nginx résout l'adresse de PHP au démarrage, et git
+# remplace default.conf par un nouveau fichier que le conteneur ne voit qu'après remontage
+"${COMPOSE[@]}" restart nginx
 
 step "Droits des fichiers"
 chown -R "$APP_OWNER" "$APP_DIR"
