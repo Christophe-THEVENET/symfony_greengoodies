@@ -54,7 +54,11 @@ services:
       db:
         condition: service_healthy
     networks:
-      - appnet
+      appnet:
+        # Nom propre au projet, utilisé par nginx : relié aussi au réseau partagé edge,
+        # nginx y verrait sous le nom « php » le conteneur PHP d'alblse
+        aliases:
+          - greengoodies-php
 
   nginx:
     image: nginx:stable
